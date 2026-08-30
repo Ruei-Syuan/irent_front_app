@@ -28,6 +28,9 @@ description: iRent 使用者端前端開發規則
 - 車輛地圖 API 預設使用 `GET /api/v1/vehicles/map-summary`。
 - API 資料應保留必要欄位：`id`、`plateNumber`、`latitude`、`longitude`、`healthScore`、`issueCount`、`status`、`updatedAt`。
 
+## 彈跳視窗固定使用
+- SweetAlert2 (JavaScript 套件)
+
 ## 健康分數機制
 
 車輛健康分數由車內與車外各占 50% 計算：

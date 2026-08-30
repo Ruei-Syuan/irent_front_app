@@ -1,3 +1,5 @@
+import { getFallbackLocation } from './location.mjs';
+
 // 取得 index.html 中各頁面、按鈕與資料容器，後續互動都透過 data-* 屬性綁定。
 const mapElement = document.querySelector('[data-nearby-map]');
 const mapPanel = document.querySelector('.map-panel');
@@ -21,8 +23,13 @@ const loginCloseButton = document.querySelector('[data-login-close]');
 const loginForm = document.querySelector('[data-login-form]');
 const loginAccountInput = document.querySelector('[data-login-account]');
 const loginPasswordInput = document.querySelector('[data-login-password]');
+const loginPasswordToggle = document.querySelector('[data-login-password-toggle]');
 const loginError = document.querySelector('[data-login-error]');
 const loginLogoutButton = document.querySelector('[data-login-logout]');
+const memberMenuToggle = document.querySelector('[data-member-menu-toggle]');
+const memberMenuPanel = document.querySelector('[data-member-panel]');
+const memberLoginButton = document.querySelector('[data-member-login]');
+const memberLogoutButton = document.querySelector('[data-member-logout]');
 const refreshVehiclesButton = document.querySelector('[data-refresh-vehicles]');
 const quickRentButton = document.querySelector('[data-quick-rent]');
 const locateButton = document.querySelector('[data-locate]');
@@ -73,13 +80,21 @@ const returnFinishButton = document.querySelector('[data-return-finish]');
 let allVehicles = createDefaultVehicles();
 let selectedVehicleId = allVehicles.features[0].properties.id;
 let map;
-let currentLocation;
+const fallbackLocation = getFallbackLocation();
+let currentLocation = { coordinates: fallbackLocation.coordinates, accuracy: 0, isFallback: true };
 let scanProgress = 3;
 let inspectionScreen = 'start';
 let returnTimerSeconds = 600;
 let returnTimerInterval;
 let toastTimer;
 const API_BASE_URL = String(window.__IRENT_API_BASE_URL__ || '').replace(/\/+$/, '');
+// 會員登入預設連到本機後端 3000；部署時可用 __IRENT_MEMBER_API_BASE_URL__ 覆寫。
+const currentApiHost = window.location.hostname || '127.0.0.1';
+const currentApiProtocol = window.location.protocol === 'https:' ? 'https:' : 'http:';
+// ? API ?身??雯?蝙?函?蜓璈?霈?璈??蝬脤????舫????餉??
+const MEMBER_API_BASE_URL = String(
+  window.__IRENT_MEMBER_API_BASE_URL__ || API_BASE_URL || `${currentApiProtocol}//${currentApiHost}:3000`
+).replace(/\/+$/, '');
 const API_TIMEOUT_MS = 8000;
 
 // 相機狀態：只保留目前頁面的串流，離開拍攝頁時會停止所有軌道。
@@ -120,12 +135,41 @@ const sharedHeaderViews = {
 // AI 客服僅顯示於一般功能頁，避免遮住取車、還車與檢查流程的主要操作按鈕。
 const floatingAssistantViews = new Set(['nearby', 'vehicle', 'trips', 'points', 'settings']);
 
-// 讀取本機登入狀態；瀏覽器禁止儲存資料時仍可正常使用網站預覽。
+// 將後端會員資料轉成 header 與設定頁共用的顯示格式。
+function toMemberUser(member) {
+  const name = String(member?.fullName || member?.name || '').trim();
+  if (!name) return null;
+  const memberNo = String(member?.memberNo || member?.account || '').trim();
+  return {
+    name,
+    initials: name.slice(0, 2),
+    memberNo,
+    phone: String(member?.phone || '').trim(),
+    account: memberNo || String(member?.phone || '').trim(),
+  };
+}
+
+function saveStoredUser(user) {
+  try {
+    window.localStorage.setItem(LOGIN_STORAGE_KEY, JSON.stringify(user));
+  } catch {
+    // localStorage 不可用時仍保留目前頁面的登入狀態。
+  }
+}
+
+function clearStoredUser() {
+  try {
+    window.localStorage.removeItem(LOGIN_STORAGE_KEY);
+  } catch {
+    // localStorage 不可用時只清除目前頁面的登入狀態。
+  }
+}
+
+// 讀取本機暫存資料，啟動後仍會向後端 /me 驗證 Cookie。
 function readStoredUser() {
   try {
     const storedUser = window.localStorage.getItem(LOGIN_STORAGE_KEY);
-    const user = storedUser ? JSON.parse(storedUser) : null;
-    return user?.name && user?.initials ? user : null;
+    return toMemberUser(storedUser ? JSON.parse(storedUser) : null);
   } catch {
     return null;
   }
@@ -151,6 +195,10 @@ function configureNativeViewport() {
 // 組合 API 網址；未設定 API 網址時，網站會使用預設示範資料。
 function apiUrl(pathname) {
   return `${API_BASE_URL}${pathname}`;
+}
+
+function memberApiUrl(pathname) {
+  return `${MEMBER_API_BASE_URL}${pathname}`;
 }
 
 // 為 API 請求加入逾時控制，避免網路異常時畫面長時間等待。
@@ -395,7 +443,7 @@ function renderVehicleList() {
     row.className = `nearby-row${properties.id === selectedVehicleId ? ' is-selected' : ''}`;
     row.dataset.vehicleId = properties.id;
     row.innerHTML = `
-      <span class="row-car ${vehicleTone(Number(properties.healthScore))}">${carIcon(properties.bodyTone)}</span>
+
       <span class="row-name"><strong>${escapeHtml(properties.displayName)}</strong><small>${escapeHtml(properties.plateNumber)}</small><span class="row-specs"><em>${escapeHtml(properties.doorCount)}門</em><em>${escapeHtml(properties.fuelType)}</em></span></span>
       <span class="row-rate"><small class="row-distance">♟ 約 ${escapeHtml(properties.walkMinutes)} 分鐘・${escapeHtml((Number(properties.distanceMeters) / 1000).toFixed(1))} km</small><strong>$${escapeHtml(properties.rate)}<small> / 分鐘</small></strong></span>
     `;
@@ -439,7 +487,7 @@ function updateMapSource() {
 
 // 建立目前位置的 GeoJSON，尚未取得 GPS 時先使用示範座標。
 function currentLocationData() {
-  const coordinates = currentLocation?.coordinates || [121.5311, 25.0442];
+  const coordinates = currentLocation.coordinates;
   return {
     type: 'FeatureCollection',
     features: [{
@@ -452,7 +500,7 @@ function currentLocationData() {
 
 // 將手機目前位置更新到地圖上的 GeoJSON 圖層。
 function updateCurrentLocation(longitude, latitude, accuracy) {
-  currentLocation = { coordinates: [longitude, latitude], accuracy };
+  currentLocation = { coordinates: [longitude, latitude], accuracy, isFallback: false };
   if (currentLocationLabel) currentLocationLabel.textContent = `目前位置：已定位（${latitude.toFixed(5)}, ${longitude.toFixed(5)}）`;
   const source = map?.getSource('current-location');
   source?.setData(currentLocationData());
@@ -642,7 +690,7 @@ function initMap() {
       },
       layers: [{ id: 'openstreetmap-tiles', type: 'raster', source: 'openstreetmap' }],
     },
-    center: [121.532, 25.044],
+    center: fallbackLocation.coordinates,
     zoom: 14.9,
     attributionControl: true,
   });
@@ -688,6 +736,9 @@ function initMap() {
     });
     map.on('mouseenter', 'vehicle-circle', () => { map.getCanvas().style.cursor = 'pointer'; });
     map.on('mouseleave', 'vehicle-circle', () => { map.getCanvas().style.cursor = ''; });
+
+    // 左側地圖載入完成後自動同步手機定位；失敗時保留台南市火車站。
+    locateUser();
   });
 
   map.on('error', () => {
@@ -726,73 +777,137 @@ function markNotificationsRead() {
   showToast('通知已全部標記為已讀');
 }
 
-// 同步設定頁的會員卡與登入視窗狀態。
+// 同步右上角會員選單、設定頁會員卡與登入視窗狀態。
 function updateProfileUI() {
   const profileInitials = document.querySelector('[data-profile-initials]');
   const profileName = document.querySelector('[data-profile-name]');
   const profileStatus = document.querySelector('[data-profile-status]');
+  const memberInitials = document.querySelector('[data-member-initials]');
+  const memberName = document.querySelector('[data-member-name]');
+  const memberStatus = document.querySelector('[data-member-status]');
   const isLoggedIn = Boolean(currentUser);
 
   if (profileInitials) profileInitials.textContent = isLoggedIn ? currentUser.initials : '訪';
   if (profileName) profileName.textContent = isLoggedIn ? currentUser.name : '登入會員';
   if (profileStatus) profileStatus.textContent = isLoggedIn ? '一般會員・已登入' : '登入後查看會員資料';
+  if (memberInitials) memberInitials.textContent = isLoggedIn ? currentUser.initials : 'C';
+  if (memberName) memberName.textContent = isLoggedIn ? currentUser.name : '登入會員';
+  if (memberStatus) memberStatus.textContent = isLoggedIn ? '一般會員・已登入' : '尚未登入';
+  if (memberLoginButton) memberLoginButton.hidden = isLoggedIn;
+  if (memberLogoutButton) memberLogoutButton.hidden = !isLoggedIn;
   if (loginLogoutButton) loginLogoutButton.hidden = !isLoggedIn;
 }
 
+function setMemberMenuOpen(isOpen) {
+  if (!memberMenuPanel) return;
+  memberMenuPanel.hidden = !isOpen;
+  memberMenuPanel.classList.toggle('is-open', isOpen);
+  memberMenuToggle?.setAttribute('aria-expanded', String(isOpen));
+}
+
 // 控制登入視窗，開啟時自動將游標放到帳號欄位。
+function setPasswordVisibility(isPasswordVisible) {
+  if (!loginPasswordInput || !loginPasswordToggle) return;
+  loginPasswordInput.type = isPasswordVisible ? 'text' : 'password';
+  loginPasswordToggle.textContent = isPasswordVisible ? '隱藏' : '顯示';
+  loginPasswordToggle.setAttribute('aria-label', isPasswordVisible ? '隱藏密碼' : '顯示密碼');
+  loginPasswordToggle.setAttribute('aria-pressed', String(isPasswordVisible));
+}
+
 function setLoginModalOpen(isOpen) {
   if (!loginModal) return;
 
   loginModal.classList.toggle('is-open', isOpen);
   loginModal.setAttribute('aria-hidden', String(!isOpen));
   if (isOpen) {
+    setPasswordVisibility(false);
     if (loginError) loginError.textContent = '';
     window.setTimeout(() => loginAccountInput?.focus(), 0);
   }
 }
 
-// 前端示範登入：驗證欄位後將會員資料保存於 localStorage。
-function handleLoginSubmit(event) {
+// 實際呼叫後端一般會員登入 API，不再使用前端假登入。
+async function handleLoginSubmit(event) {
   event.preventDefault();
   const account = loginAccountInput?.value.trim() || '';
   const password = loginPasswordInput?.value || '';
 
   if (account.length < 3) {
-    if (loginError) loginError.textContent = '請輸入至少 3 個字元的帳號或手機號碼。';
+    if (loginError) loginError.textContent = '請輸入至少 3 個字元的會員編號或手機號碼。';
     loginAccountInput?.focus();
     return;
   }
 
-  if (password.length < 4) {
-    if (loginError) loginError.textContent = '密碼至少需要 4 個字元。';
+  if (password.length < 8) {
+    if (loginError) loginError.textContent = '密碼至少需要 8 個字元。';
     loginPasswordInput?.focus();
     return;
   }
 
-  const name = account.includes('@') ? account.split('@')[0] : `會員 ${account.slice(-4)}`;
-  currentUser = { name, initials: name.slice(0, 2), account };
   try {
-    window.localStorage.setItem(LOGIN_STORAGE_KEY, JSON.stringify(currentUser));
-  } catch {
-    // localStorage 不可用時仍保留目前頁面的登入狀態。
-  }
+    const response = await fetchWithTimeout(memberApiUrl('/api/v1/member-auth/login'), {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ identifier: account, password }),
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(payload.error || '登入失敗，請檢查帳號與密碼。');
 
-  updateProfileUI();
-  setLoginModalOpen(false);
-  loginForm?.reset();
-  showToast('登入成功');
+    const user = toMemberUser(payload.item);
+    if (!user) throw new Error('登入回應缺少會員資料。');
+    currentUser = user;
+    saveStoredUser(currentUser);
+    updateProfileUI();
+    setMemberMenuOpen(false);
+    setLoginModalOpen(false);
+    loginForm?.reset();
+    showToast('登入成功');
+  } catch (error) {
+    if (loginError) loginError.textContent = error.name === 'AbortError' ? '登入逾時，請稍後再試。' : error instanceof TypeError ? '無法連線至會員服務，請確認後端是否已啟動。' : error.message || '登入失敗，請稍後再試。';
+  }
 }
 
-function handleLogout() {
-  currentUser = null;
+// 登出後端會員 session，同時清除前端暫存的顯示資料。
+async function handleLogout() {
   try {
-    window.localStorage.removeItem(LOGIN_STORAGE_KEY);
+    await fetchWithTimeout(memberApiUrl('/api/v1/member-auth/logout'), {
+      method: 'POST',
+      credentials: 'include',
+    });
   } catch {
-    // localStorage 不可用時只清除目前頁面的登入狀態。
+    // 後端暫時無法連線時仍清除本機顯示，避免畫面停留在已登入狀態。
   }
+
+  currentUser = null;
+  clearStoredUser();
   updateProfileUI();
+  setMemberMenuOpen(false);
   setLoginModalOpen(false);
   showToast('已登出目前帳號');
+}
+
+// 啟動時以後端 session 為準，避免只依賴 localStorage 判定登入狀態。
+async function restoreMemberSession() {
+  try {
+    const response = await fetchWithTimeout(memberApiUrl('/api/v1/member-auth/me'), { credentials: 'include' });
+    if (response.status === 401) {
+      currentUser = null;
+      clearStoredUser();
+      updateProfileUI();
+      return;
+    }
+    if (!response.ok) return;
+
+    const payload = await response.json().catch(() => ({}));
+    const user = toMemberUser(payload.item);
+    if (!user) return;
+    currentUser = user;
+    saveStoredUser(currentUser);
+    updateProfileUI();
+  } catch {
+    // 後端尚未啟動時保留預覽畫面，不阻止找車功能初始化。
+  }
 }
 
 // 依開始時間、站點與車輛關鍵字篩選租借歷史。
@@ -1060,7 +1175,7 @@ document.addEventListener('click', (event) => {
     '[data-refresh-vehicles]', '[data-quick-rent]', '[data-locate]', '[data-nav-view]',
     '[data-notification-close]', '[data-notification-mark-read]',
     '.notification-button', '.detail-notification', '.order-notification', '.inspection-notification', '.return-notification',
-    '[data-login-open]', '[data-login-close]', '[data-login-logout]',
+    '[data-login-open]', '[data-login-close]', '[data-login-logout]', '[data-member-menu-toggle]', '[data-member-login]', '[data-member-logout]',
     '[data-floating-assistant]',
     '[data-shared-back]', '[data-history-reset]',
     '[data-vehicle-id]', '[data-scan-start]', '[data-scan-record-next]', '[data-scan-capture-next]',
@@ -1092,11 +1207,31 @@ document.addEventListener('click', (event) => {
   setNotificationOpen(false);
 });
 loginOpenButtons.forEach((button) => button.addEventListener('click', () => setLoginModalOpen(true)));
+memberMenuToggle?.addEventListener('click', (event) => {
+  event.stopPropagation();
+  if (!currentUser) {
+    setLoginModalOpen(true);
+    return;
+  }
+  setMemberMenuOpen(memberMenuPanel?.hidden ?? true);
+});
+memberLoginButton?.addEventListener('click', () => {
+  setMemberMenuOpen(false);
+  setLoginModalOpen(true);
+});
+memberLogoutButton?.addEventListener('click', () => void handleLogout());
 loginCloseButton?.addEventListener('click', () => setLoginModalOpen(false));
 loginForm?.addEventListener('submit', handleLoginSubmit);
-loginLogoutButton?.addEventListener('click', handleLogout);
+loginPasswordToggle?.addEventListener('click', () => {
+  setPasswordVisibility(loginPasswordInput?.type === 'password');
+});
+loginLogoutButton?.addEventListener('click', () => void handleLogout());
 loginModal?.addEventListener('click', (event) => {
   if (event.target === loginModal) setLoginModalOpen(false);
+});
+document.addEventListener('click', (event) => {
+  if (event.target.closest?.('[data-member-menu]')) return;
+  setMemberMenuOpen(false);
 });
 appHeaderBack?.addEventListener('click', () => {
   const targetView = appHeaderBack.dataset.backView || 'nearby';
@@ -1211,6 +1346,7 @@ document.addEventListener('visibilitychange', () => {
 // ------------------------------
 configureNativeViewport();
 updateProfileUI();
+void restoreMemberSession();
 setActiveView('nearby');
 setInspectionScreen(inspectionScreen);
 // 等頁面完成首次版面配置後再產生清單，避免右側欄在初始繪製時漏顯示。

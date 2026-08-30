@@ -64,3 +64,30 @@ test('shows the detected location below nearby recommendations', async () => {
   assert.match(html, /data-current-location-label[^>]*>目前位置：台南火車站</);
   assert.match(script, /currentLocationLabel\.textContent = `目前位置：已定位（\$\{latitude\.toFixed\(5\)\}, \$\{longitude\.toFixed\(5\)\}）`/);
 });
+
+test('adds a top-right member account control wired to the member auth API', async () => {
+  const html = await readFile(new URL('./index.html', import.meta.url), 'utf8');
+  const script = await readFile(new URL('./js/nearby-vehicles.js', import.meta.url), 'utf8');
+  const styles = await readFile(new URL('./css/nearby-vehicles.css', import.meta.url), 'utf8');
+
+  assert.match(html, /data-member-menu/);
+  assert.match(html, /data-member-name/);
+  assert.match(html, /data-member-status/);
+  assert.match(html, /data-member-login/);
+  assert.match(html, /data-member-logout/);
+  assert.match(script, /const MEMBER_API_BASE_URL =/);
+  assert.ok(script.includes('window.location.hostname'));
+  assert.ok(script.includes('/api/v1/member-auth/me'));
+  assert.ok(script.includes('/api/v1/member-auth/login'));
+  assert.ok(script.includes('/api/v1/member-auth/logout'));
+  assert.match(styles, /\.member-menu/);
+});
+test('provides a toggle that can reveal the login password', async () => {
+  const html = await readFile(new URL('./index.html', import.meta.url), 'utf8');
+  const script = await readFile(new URL('./js/nearby-vehicles.js', import.meta.url), 'utf8');
+
+  assert.match(html, /data-login-password-toggle/);
+  assert.match(html, /aria-pressed="false"/);
+  assert.match(script, /loginPasswordToggle\?\.addEventListener\('click'/);
+  assert.match(script, /loginPasswordInput\.type = isPasswordVisible \? 'text' : 'password'/);
+});

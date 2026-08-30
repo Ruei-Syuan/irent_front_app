@@ -603,12 +603,14 @@ button { cursor: pointer; touch-action: manipulation; }
 .function-menu {
   position: fixed;
   z-index: 31;
-  top: 0;
-  bottom: 0;
+  top: 16px;
   left: 0;
   width: min(78vw, 290px);
+  max-height: calc(100dvh - 32px);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  border-radius: 0 18px 18px 0;
   background: #ffffff;
   box-shadow: 18px 0 40px rgba(20, 81, 77, 0.18);
   transform: translateX(-105%);
@@ -1576,7 +1578,9 @@ body.front-app-body {
   }
 
   .function-menu {
+    top: calc(12px + env(safe-area-inset-top, 0px));
     width: min(84vw, 300px);
+    max-height: calc(100dvh - 24px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -1950,7 +1954,7 @@ body.front-app-body {
   text-align: left;
 }
 
-/* 登入視窗：目前為前端示範，不會將密碼送到後端。 */
+/* 登入視窗：送出一般會員 API，使用 HttpOnly Cookie 維持登入。 */
 .login-modal {
   position: fixed;
   z-index: 50;
@@ -2249,7 +2253,7 @@ body.front-app-body {
 .app-header__notification {
   position: absolute;
   top: calc(8px + env(safe-area-inset-top, 0px));
-  right: 16px;
+  right: calc(16px + 184px + 10px);
   width: 42px;
   height: 42px;
   margin-left: 0;
@@ -2696,7 +2700,7 @@ body.front-app-body {
 
   .app-header__notification {
     top: 16px;
-    right: 20px;
+    right: calc(16px + 184px + 10px);
     width: 46px;
     height: 42px;
   }
@@ -3031,4 +3035,207 @@ body.front-app-body {
     margin-top: 0;
   }
 
+}
+
+
+/* 附近推薦車輛：移除清單左側車輛圖標，文字與價格填滿可用寬度。 */
+.nearby-row { grid-template-columns: minmax(0, 1fr) auto; }
+
+/* 右上角會員登入／登出選單：與通知鈴鐺同列，避免遮住頁面標題。 */
+.member-menu {
+  position: absolute;
+  z-index: 21;
+  top: calc(8px + env(safe-area-inset-top, 0px));
+  right: 16px;
+}
+
+.member-menu__trigger {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) 14px;
+  align-items: center;
+  gap: 8px;
+  width: 154px;
+  min-height: 42px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: #102f59;
+  text-align: left;
+}
+
+.member-menu__avatar {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 50%;
+  background: #213b67;
+  box-shadow: 0 5px 12px rgba(16, 47, 89, 0.18);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.member-menu__copy {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.member-menu__copy strong,
+.member-menu__copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.member-menu__copy strong {
+  color: #173a67;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.member-menu__copy small {
+  color: #71849c;
+  font-size: 9px;
+}
+
+.member-menu__chevron {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: #71849c;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+  transition: transform 0.18s ease;
+}
+
+.member-menu__trigger[aria-expanded="true"] .member-menu__chevron {
+  transform: rotate(180deg);
+}
+
+.member-menu__panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  display: grid;
+  min-width: 140px;
+  overflow: hidden;
+  border: 1px solid #e4edf1;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(16, 47, 89, 0.16);
+}
+
+.member-menu__panel[hidden] {
+  display: none;
+}
+
+.member-menu__panel button {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-bottom: 1px solid #edf2f4;
+  background: #fff;
+  color: #173a67;
+  font-size: 11px;
+  text-align: left;
+}
+
+.member-menu__panel button:last-child {
+  border-bottom: 0;
+}
+
+.member-menu__panel button:hover,
+.member-menu__panel button:focus-visible {
+  background: #f0faf8;
+  color: #008f89;
+  outline: 0;
+}
+
+@media (max-width: 520px) {
+  .app-header__notification { right: calc(16px + 145px + 8px); }
+  .member-menu {
+    top: calc(8px + env(safe-area-inset-top, 0px));
+    right: 16px;
+  }
+
+  .member-menu__trigger {
+    grid-template-columns: 34px minmax(0, 1fr) 12px;
+    width: 145px;
+    min-height: 36px;
+    gap: 6px;
+  }
+
+  .member-menu__avatar {
+    width: 34px;
+    height: 34px;
+  }
+
+  .member-menu__copy strong {
+    font-size: 10px;
+  }
+
+  .member-menu__copy small {
+    font-size: 8px;
+  }
+}
+
+@media (min-width: 521px) {
+  .member-menu {
+    top: 16px;
+    right: 16px;
+  }
+
+  .member-menu__trigger {
+    grid-template-columns: 42px minmax(0, 1fr) 14px;
+    width: 184px;
+    min-height: 42px;
+    gap: 9px;
+  }
+
+  .member-menu__avatar {
+    width: 42px;
+    height: 42px;
+  }
+
+  .member-menu__copy strong {
+    font-size: 13px;
+  }
+
+  .member-menu__copy small {
+    font-size: 10px;
+  }
+}
+
+.login-password-field {
+  position: relative;
+  display: block;
+}
+
+.login-password-field input {
+  padding-right: 64px;
+}
+
+.login-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  min-height: 32px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 8px;
+  transform: translateY(-50%);
+  background: transparent;
+  color: #008f89;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.login-password-toggle:focus-visible {
+  outline: 2px solid #00a49b;
+  outline-offset: 1px;
 }

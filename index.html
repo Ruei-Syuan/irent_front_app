@@ -27,6 +27,18 @@
           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg>
           <i aria-hidden="true"></i>
         </button>
+        <!-- 右上角會員功能：登入後顯示會員姓名，展開後可登出。 -->
+        <div class="member-menu" data-member-menu>
+          <button class="member-menu__trigger" data-member-menu-toggle type="button" aria-haspopup="menu" aria-expanded="false">
+            <span class="member-menu__avatar" data-member-initials aria-hidden="true">-</span>
+            <span class="member-menu__copy"><strong data-member-name>登入會員</strong><small data-member-status>尚未登入</small></span>
+            <svg class="member-menu__chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5" /></svg>
+          </button>
+          <div class="member-menu__panel" data-member-panel role="menu" hidden>
+            <button type="button" data-member-login role="menuitem">登入會員</button>
+            <button type="button" data-member-logout role="menuitem" hidden>登出</button>
+          </div>
+        </div>
       </header>
 
       <!-- 浮動 AI 客服：固定在右下角，點擊後開啟 AI 助手頁面。 -->
@@ -479,11 +491,11 @@
 
       <!-- 底部導覽：切換找車、租借歷史、開門、點數紀錄與我的頁面。 -->
       <nav class="app-nav" aria-label="App 導覽">
-        <button class="is-active" data-nav-view="nearby" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s7-5.5 7-12a7 7 0 1 0-14 0c0 6.5 7 12 7 12Z" /><circle cx="12" cy="9" r="2" /></svg><span>找車</span></button>
+        <!-- <button class="is-active" data-nav-view="nearby" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s7-5.5 7-12a7 7 0 1 0-14 0c0 6.5 7 12 7 12Z" /><circle cx="12" cy="9" r="2" /></svg><span>找車(主畫面)</span></button> -->
         <button data-nav-view="trips" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2" /><path d="M8 2v4M16 2v4M5 9h14" /></svg><span>租借歷史</span></button>
         <button class="take-car" data-nav-view="scan" type="button"><span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 3h10M7 21h10M5 6h14v12H5zM9 9h6v6H9z" /></svg></span><small>開門</small></button>
         <button data-nav-view="points" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 14.8 9l6.2.6-4.7 4.1 1.4 6.1-5.7-3.2-5.7 3.2 1.4-6.1L3 9.6 9.2 9 12 3Z" /></svg><span>點數紀錄</span></button>
-        <button data-nav-view="settings" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5" /><path d="M5 21c.4-4 2.7-6 7-6s6.6 2 7 6" /></svg><span>我的</span></button>
+        <button data-nav-view="settings" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5" /><path d="M5 21c.4-4 2.7-6 7-6s6.6 2 7 6" /></svg><span>帳號設定</span></button>
       </nav>
     </main>
 
@@ -498,16 +510,16 @@
       </div>
       <nav class="function-menu__nav" aria-label="主要功能">
         <button class="is-active" data-menu-action data-view="nearby" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s7-5.5 7-12a7 7 0 1 0-14 0c0 6.5 7 12 7 12Z" /><circle cx="12" cy="9" r="2" /></svg>找車</button>
+        <button data-menu-action data-view="return" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h5" /></svg>還車</button>
         <button data-menu-action data-view="trips" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2" /><path d="M8 2v4M16 2v4M5 9h14" /></svg>租借歷史</button>
-        <button data-menu-action data-view="return" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h5" /></svg>還車流程</button>
-        <button data-menu-action data-view="feedback" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 3 20h18L12 3Z" /><path d="M12 9v4M12 17h.01" /></svg>異常回饋</button>
+        <!-- <button data-menu-action data-view="feedback" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 3 20h18L12 3Z" /><path d="M12 9v4M12 17h.01" /></svg>異常回饋</button> -->
         <button data-menu-action data-view="points" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 14.8 9l6.2.6-4.7 4.1 1.4 6.1-5.7-3.2-5.7 3.2 1.4-6.1L3 9.6 9.2 9 12 3Z" /></svg>點數紀錄</button>
-        <button data-menu-action data-view="settings" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5" /><path d="M5 21c.4-4 2.7-6 7-6s6.6 2 7 6" /></svg>我的</button>
+        <button data-menu-action data-view="settings" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5" /><path d="M5 21c.4-4 2.7-6 7-6s6.6 2 7 6" /></svg>帳戶偏好</button>
       </nav>
-      <div class="function-menu__footer">iRent 前端預覽</div>
+      <!-- <div class="function-menu__footer">iRent 前端預覽</div> -->
     </aside>
 
-    <!-- 登入視窗：前端示範登入，成功後保存會員狀態於瀏覽器。 -->
+    <!-- 登入視窗：送出一般會員 API，成功後由 HttpOnly Cookie 維持登入。 -->
     <section class="login-modal" data-login-modal aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="login-title">
       <div class="login-modal__card">
         <div class="login-modal__header">
@@ -517,7 +529,12 @@
         <p class="login-modal__intro">登入後即可查看點數紀錄與會員資訊。</p>
         <form class="login-form" data-login-form>
           <label>帳號或手機<input data-login-account name="account" type="text" autocomplete="username" placeholder="請輸入帳號或手機號碼" required /></label>
-          <label>密碼<input data-login-password name="password" type="password" autocomplete="current-password" placeholder="請輸入密碼" minlength="4" required /></label>
+          <label>密碼
+  <span class="login-password-field">
+    <input data-login-password name="password" type="password" autocomplete="current-password" placeholder="請輸入密碼" minlength="8" required />
+    <button class="login-password-toggle" data-login-password-toggle type="button" aria-label="顯示密碼" aria-pressed="false">顯示</button>
+  </span>
+</label>
           <p class="login-form__error" data-login-error role="alert" aria-live="polite"></p>
           <button class="login-form__submit" type="submit">登入</button>
           <button class="login-form__logout" data-login-logout type="button" hidden>登出目前帳號</button>
