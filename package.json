@@ -1,0 +1,1 @@
+{"name":"irent-front-app","private":true,"scripts":{"dev":"node server.mjs","build":"vite build","start":"node server.mjs","test":"node --test"},"dependencies":{"@capacitor/core":"^8.5.0","@capacitor/ios":"^8.5.0"},"devDependencies":{"@capacitor/cli":"^8.4.2","typescript":"^7.0.2"}}

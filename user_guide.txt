@@ -1,0 +1,5 @@
+cd /d D:\code\2026\irent-project
+-- npm install
+-- 輸入下方這行:
+npm run dev
+-- iRent front app running at http://127.0.0.1:5000/
