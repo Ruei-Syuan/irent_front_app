@@ -99,18 +99,9 @@
               <small data-current-location-label aria-live="polite">目前位置：台南火車站</small>
             </p>
           </div>
-          <button class="refresh-button" data-refresh-vehicles type="button" aria-label="重新整理車輛">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0 1 4" /><path d="M20 5v6h-6" /></svg>
-            <span>重新整理</span>
-          </button>
         </div>
         <div class="vehicle-list" data-vehicle-list></div>
-        <div class="ai-recommendation">
-          <span class="ai-recommendation__icon" aria-hidden="true">✦</span>
-          <div><strong>AI 推薦</strong><p>附近有 3 台 GO 智慧車可用，步行 2 分鐘內可達</p></div>
-          <b aria-hidden="true">›</b>
-        </div>
-        <button class="quick-rent" data-quick-rent data-nav-view="scan" type="button">
+        <button class="quick-rent" data-quick-rent data-nav-view="scan" type="button" disabled aria-disabled="true">
           <!-- <span> -->
             <strong>查看車輛狀況</strong>
             <!-- <small>掃碼取車，即刻出發</small> -->

@@ -30,7 +30,6 @@ const memberMenuToggle = document.querySelector('[data-member-menu-toggle]');
 const memberMenuPanel = document.querySelector('[data-member-panel]');
 const memberLoginButton = document.querySelector('[data-member-login]');
 const memberLogoutButton = document.querySelector('[data-member-logout]');
-const refreshVehiclesButton = document.querySelector('[data-refresh-vehicles]');
 const quickRentButton = document.querySelector('[data-quick-rent]');
 const locateButton = document.querySelector('[data-locate]');
 const nearbyViews = document.querySelectorAll('[data-nearby-view]');
@@ -78,8 +77,9 @@ const returnFinishButton = document.querySelector('[data-return-finish]');
 
 // 頁面執行期間使用的狀態資料。
 let allVehicles = createDefaultVehicles();
-let selectedVehicleId = allVehicles.features[0].properties.id;
+let selectedVehicleId = null;
 let map;
+let stationMapData = { type: 'FeatureCollection', features: [] };
 const fallbackLocation = getFallbackLocation();
 let currentLocation = { coordinates: fallbackLocation.coordinates, accuracy: 0, isFallback: true };
 let scanProgress = 3;
@@ -87,10 +87,13 @@ let inspectionScreen = 'start';
 let returnTimerSeconds = 600;
 let returnTimerInterval;
 let toastTimer;
-const API_BASE_URL = String(window.__IRENT_API_BASE_URL__ || '').replace(/\/+$/, '');
+
 // 會員登入預設連到本機後端 3000；部署時可用 __IRENT_MEMBER_API_BASE_URL__ 覆寫。
 const currentApiHost = window.location.hostname || '127.0.0.1';
 const currentApiProtocol = window.location.protocol === 'https:' ? 'https:' : 'http:';
+const API_BASE_URL = String(
+  window.__IRENT_API_BASE_URL__ || window.__IRENT_MEMBER_API_BASE_URL__ || `${currentApiProtocol}//${currentApiHost}:3000`
+).replace(/\/+$/, '');
 // ? API ?身??雯?蝙?函?蜓璈?霈?璈??蝬脤????舫????餉??
 const MEMBER_API_BASE_URL = String(
   window.__IRENT_MEMBER_API_BASE_URL__ || API_BASE_URL || `${currentApiProtocol}//${currentApiHost}:3000`
@@ -378,16 +381,50 @@ function createDefaultVehicles() {
   };
 }
 
-function vehicleFeature(id, plateNumber, displayName, longitude, latitude, healthScore, issueCount, status, updatedAt, walkMinutes, rate, distanceMeters = 120, fuelType = '汽油', doorCount = 5, bodyTone = 'white', showInList = true) {
+function vehicleFeature(id, plateNumber, displayName, longitude, latitude, healthScore, issueCount, status, updatedAt, walkMinutes, rate, distanceMeters = 120, fuelType = '汽油', doorCount = 5, bodyTone = 'white', showInList = true, stationName = '', stationAddress = '') {
   return {
     type: 'Feature',
     geometry: { type: 'Point', coordinates: [longitude, latitude] },
-    properties: { id, plateNumber, displayName, longitude, latitude, healthScore, issueCount, status, updatedAt, walkMinutes, rate, distanceMeters, fuelType, doorCount, bodyTone, showInList },
+    properties: { id, plateNumber, displayName, stationName, stationAddress, longitude, latitude, healthScore, issueCount, status, updatedAt, walkMinutes, rate, distanceMeters, fuelType, doorCount, bodyTone, showInList },
   };
 }
 
 function getProperties(feature) {
   return feature.properties || {};
+}
+
+// 以 Haversine 公式計算目前定位與車輛座標之間的直線距離（公尺）。
+function distanceBetweenMeters(fromCoordinates, toCoordinates) {
+  const [fromLongitude, fromLatitude] = Array.isArray(fromCoordinates) ? fromCoordinates.map(Number) : [];
+  const [toLongitude, toLatitude] = Array.isArray(toCoordinates) ? toCoordinates.map(Number) : [];
+  if (![fromLongitude, fromLatitude, toLongitude, toLatitude].every(Number.isFinite)) return 0;
+
+  const toRadians = (value) => value * Math.PI / 180;
+  const latitudeDelta = toRadians(toLatitude - fromLatitude);
+  const longitudeDelta = toRadians(toLongitude - fromLongitude);
+  const haversine = Math.sin(latitudeDelta / 2) ** 2
+    + Math.cos(toRadians(fromLatitude)) * Math.cos(toRadians(toLatitude)) * Math.sin(longitudeDelta / 2) ** 2;
+  return 6371000 * 2 * Math.atan2(Math.sqrt(haversine), Math.sqrt(1 - haversine));
+}
+
+function nearbyMetrics(feature) {
+  const distanceMeters = distanceBetweenMeters(currentLocation.coordinates, feature?.geometry?.coordinates);
+  return {
+    distanceMeters,
+    walkMinutes: Math.max(1, Math.ceil(distanceMeters / 80)),
+  };
+}
+
+function vehicleStatusLabel(status) {
+  const labels = {
+    available: '可租',
+    reserved: '已預約',
+    rented: '租借中',
+    maintenance: '維修中',
+    unavailable: '暫停服務',
+  };
+  const key = String(status || '').trim().toLowerCase();
+  return labels[key] || (key ? String(status) : '可租');
 }
 
 function escapeHtml(value) {
@@ -423,8 +460,30 @@ function filteredVehicles() {
   });
 }
 
+function nearbyVehicleFeatures() {
+  return filteredVehicles()
+    .map((feature) => ({ feature, metrics: nearbyMetrics(feature) }))
+    .sort((left, right) => left.metrics.walkMinutes - right.metrics.walkMinutes || left.metrics.distanceMeters - right.metrics.distanceMeters)
+    .slice(0, 3)
+    .map(({ feature }, index) => ({
+      ...feature,
+      properties: { ...getProperties(feature), nearbyRank: index + 1 },
+    }));
+}
+
+function nearbyVehicleMapData() {
+  return { type: 'FeatureCollection', features: nearbyVehicleFeatures() };
+}
+
+function updateQuickRentAvailability() {
+  const hasSelection = Boolean(selectedVehicleId);
+  quickRentButton.disabled = !hasSelection;
+  quickRentButton.setAttribute('aria-disabled', String(!hasSelection));
+}
+
 function renderVehicleList() {
-  const features = filteredVehicles();
+  updateQuickRentAvailability();
+  const features = nearbyVehicleFeatures();
   countElement.textContent = features.length ? `距離你最近的 ${features.length} 台` : '找不到符合的車輛';
   listElement.replaceChildren();
 
@@ -438,18 +497,21 @@ function renderVehicleList() {
 
   features.forEach((feature) => {
     const properties = getProperties(feature);
+    const { distanceMeters, walkMinutes } = nearbyMetrics(feature);
     const row = document.createElement('button');
     row.type = 'button';
     row.className = `nearby-row${properties.id === selectedVehicleId ? ' is-selected' : ''}`;
     row.dataset.vehicleId = properties.id;
     row.innerHTML = `
 
-      <span class="row-name"><strong>${escapeHtml(properties.displayName)}</strong><small>${escapeHtml(properties.plateNumber)}</small><span class="row-specs"><em>${escapeHtml(properties.doorCount)}門</em><em>${escapeHtml(properties.fuelType)}</em></span></span>
-      <span class="row-rate"><small class="row-distance">♟ 約 ${escapeHtml(properties.walkMinutes)} 分鐘・${escapeHtml((Number(properties.distanceMeters) / 1000).toFixed(1))} km</small><strong>$${escapeHtml(properties.rate)}<small> / 分鐘</small></strong></span>
+      <span class="row-name"><strong>${escapeHtml(properties.plateNumber)}</strong><small>${escapeHtml(properties.stationAddress || properties.stationName || '站點地址載入中')}</small></span>
+      <span class="row-rate">
+        <small class="row-distance">約 ${escapeHtml((distanceMeters / 1000).toFixed(1))} km</small>
+        <strong class="row-walk-minutes">約 ${escapeHtml(walkMinutes)} 分鐘</strong>
+      </span>
     `;
     row.addEventListener('click', () => {
       selectVehicle(properties.id, true);
-      setActiveView('vehicle');
     });
     listElement.append(row);
   });
@@ -470,10 +532,12 @@ function selectVehicle(vehicleId, flyTo) {
 
 function showVehiclePopup(feature) {
   const properties = getProperties(feature);
+  const { distanceMeters } = nearbyMetrics(feature);
+  const distanceKm = (distanceMeters / 1000).toFixed(1);
   document.querySelectorAll('.maplibregl-popup').forEach((popup) => popup.remove());
   new maplibregl.Popup({ closeButton: false, closeOnClick: true, offset: 16 })
     .setLngLat(feature.geometry.coordinates)
-    .setHTML(`<strong>${escapeHtml(properties.displayName)}</strong><span>${escapeHtml(properties.plateNumber)}・健康 ${escapeHtml(properties.healthScore)} 分</span>`)
+    .setHTML(`<strong>${escapeHtml(properties.plateNumber)}</strong><span>${escapeHtml(vehicleStatusLabel(properties.status))}・約 ${escapeHtml(distanceKm)} km</span>`)
     .addTo(map);
 }
 
@@ -482,10 +546,41 @@ function showVehiclePopup(feature) {
 // ------------------------------
 function updateMapSource() {
   if (!map || !map.getSource('vehicles')) return;
-  map.getSource('vehicles').setData(allVehicles);
+  map.getSource('vehicles').setData(nearbyVehicleMapData());
 }
 
 // 建立目前位置的 GeoJSON，尚未取得 GPS 時先使用示範座標。
+function stationFeatureCollection(items) {
+  const features = (Array.isArray(items) ? items : []).flatMap((station) => {
+    const longitude = Number(station?.longitude);
+    const latitude = Number(station?.latitude);
+    if (!Number.isFinite(longitude) || !Number.isFinite(latitude)) return [];
+    return [{
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: [longitude, latitude] },
+      properties: {
+        id: String(station.id ?? station.code ?? ''),
+        name: String(station.name ?? ''),
+        address: String(station.address ?? ''),
+        city: String(station.city ?? ''),
+        vehicleCount: Number(station.vehicleCount ?? 0),
+      },
+    }];
+  });
+  return { type: 'FeatureCollection', features };
+}
+
+async function fetchStationMapData() {
+  try {
+    const response = await fetchWithTimeout(apiUrl('/api/v1/stations'));
+    if (!response.ok) throw new Error('Station API request failed: ' + response.status);
+    const payload = await response.json();
+    stationMapData = stationFeatureCollection(payload?.items);
+    map?.getSource('irent-stations')?.setData(stationMapData);
+  } catch (error) {
+    console.warn('Station API unavailable; station markers were not loaded.', error);
+  }
+}
 function currentLocationData() {
   const coordinates = currentLocation.coordinates;
   return {
@@ -504,6 +599,8 @@ function updateCurrentLocation(longitude, latitude, accuracy) {
   if (currentLocationLabel) currentLocationLabel.textContent = `目前位置：已定位（${latitude.toFixed(5)}, ${longitude.toFixed(5)}）`;
   const source = map?.getSource('current-location');
   source?.setData(currentLocationData());
+  updateMapSource();
+  renderVehicleList();
 }
 
 // 讀取手機 GPS，定位地圖並顯示目前位置；網站需在 HTTPS 或 localhost 下才能取得定位。
@@ -595,12 +692,15 @@ async function fetchVehicleMapSummary() {
         Number(properties.issueCount ?? 0),
         properties.status || 'available',
         properties.updatedAt || '',
-        Number(properties.walkMinutes ?? index * 2 + 2),
+        0,
         Number(properties.rate ?? 3.2),
-        Number(properties.distanceMeters ?? (index + 1) * 80 + 40),
+        0,
         properties.fuelType || '汽油',
         Number(properties.doorCount ?? 5),
         properties.bodyTone || 'white',
+        true,
+        properties.stationName || properties.station?.name || '',
+        properties.stationAddress || properties.station?.address || '',
       );
     }).filter((feature) => Number.isFinite(feature.geometry.coordinates[0]) && Number.isFinite(feature.geometry.coordinates[1]));
 
@@ -611,8 +711,8 @@ async function fetchVehicleMapSummary() {
       features: validFeatures,
     };
 
-    if (!allVehicles.features.some((feature) => getProperties(feature).id === selectedVehicleId)) {
-      selectedVehicleId = allVehicles.features[0]?.properties.id;
+    if (selectedVehicleId && !allVehicles.features.some((feature) => getProperties(feature).id === selectedVehicleId)) {
+      selectedVehicleId = null;
     }
 
     updateMapSource();
@@ -628,17 +728,15 @@ async function fetchVehicleMapSummary() {
 // 頁面切換與流程狀態控制。
 // ------------------------------
 function vehicleMarkerImageUrl() {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="32" viewBox="0 0 48 32">
-    <path d="M6 20 10 11c1-2 3-3 6-3h13c3 0 5 1 7 4l3 8c4 1 6 3 6 6v1H1v-1c0-3 2-5 5-6Z" fill="#273942" stroke="#17272f" stroke-width="1.5"/>
-    <path d="m14 11 3-3h12c2 0 4 1 5 3l2 4H11l3-4Z" fill="#9fb1b7" stroke="#3d545d" stroke-width="1.2"/>
-    <path d="M24 8v7M11 17h26" fill="none" stroke="#dbe6e8" stroke-width="1.2"/>
-    <circle cx="11" cy="25" r="4" fill="#17272f"/><circle cx="37" cy="25" r="4" fill="#17272f"/>
-    <circle cx="11" cy="25" r="1.7" fill="#aebdc2"/><circle cx="37" cy="25" r="1.7" fill="#aebdc2"/>
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="44" height="58" viewBox="0 0 44 58">
+    <ellipse cx="22" cy="54" rx="13" ry="3" fill="#12395b" fill-opacity=".18"/>
+    <path d="M22 2C11.5 2 3 10.3 3 20.8 3 35.1 22 53 22 53s19-17.9 19-32.2C41 10.3 32.5 2 22 2Z" fill="#e31818" stroke="#b90909" stroke-width="1.5"/>
+    <circle cx="22" cy="20.5" r="8" fill="#fff"/>
   </svg>`;
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
-// 加入找車頁面的icon
+
 function addVehicleIconLayer() {
   const image = new Image();
 
@@ -653,7 +751,8 @@ function addVehicleIconLayer() {
       source: 'vehicles',
       layout: {
         'icon-image': 'vehicle-car',
-        'icon-size': 0.85,
+        'icon-size': 0.95,
+        'icon-anchor': 'bottom',
         'icon-allow-overlap': true,
         'icon-ignore-placement': true,
       },
@@ -700,7 +799,10 @@ function initMap() {
     mapPanel.classList.add('is-map-ready');
     fallbackElement.setAttribute('aria-hidden', 'true');
 
-    map.addSource('vehicles', { type: 'geojson', data: allVehicles });
+    map.addSource('irent-stations', { type: 'geojson', data: stationMapData });
+    map.addLayer({ id: 'station-halo', type: 'circle', source: 'irent-stations', paint: { 'circle-radius': 11, 'circle-color': '#00a49b', 'circle-opacity': 0.16 } });
+    map.addLayer({ id: 'station-circle', type: 'circle', source: 'irent-stations', paint: { 'circle-radius': 6, 'circle-color': '#ffffff', 'circle-stroke-width': 3, 'circle-stroke-color': '#008f89' } });
+    map.addSource('vehicles', { type: 'geojson', data: nearbyVehicleMapData() });
     map.addSource('current-location', {
       type: 'geojson',
       data: currentLocationData(),
@@ -710,26 +812,33 @@ function initMap() {
       id: 'vehicle-shadow',
       type: 'circle',
       source: 'vehicles',
-      paint: { 'circle-radius': 20, 'circle-color': '#00a79b', 'circle-opacity': 0.16 },
+      paint: { 'circle-radius': 20, 'circle-color': '#e31818', 'circle-opacity': 0.18 },
     });
     map.addLayer({
       id: 'vehicle-circle',
       type: 'circle',
       source: 'vehicles',
       paint: {
-        'circle-radius': 22,
-        'circle-color': '#ffffff',
-        'circle-opacity': 0.98,
-        'circle-stroke-width': 1,
-        'circle-stroke-color': '#e7f0ef',
+        'circle-radius': 26,
+        'circle-color': '#e31818',
+        'circle-opacity': 0.01,
       },
     });
     addVehicleIconLayer();
-    map.addLayer({ id: 'vehicle-badge', type: 'circle', source: 'vehicles', paint: { 'circle-radius': 10, 'circle-color': '#00a79b', 'circle-translate': [15, 15], 'circle-translate-anchor': 'viewport' } });
-    map.addLayer({ id: 'vehicle-badge-text', type: 'symbol', source: 'vehicles', layout: { 'text-field': ['to-string', ['get', 'issueCount']], 'text-size': 11, 'text-offset': [1.35, 1.35], 'text-allow-overlap': true }, paint: { 'text-color': '#ffffff' } });
     map.addLayer({ id: 'current-location-halo', type: 'circle', source: 'current-location', paint: { 'circle-radius': 30, 'circle-color': '#5a9ee9', 'circle-opacity': 0.16 } });
     map.addLayer({ id: 'current-location', type: 'circle', source: 'current-location', paint: { 'circle-radius': 11, 'circle-color': '#1689e8', 'circle-stroke-width': 4, 'circle-stroke-color': '#ffffff' } });
 
+    map.on('click', 'station-circle', (event) => {
+      const feature = event.features?.[0];
+      if (!feature) return;
+      const properties = feature.properties || {};
+      new maplibregl.Popup({ offset: 12 })
+        .setLngLat(feature.geometry.coordinates)
+        .setHTML('<strong>' + escapeHtml(properties.name) + '</strong><span>' + escapeHtml(properties.address) + '</span>')
+        .addTo(map);
+    });
+    map.on('mouseenter', 'station-circle', () => { map.getCanvas().style.cursor = 'pointer'; });
+    map.on('mouseleave', 'station-circle', () => { map.getCanvas().style.cursor = ''; });
     map.on('click', 'vehicle-circle', (event) => {
       const feature = event.features?.[0];
       if (feature) selectVehicle(feature.properties.id, false);
@@ -738,6 +847,7 @@ function initMap() {
     map.on('mouseleave', 'vehicle-circle', () => { map.getCanvas().style.cursor = ''; });
 
     // 左側地圖載入完成後自動同步手機定位；失敗時保留台南市火車站。
+    fetchStationMapData();
     locateUser();
   });
 
@@ -1172,7 +1282,7 @@ document.addEventListener('click', (event) => {
 
   const handledByExistingFlow = button.matches([
     '[data-menu-toggle]', '[data-menu-close]', '[data-menu-action]',
-    '[data-refresh-vehicles]', '[data-quick-rent]', '[data-locate]', '[data-nav-view]',
+    '[data-quick-rent]', '[data-locate]', '[data-nav-view]',
     '[data-notification-close]', '[data-notification-mark-read]',
     '.notification-button', '.detail-notification', '.order-notification', '.inspection-notification', '.return-notification',
     '[data-login-open]', '[data-login-close]', '[data-login-logout]', '[data-member-menu-toggle]', '[data-member-login]', '[data-member-logout]',
@@ -1189,7 +1299,10 @@ document.addEventListener('click', (event) => {
   if (!handledByExistingFlow) handleUnboundButton(button);
 });
 
-searchInput.addEventListener('input', renderVehicleList);
+searchInput.addEventListener('input', () => {
+  updateMapSource();
+  renderVehicleList();
+});
 menuToggle.addEventListener('click', () => setMenuOpen(true));
 menuCloseButtons.forEach((button) => button.addEventListener('click', () => setMenuOpen(false)));
 notificationButtons.forEach((button) => {
@@ -1241,18 +1354,6 @@ appHeaderBack?.addEventListener('click', () => {
 historyFilters?.addEventListener('input', renderRentalHistory);
 historyFilters?.addEventListener('change', renderRentalHistory);
 historyFilters?.addEventListener('reset', () => window.setTimeout(renderRentalHistory, 0));
-refreshVehiclesButton.addEventListener('click', async () => {
-  refreshVehiclesButton.classList.add('is-refreshing');
-  refreshVehiclesButton.disabled = true;
-
-  try {
-    await fetchVehicleMapSummary();
-  } finally {
-    renderVehicleList();
-    refreshVehiclesButton.disabled = false;
-    window.setTimeout(() => refreshVehiclesButton.classList.remove('is-refreshing'), 450);
-  }
-});
 quickRentButton.addEventListener('click', () => { setActiveView('scan'); setInspectionScreen('start'); });
 locateButton.addEventListener('click', locateUser);
 floatingAssistantButton?.addEventListener('click', () => {

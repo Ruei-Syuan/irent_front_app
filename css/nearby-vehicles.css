@@ -865,23 +865,6 @@ body.front-app-body {
 .sheet-heading span { color: #173a67; }
 .sheet-heading .vehicle-count { display: none; }
 
-.refresh-button {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 5px 0;
-  border: 0;
-  background: transparent;
-  color: #173a67;
-  font-size: 15px;
-  font-weight: 800;
-}
-
-.refresh-button svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.9; }
-.refresh-button.is-refreshing svg { animation: refresh-spin 450ms ease; }
-
-@keyframes refresh-spin { to { transform: rotate(360deg); } }
-
 .vehicle-list { overflow: visible; }
 
 .nearby-row {
@@ -2892,16 +2875,6 @@ body.front-app-body {
     font-size: 15px;
   }
 
-  .refresh-button {
-    gap: 4px;
-    font-size: 10px;
-  }
-
-  .refresh-button svg {
-    width: 16px;
-    height: 16px;
-  }
-
   .nearby-row {
     grid-template-columns: 88px minmax(0, 1fr) auto;
     min-height: 84px;
@@ -3239,3 +3212,13 @@ body.front-app-body {
   outline: 2px solid #00a49b;
   outline-offset: 1px;
 }
+
+/* 推薦清單：公里數置頂，步行時間以品牌綠色突出顯示。 */
+.row-rate .row-walk-minutes { color: #009991; font-size: 15px; line-height: 1.2; }
+
+/* 推薦清單：距離在最上方以較大字級顯示。 */
+.row-rate .row-distance { color: #112f58; font-size: 20px; font-weight: 900; line-height: 1.2; }
+
+/* 已選取的推薦車輛以淺綠底提示，未選車時主操作按鈕維持停用。 */
+.nearby-row.is-selected { background: #e8f8f3; box-shadow: inset 4px 0 0 #00a49b; border-radius: 12px; }
+.quick-rent:disabled { cursor: not-allowed; background: #b9c8ca; box-shadow: none; color: #f7fbfb; opacity: .78; }
