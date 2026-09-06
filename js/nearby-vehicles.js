@@ -4,10 +4,17 @@ import { getFallbackLocation } from './location.mjs';
 const mapElement = document.querySelector('[data-nearby-map]');
 const mapPanel = document.querySelector('.map-panel');
 const fallbackElement = document.querySelector('[data-map-fallback]');
-const searchInput = document.querySelector('[data-vehicle-search]');
+const locationToggle = document.querySelector('[data-location-toggle]');
 const listElement = document.querySelector('[data-vehicle-list]');
 const countElement = document.querySelector('[data-vehicle-count]');
 const currentLocationLabel = document.querySelector('[data-current-location-label]');
+const rentalStartInput = document.querySelector('[data-rental-start-time]');
+const rentalHoursInput = document.querySelector('[data-rental-hours]');
+const rentalStartButton = document.querySelector('[data-rental-start]');
+const estimatedPriceElements = document.querySelectorAll('[data-order-estimated-price]');
+const rentalDurationElements = document.querySelectorAll('[data-rental-duration]');
+const orderDetailStartTime = document.querySelector('[data-order-detail-start-time]');
+const orderDetailEndTime = document.querySelector('[data-order-detail-end-time]');
 const menuToggle = document.querySelector('[data-menu-toggle]');
 const functionMenu = document.querySelector('[data-function-menu]');
 const menuBackdrop = document.querySelector('.menu-backdrop');
@@ -48,6 +55,7 @@ const historyKeywordInput = document.querySelector('[data-history-keyword]');
 const historyResultCount = document.querySelector('[data-history-result-count]');
 const historyRecordList = document.querySelector('[data-history-record-list]');
 const scanButton = document.querySelector('[data-scan-start]');
+const inspectionModeButtons = document.querySelectorAll('[data-inspection-mode]');
 const scanCount = document.querySelector('[data-scan-count]');
 const inspectionScreens = document.querySelectorAll('[data-inspection-screen]');
 const scanRecordNext = document.querySelector('[data-scan-record-next]');
@@ -82,8 +90,10 @@ let map;
 let stationMapData = { type: 'FeatureCollection', features: [] };
 const fallbackLocation = getFallbackLocation();
 let currentLocation = { coordinates: fallbackLocation.coordinates, accuracy: 0, isFallback: true };
+let locationEnabled = false;
 let scanProgress = 3;
 let inspectionScreen = 'start';
+let inspectionMode = 'open';
 let returnTimerSeconds = 600;
 let returnTimerInterval;
 let toastTimer;
@@ -109,12 +119,8 @@ const LOGIN_STORAGE_KEY = 'irent-front-app-user';
 let currentUser = readStoredUser();
 
 // 租借歷史預覽資料；之後可直接替換為後端 API 回傳的紀錄。
-const rentalHistoryRecords = [
-  { start: '2026-07-21T09:30', end: '2026-07-21T11:42', pickup: '台北車站東停車場', dropoff: '市民大道停車場', vehicle: 'Toyota Yaris', plate: 'ABC-1234', duration: '2 小時 12 分', cost: '$278', status: '已完成' },
-  { start: '2026-06-25T14:10', end: '2026-06-25T16:05', pickup: '忠孝敦化站', dropoff: '大安站', vehicle: 'Toyota Corolla Cross', plate: 'EFG-5678', duration: '1 小時 55 分', cost: '$352', status: '已完成' },
-  { start: '2026-05-20T09:30', end: '2026-05-20T11:30', pickup: '台北車站東停車場', dropoff: '台北車站東停車場', vehicle: 'Toyota Yaris', plate: 'ABC-1234', duration: '2 小時', cost: '$485', status: '已完成' },
-  { start: '2026-04-30T18:20', end: '2026-04-30T20:00', pickup: '大安站', dropoff: '忠孝敦化站', vehicle: 'Toyota RAV4', plate: 'HIJ-9012', duration: '1 小時 40 分', cost: '$420', status: '已完成' },
-];
+let rentalHistoryRecords = [];
+let currentRentalId = null;
 
 const sharedHeaderViews = {
   nearby: { title: '找車', home: true },
@@ -449,19 +455,9 @@ function carIcon(bodyTone = 'white') {
   </svg>`;
 }
 
-// 依搜尋關鍵字篩選車名、車牌與車輛狀態。
-function filteredVehicles() {
-  const keyword = searchInput.value.trim().toLowerCase();
-  const listVehicles = allVehicles.features.filter((feature) => getProperties(feature).showInList !== false);
-  if (!keyword) return listVehicles;
-  return listVehicles.filter((feature) => {
-    const properties = getProperties(feature);
-    return `${properties.displayName} ${properties.plateNumber} ${properties.status}`.toLowerCase().includes(keyword);
-  });
-}
-
 function nearbyVehicleFeatures() {
-  return filteredVehicles()
+  return allVehicles.features
+    .filter((feature) => getProperties(feature).showInList !== false)
     .map((feature) => ({ feature, metrics: nearbyMetrics(feature) }))
     .sort((left, right) => left.metrics.walkMinutes - right.metrics.walkMinutes || left.metrics.distanceMeters - right.metrics.distanceMeters)
     .slice(0, 3)
@@ -529,6 +525,179 @@ function selectVehicle(vehicleId, flyTo) {
   if (flyTo) map.flyTo({ center: coordinates, zoom: 15.8, essential: true, duration: 500 });
   showVehiclePopup(feature);
 }
+let maintenanceHistoryRequestId = 0;
+
+function formatMaintenanceDate(value) {
+  const date = new Date(value);
+  if (!Number.isFinite(date.getTime())) return '日期未提供';
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${date.getFullYear()}/${month}/${day}`;
+}
+
+function maintenanceHistoryMarkup(records) {
+  const latestRecords = (Array.isArray(records) ? records : [])
+    .slice()
+    .sort((left, right) => new Date(right.performedAt) - new Date(left.performedAt))
+    .slice(0, 5);
+
+  if (!latestRecords.length) {
+    return '<p class="maintenance-history-empty">尚無清潔或維修紀錄</p>';
+  }
+
+  return latestRecords.map((record) => {
+    const isCleaning = record?.type === 'cleaning';
+    const label = isCleaning ? '清潔完成' : '維修完成';
+    const recordType = isCleaning ? '清潔服務紀錄' : '維修服務紀錄';
+    const note = String(record?.note || '未提供維護說明').trim();
+    const stateClass = isCleaning ? 'is-teal' : 'is-orange';
+
+    return `<article><span>${escapeHtml(formatMaintenanceDate(record?.performedAt))} <i class="${stateClass}"></i></span><strong>${label}</strong><small>${escapeHtml(note)}</small><small>${recordType}</small></article>`;
+  }).join('');
+}
+
+async function loadMaintenanceHistory(vehicleId) {
+  const list = document.querySelector('[data-maintenance-history-list]');
+  if (!list || vehicleId == null || vehicleId === '') return;
+
+  const requestId = ++maintenanceHistoryRequestId;
+  list.innerHTML = '<p class="maintenance-history-empty">載入維護紀錄中</p>';
+
+  try {
+    const response = await fetchWithTimeout(apiUrl(`/api/v1/vehicles/${encodeURIComponent(vehicleId)}/history`));
+    if (!response.ok) throw new Error(`Vehicle history API request failed: ${response.status}`);
+    const payload = await response.json();
+    if (requestId !== maintenanceHistoryRequestId) return;
+    list.innerHTML = maintenanceHistoryMarkup(payload?.maintenanceRecords);
+  } catch (error) {
+    if (requestId !== maintenanceHistoryRequestId) return;
+    console.warn('Vehicle maintenance history API unavailable.', error);
+    list.innerHTML = '<p class="maintenance-history-empty">維護紀錄暫時無法載入</p>';
+  }
+}
+let vehicleConditionRequestId = 0;
+
+function exteriorConditionLabel(status) {
+  const labels = {
+    available: '良好',
+    cleaning: '清潔中',
+    maintenance: '待維修',
+  };
+  return labels[String(status || '').trim().toLowerCase()] || '狀態未提供';
+}
+
+function cabinConditionLabel(condition) {
+  const labels = {
+    clean: '良好',
+    average: '普通',
+    dirty: '髒污',
+  };
+  return labels[String(condition || '').trim().toLowerCase()] || '狀態未提供';
+}
+
+function cabinConditionNote(condition) {
+  const notes = {
+    clean: '車內整潔，無異味',
+    average: '車內有輕微使用痕跡',
+    dirty: '車內待清潔',
+  };
+  return notes[String(condition || '').trim().toLowerCase()] || '車況資料未提供';
+}
+
+function applyVehicleCondition(vehicle, properties) {
+  const exteriorIssueValues = document.querySelectorAll('.exterior-condition li strong');
+  const issueCount = Math.max(0, Number(properties.issueCount) || 0);
+
+  document.querySelector('.exterior-condition > em').textContent = exteriorConditionLabel(vehicle.status);
+  exteriorIssueValues[0].textContent = String(issueCount);
+  exteriorIssueValues[1].textContent = vehicle.latestAnomaly ? '1' : '0';
+  document.querySelector('.cabin-condition > em').textContent = cabinConditionLabel(vehicle.cabinCondition);
+  document.querySelector('.cabin-condition > p').textContent = cabinConditionNote(vehicle.cabinCondition);
+}
+
+async function loadVehicleCondition(vehicleId, properties) {
+  if (vehicleId == null || vehicleId === '') return;
+
+  const requestId = ++vehicleConditionRequestId;
+  try {
+    const response = await fetchWithTimeout(apiUrl(`/api/v1/vehicles/${encodeURIComponent(vehicleId)}`));
+    if (!response.ok) throw new Error(`Vehicle condition API request failed: ${response.status}`);
+    const payload = await response.json();
+    if (requestId !== vehicleConditionRequestId || !payload?.item) return;
+    applyVehicleCondition(payload.item, properties);
+  } catch (error) {
+    console.warn('Vehicle condition API unavailable.', error);
+  }
+}
+const conditionPhotoDefaults = {
+  exterior: '/assets/vehicle-exterior-condition/default.png',
+  cabin: '/assets/vehicle-cabin-condition/default.png',
+};
+
+const conditionPhotoUrlsByPlate = {
+  'RVC-4360': {
+    exterior: '/assets/vehicle-exterior-condition/RVC-4360_20260904_005519_front.png',
+    cabin: '/assets/vehicle-cabin-condition/RVC-4360_20260904_005519_front-cabin.png',
+  },
+};
+
+function loadVehicleConditionPhoto(type, plateNumber) {
+  const image = document.querySelector(`[data-vehicle-condition-photo="${type}"]`);
+  const defaultUrl = conditionPhotoDefaults[type];
+  if (!image || !defaultUrl) return;
+
+  const normalizedPlate = String(plateNumber || '').trim().toUpperCase();
+  const photoUrl = conditionPhotoUrlsByPlate[normalizedPlate]?.[type] || defaultUrl;
+  const container = image.parentElement;
+
+  image.dataset.usesDefault = 'false';
+  image.onload = () => container?.classList.remove('is-missing');
+  image.onerror = () => {
+    if (image.dataset.usesDefault === 'true') {
+      image.onerror = null;
+      container?.classList.add('is-missing');
+      return;
+    }
+    image.dataset.usesDefault = 'true';
+    image.src = defaultUrl;
+  };
+  image.src = photoUrl;
+}
+function renderVehicleDetail(feature) {
+  const properties = getProperties(feature);
+  const detail = {
+    exteriorStatus: '載入中',
+    existingIssues: Math.max(0, Number(properties.issueCount) || 0),
+    newIssues: 0,
+    cabinStatus: '載入中',
+    cabinNote: '車況資料載入中',
+    dailyLimit: 980,
+  };
+  const { distanceMeters, walkMinutes } = nearbyMetrics(feature);
+  const healthScore = Math.max(0, Math.min(100, Number(properties.healthScore) || 0));
+  const stationName = properties.stationAddress || properties.stationName || '站點資料載入中';
+  const distanceText = `步行約 ${walkMinutes} 分鐘・${Math.round(distanceMeters)}m`;
+  const exteriorIssueValues = document.querySelectorAll('.exterior-condition li strong');
+
+  document.querySelector('[data-vehicle-detail-name]').textContent = properties.displayName || 'iRent 車輛';
+  document.querySelector('[data-vehicle-detail-plate]').textContent = properties.plateNumber || '未提供車牌';
+  document.querySelector('.detail-location strong').textContent = stationName;
+  document.querySelector('.detail-location span').textContent = distanceText;
+  document.querySelector('.vehicle-detail-score strong').innerHTML = `${healthScore}<small>/100</small>`;
+  document.querySelector('.vehicle-detail-score i b').style.width = `${healthScore}%`;
+  document.querySelector('.exterior-condition > em').textContent = detail.exteriorStatus;
+  exteriorIssueValues[0].textContent = String(detail.existingIssues);
+  exteriorIssueValues[1].textContent = String(detail.newIssues);
+  document.querySelector('.cabin-condition > em').textContent = detail.cabinStatus;
+  document.querySelector('.cabin-condition > p').textContent = detail.cabinNote;
+  document.querySelector('.rental-price-card p strong').innerHTML = `$${properties.rate || 0}<small> / 分</small>`;
+  document.querySelector('.rental-price-card p + p strong').innerHTML = `$${detail.dailyLimit}<small> / 日</small>`;
+  void loadMaintenanceHistory(properties.id);
+  void loadVehicleCondition(properties.id, properties);
+  loadVehicleConditionPhoto('exterior', properties.plateNumber);
+  loadVehicleConditionPhoto('cabin', properties.plateNumber);
+}
+
 
 function showVehiclePopup(feature) {
   const properties = getProperties(feature);
@@ -577,11 +746,14 @@ async function fetchStationMapData() {
     const payload = await response.json();
     stationMapData = stationFeatureCollection(payload?.items);
     map?.getSource('irent-stations')?.setData(stationMapData);
+    renderVehicleList();
   } catch (error) {
     console.warn('Station API unavailable; station markers were not loaded.', error);
   }
 }
 function currentLocationData() {
+  if (!locationEnabled) return { type: 'FeatureCollection', features: [] };
+
   const coordinates = currentLocation.coordinates;
   return {
     type: 'FeatureCollection',
@@ -593,9 +765,28 @@ function currentLocationData() {
   };
 }
 
-// 將手機目前位置更新到地圖上的 GeoJSON 圖層。
+function updateLocationMarker() {
+  map?.getSource('current-location')?.setData(currentLocationData());
+}
+
+function disableLocation() {
+  locationEnabled = false;
+  currentLocation = { coordinates: fallbackLocation.coordinates, accuracy: 0, isFallback: true };
+  if (currentLocationLabel) currentLocationLabel.textContent = '目前位置：定位未開啟';
+  locationToggle?.setAttribute('aria-checked', 'false');
+  if (locationToggle) locationToggle.checked = false;
+  locateButton?.classList.remove('is-locating', 'is-enabled');
+  locateButton?.removeAttribute('aria-busy');
+  updateLocationMarker();
+  updateMapSource();
+  renderVehicleList();
+}
+
 function updateCurrentLocation(longitude, latitude, accuracy) {
+  locationEnabled = true;
   currentLocation = { coordinates: [longitude, latitude], accuracy, isFallback: false };
+  locationToggle?.setAttribute('aria-checked', 'true');
+  if (locationToggle) locationToggle.checked = true;
   if (currentLocationLabel) currentLocationLabel.textContent = `目前位置：已定位（${latitude.toFixed(5)}, ${longitude.toFixed(5)}）`;
   const source = map?.getSource('current-location');
   source?.setData(currentLocationData());
@@ -606,18 +797,21 @@ function updateCurrentLocation(longitude, latitude, accuracy) {
 // 讀取手機 GPS，定位地圖並顯示目前位置；網站需在 HTTPS 或 localhost 下才能取得定位。
 function locateUser() {
   if (!map) {
-    showToast('地圖尚未準備完成，請稍候再試');
+    showToast('地圖尚未載入，請稍後再試');
     return;
   }
+
+  locationEnabled = true;
+  locationToggle?.setAttribute('aria-checked', 'true');
+  if (locationToggle) locationToggle.checked = true;
+  locateButton?.classList.add('is-locating');
+  locateButton?.setAttribute('aria-busy', 'true');
 
   if (!navigator.geolocation) {
-    showToast('此裝置或瀏覽器不支援定位功能');
+    disableLocation();
+    showToast('此裝置不支援定位功能');
     return;
   }
-
-  locateButton.disabled = true;
-  locateButton.setAttribute('aria-busy', 'true');
-  locateButton.classList.add('is-locating');
 
   navigator.geolocation.getCurrentPosition(
     ({ coords }) => {
@@ -626,21 +820,19 @@ function locateUser() {
       const accuracy = Number(coords.accuracy);
       updateCurrentLocation(longitude, latitude, accuracy);
       map.flyTo({ center: [longitude, latitude], zoom: 15.4, essential: true, duration: 500 });
-      showToast(`已取得目前位置${Number.isFinite(accuracy) ? `，誤差約 ${Math.round(accuracy)} 公尺` : ''}`);
-      locateButton.disabled = false;
-      locateButton.removeAttribute('aria-busy');
-      locateButton.classList.remove('is-locating');
+      showToast('已取得目前位置' + (Number.isFinite(accuracy) ? '，誤差約 ' + Math.round(accuracy) + ' 公尺' : ''));
+      if (locateButton) locateButton.disabled = false;
+      locateButton?.removeAttribute('aria-busy');
+      locateButton?.classList.remove('is-locating');
     },
     (error) => {
       const messages = {
-        1: '請允許瀏覽器使用定位權限',
-        2: '目前無法取得位置，請確認 GPS 已開啟',
-        3: '定位逾時，請稍後再試',
+        1: '請在瀏覽器設定中允許定位權限',
+        2: '目前無法取得位置，請確認 GPS 是否開啟',
+        3: '定位逾時，請確認網路或 GPS 狀態',
       };
-      showToast(messages[error.code] || '定位失敗，請稍後再試');
-      locateButton.disabled = false;
-      locateButton.removeAttribute('aria-busy');
-      locateButton.classList.remove('is-locating');
+      disableLocation();
+      showToast(messages[error.code] || '目前無法取得位置，請稍後再試');
     },
     { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 },
   );
@@ -668,6 +860,26 @@ function createMapBackdrop() {
   };
 }
 
+function vehicleTypeName(properties, index) {
+  const candidates = [
+    properties.vehicleTypeName,
+    properties.vehicleType?.name,
+    properties.modelName,
+    properties.model,
+    properties.vehicleModel,
+    properties.vehicle?.modelName,
+    properties.vehicle?.model,
+    properties.displayName,
+    properties.vehicleName,
+  ];
+
+  for (const candidate of candidates) {
+    const name = typeof candidate === 'string' ? candidate.trim() : '';
+    if (name && !/^iRent 車輛\b/i.test(name)) return name;
+  }
+
+  return `車型資料未提供 ${index + 1}`;
+}
 async function fetchVehicleMapSummary() {
   if (isNativeApp() && !API_BASE_URL) {
     showToast('請先設定後端 API 網址，目前顯示示範車輛');
@@ -685,7 +897,7 @@ async function fetchVehicleMapSummary() {
       return vehicleFeature(
         properties.id || `vehicle-${index}`,
         properties.plateNumber || '未提供車牌',
-        properties.displayName || properties.vehicleName || `iRent 車輛 ${index + 1}`,
+        vehicleTypeName(properties, index),
         Number(properties.longitude ?? feature.geometry?.coordinates?.[0]),
         Number(properties.latitude ?? feature.geometry?.coordinates?.[1]),
         Number(properties.healthScore ?? 80),
@@ -848,7 +1060,7 @@ function initMap() {
 
     // 左側地圖載入完成後自動同步手機定位；失敗時保留台南市火車站。
     fetchStationMapData();
-    locateUser();
+    if (locationEnabled) locateUser();
   });
 
   map.on('error', () => {
@@ -1021,6 +1233,93 @@ async function restoreMemberSession() {
 }
 
 // 依開始時間、站點與車輛關鍵字篩選租借歷史。
+const rentalStatusLabels = {
+  pending_pickup: '尚未取車',
+  active: '租借中',
+  completed: '已還車'
+};
+
+function rentalStatusLabel(status) {
+  return rentalStatusLabels[status] || '狀態未知';
+}
+
+function rentalRecordFromApi(item) {
+  const pickup = item.vehicle?.station?.name || '取車站點';
+  return {
+    id: item.id,
+    rawStatus: item.status,
+    start: item.startedAt,
+    end: item.endedAt,
+    pickup,
+    dropoff: pickup,
+    vehicle: item.vehicle?.model || 'iRent',
+    plate: item.vehicle?.licensePlate || '-',
+    duration: '-',
+    cost: '$' + Number(item.rentalFee || 0),
+    status: rentalStatusLabel(item.status)
+  };
+}
+
+async function loadMemberRentalHistory() {
+  if (!currentUser) {
+    rentalHistoryRecords = [];
+    renderRentalHistory();
+    return rentalHistoryRecords;
+  }
+  try {
+    const response = await fetchWithTimeout(memberApiUrl('/api/v1/member-auth/rentals'), { credentials: 'include' });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(result.error || '訂單資料載入失敗');
+    rentalHistoryRecords = Array.isArray(result.items) ? result.items.map(rentalRecordFromApi) : [];
+  } catch {
+    rentalHistoryRecords = [];
+  }
+  renderRentalHistory();
+  return rentalHistoryRecords;
+}
+
+function applyRentalToOrderDetails(record) {
+  currentRentalId = record.id;
+  if (orderDetailStartTime) orderDetailStartTime.textContent = formatHistoryDateTime(record.start);
+  if (orderDetailEndTime) orderDetailEndTime.textContent = formatHistoryDateTime(record.end);
+  estimatedPriceElements.forEach((element) => { element.textContent = record.cost; });
+}
+
+async function selectMemberRental(status) {
+  const records = await loadMemberRentalHistory();
+  const record = records.find((item) => item.rawStatus === status) || null;
+  if (record) applyRentalToOrderDetails(record);
+  return record;
+}
+
+async function updateMemberRentalStatus(status) {
+  const expectedStatus = status === 'active' ? 'pending_pickup' : 'active';
+  let record = rentalHistoryRecords.find((item) => item.id === currentRentalId) || null;
+  if (!record || record.rawStatus !== expectedStatus) record = await selectMemberRental(expectedStatus);
+  if (!record) return false;
+
+  const response = await fetchWithTimeout(memberApiUrl('/api/v1/member-auth/rentals/' + encodeURIComponent(record.id) + '/status'), {
+    method: 'PATCH',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status })
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(result.error || '訂單資料載入失敗');
+  currentRentalId = result.item.id;
+  await loadMemberRentalHistory();
+  return true;
+}
+
+async function openPickupOrder() {
+  const record = await selectMemberRental('pending_pickup');
+  if (!record) {
+    showToast('目前沒有待取車訂單');
+    return;
+  }
+  setActiveView('order-detail');
+}
+
 function filteredRentalHistory() {
   const startDate = historyStartInput?.value || '';
   const endDate = historyEndInput?.value || '';
@@ -1094,16 +1393,151 @@ function updateSharedHeader(viewName) {
   }
 }
 
+function parseRentalDate(value) {
+  const date = new Date(value);
+  return Number.isFinite(date.getTime()) ? date : null;
+}
+
+function formatRentalTime(value) {
+  return String(value || "").replace("T", " ");
+}
+
+function formatDateTimeLocal(date) {
+  const pad = (value) => String(value).padStart(2, "0");
+  return date.getFullYear() + "-" + pad(date.getMonth() + 1) + "-" + pad(date.getDate()) + "T" + pad(date.getHours()) + ":" + pad(date.getMinutes());
+}
+
+function rentalDurationText(totalMinutes) {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return '\u5171 ' + hours + ' \u5c0f\u6642' + (minutes ? ' ' + minutes + ' \u5206' : '');
+}
+
+function estimatedRentalPrice(totalMinutes) {
+  const minutesPerDay = 24 * 60;
+  const fullDays = Math.floor(totalMinutes / minutesPerDay);
+  const remainingMinutes = totalMinutes % minutesPerDay;
+  return fullDays * 980 + Math.min(Math.round(remainingMinutes * 3.2), 980);
+}
+
+function formatEstimatedPrice(totalMinutes) {
+  return '$' + estimatedRentalPrice(totalMinutes).toLocaleString('zh-TW');
+}
+
+function updateRentalSchedule() {
+  const startDate = parseRentalDate(rentalStartInput?.value);
+  const rentalHours = Number(rentalHoursInput?.value);
+  if (!rentalStartInput || !rentalHoursInput || !startDate || !Number.isFinite(rentalHours) || rentalHours < 0.5) {
+    rentalHoursInput?.setCustomValidity('\u8acb\u8f38\u5165至少 0.5 \u5c0f\u6642');
+    return false;
+  }
+
+  rentalHoursInput.setCustomValidity('');
+  const durationMinutes = Math.round(rentalHours * 60);
+  const estimatedEndDate = new Date(startDate.getTime() + durationMinutes * 60 * 1000);
+  const duration = rentalDurationText(durationMinutes);
+  rentalDurationElements.forEach((element) => { element.textContent = duration; });
+  estimatedPriceElements.forEach((element) => { element.textContent = formatEstimatedPrice(durationMinutes); });
+  if (orderDetailStartTime) orderDetailStartTime.textContent = formatRentalTime(rentalStartInput.value);
+  if (orderDetailEndTime) orderDetailEndTime.textContent = formatRentalTime(formatDateTimeLocal(estimatedEndDate));
+  return true;
+}
+function rentalRequestPayload() {
+  const startDate = parseRentalDate(rentalStartInput?.value);
+  const rentalHours = Number(rentalHoursInput?.value);
+  const vehicleId = Number(selectedVehicleId);
+  if (!startDate || !Number.isFinite(rentalHours) || rentalHours < 0.5 || !Number.isInteger(vehicleId) || vehicleId < 1) return null;
+
+  const durationMinutes = Math.round(rentalHours * 60);
+  return {
+    vehicleId,
+    startedAt: startDate.toISOString(),
+    endedAt: new Date(startDate.getTime() + durationMinutes * 60 * 1000).toISOString(),
+    rentalFee: estimatedRentalPrice(durationMinutes)
+  };
+}
+
+async function submitMemberRental() {
+  if (!updateRentalSchedule()) {
+    rentalHoursInput?.reportValidity();
+    return false;
+  }
+  if (!currentUser) {
+    setLoginModalOpen(true);
+    return false;
+  }
+
+  const payload = rentalRequestPayload();
+  if (!payload) {
+    showToast('\u8acb\u5148\u9078\u64c7\u53ef\u79df\u501f\u8eca\u8f1b');
+    return false;
+  }
+
+  rentalStartButton?.setAttribute('aria-busy', 'true');
+  if (rentalStartButton) rentalStartButton.disabled = true;
+  try {
+    const response = await fetchWithTimeout(memberApiUrl('/api/v1/member-auth/rentals'), {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(result.error || '\u79df\u501f\u8a02\u55ae\u5132\u5b58\u5931\u6557');
+
+    currentRentalId = result.item?.id || null;
+    await loadMemberRentalHistory();
+    showToast('訂單已建立');
+    return true;
+  } catch (error) {
+    showToast(error?.name === 'AbortError' ? '\u8a02\u55ae\u5132\u5b58\u903e\u6642\uff0c\u8acb\u518d\u8a66\u4e00\u6b21' : error?.message || '\u79df\u501f\u8a02\u55ae\u5132\u5b58\u5931\u6557');
+    return false;
+  } finally {
+    rentalStartButton?.removeAttribute('aria-busy');
+    if (rentalStartButton) rentalStartButton.disabled = false;
+  }
+}
+
+async function startMemberRental() {
+  try {
+    const updated = await updateMemberRentalStatus('active');
+    if (!updated) {
+      showToast('目前沒有待取車訂單');
+      return;
+    }
+    showToast('已開始租借');
+    setActiveView('nearby');
+  } catch (error) {
+    showToast(error?.message || '訂單資料載入失敗');
+  }
+}
+
+async function finishMemberRental() {
+  try {
+    const updated = await updateMemberRentalStatus('completed');
+    if (!updated) {
+      showToast('目前沒有租借中訂單');
+      return;
+    }
+    showToast('已完成還車');
+    setActiveView('nearby');
+  } catch (error) {
+    showToast(error?.message || '訂單資料載入失敗');
+  }
+}
+
 function setActiveView(viewName) {
   if (viewName !== 'scan') stopCamera();
   updateSharedHeader(viewName);
+  if (viewName === 'order-confirm') updateRentalSchedule();
+  if (viewName === 'trips') void loadMemberRentalHistory();
   nearbyViews.forEach((element) => element.classList.toggle('is-hidden', viewName !== 'nearby'));
   viewPanels.forEach((panel) => panel.classList.toggle('is-active', panel.dataset.viewPanel === viewName));
   menuActionButtons.forEach((button) => button.classList.toggle('is-active', button.dataset.view === viewName));
   const isTakeCarFlow = ['order-confirm', 'order-detail', 'scan', 'rental-ready'].includes(viewName);
   const isRentingView = viewName === 'renting';
   const isReturnFlow = ['return', 'return-summary', 'return-complete'].includes(viewName);
-  navigationButtons.forEach((button) => button.classList.toggle('is-active', button.dataset.navView === viewName || (viewName === 'vehicle' && button.dataset.navView === 'nearby') || (isTakeCarFlow && button.classList.contains('take-car')) || (isReturnFlow && button.classList.contains('take-car')) || (isRentingView && button.dataset.navView === 'trips')));
+  navigationButtons.forEach((button) => button.classList.toggle('is-active', button.dataset.navView === viewName || (viewName === 'vehicle' && button.dataset.navView === 'nearby') || (isTakeCarFlow && button.classList.contains('take-car')) || (isTakeCarFlow && button.hasAttribute('data-pickup-menu')) || (isReturnFlow && button.classList.contains('take-car')) || (isRentingView && button.dataset.navView === 'trips')));
   floatingAssistantButton?.toggleAttribute('hidden', !floatingAssistantViews.has(viewName));
   if (viewName === 'return') setReturnScreen('choice');
   if (viewName === 'nearby' && map) window.setTimeout(() => map.resize(), 0);
@@ -1112,6 +1546,17 @@ function setActiveView(viewName) {
 function resizeMap() {
   if (!map) return;
   window.requestAnimationFrame(() => map.resize());
+}
+
+function setInspectionMode(mode) {
+  inspectionMode = mode;
+  inspectionModeButtons.forEach((button) => {
+    const isSelected = button.dataset.inspectionMode === mode;
+    button.classList.toggle('is-selected', isSelected);
+    button.setAttribute('aria-pressed', String(isSelected));
+    const indicator = button.querySelector('span');
+    if (indicator) indicator.textContent = isSelected ? '\u2713' : '\u25cb';
+  });
 }
 
 function setInspectionScreen(screenName) {
@@ -1299,10 +1744,6 @@ document.addEventListener('click', (event) => {
   if (!handledByExistingFlow) handleUnboundButton(button);
 });
 
-searchInput.addEventListener('input', () => {
-  updateMapSource();
-  renderVehicleList();
-});
 menuToggle.addEventListener('click', () => setMenuOpen(true));
 menuCloseButtons.forEach((button) => button.addEventListener('click', () => setMenuOpen(false)));
 notificationButtons.forEach((button) => {
@@ -1354,27 +1795,66 @@ appHeaderBack?.addEventListener('click', () => {
 historyFilters?.addEventListener('input', renderRentalHistory);
 historyFilters?.addEventListener('change', renderRentalHistory);
 historyFilters?.addEventListener('reset', () => window.setTimeout(renderRentalHistory, 0));
-quickRentButton.addEventListener('click', () => { setActiveView('scan'); setInspectionScreen('start'); });
-locateButton.addEventListener('click', locateUser);
+quickRentButton.addEventListener('click', () => {
+  const selectedVehicle = allVehicles.features.find((feature) => getProperties(feature).id === selectedVehicleId);
+  if (!selectedVehicle) return;
+  renderVehicleDetail(selectedVehicle);
+  setActiveView('vehicle');
+});
+locateButton?.addEventListener('click', () => {
+  if (locationEnabled) {
+    locateUser();
+    return;
+  }
+  if (locationToggle) locationToggle.checked = true;
+  locateUser();
+});
+locationToggle?.addEventListener('change', () => {
+  if (locationToggle.checked) {
+    locateUser();
+    return;
+  }
+  disableLocation();
+});
 floatingAssistantButton?.addEventListener('click', () => {
   setMenuOpen(false);
   setAssistantScreen('home');
   setActiveView('assistant');
 });
 menuActionButtons.forEach((button) => button.addEventListener('click', () => {
-  setActiveView(button.dataset.view);
   setMenuOpen(false);
+  if (button.hasAttribute('data-pickup-menu')) {
+    void openPickupOrder();
+    return;
+  }
+  setActiveView(button.dataset.view);
 }));
-navigationButtons.forEach((button) => button.addEventListener('click', () => {
+navigationButtons.forEach((button) => button.addEventListener('click', async () => {
+  if (button.matches('[data-order-submit]')) {
+    if (!updateRentalSchedule()) {
+      rentalHoursInput?.reportValidity();
+      return;
+    }
+    if (!(await submitMemberRental())) return;
+    setActiveView('order-detail');
+    return;
+  }
   if (button.dataset.navView === 'scan') setInspectionScreen('start');
   setActiveView(button.dataset.navView);
 }));
+rentalStartInput?.addEventListener('change', updateRentalSchedule);
+rentalHoursInput?.addEventListener('input', updateRentalSchedule);
+rentalStartButton?.addEventListener('click', () => { void startMemberRental(); });
+updateRentalSchedule();
 document.addEventListener('keydown', (event) => {
   if (event.key !== 'Escape') return;
   setMenuOpen(false);
   setNotificationOpen(false);
   setLoginModalOpen(false);
 });
+inspectionModeButtons.forEach((button) => button.addEventListener('click', () => {
+  setInspectionMode(button.dataset.inspectionMode);
+}));
 scanButton.addEventListener('click', () => { revokeCapturedPhotos(); scanProgress = 3; setInspectionScreen('recording'); });
 scanRecordNext.addEventListener('click', () => { scanProgress = 4; setInspectionScreen('capture'); });
 scanCaptureNext.addEventListener('click', async () => {
@@ -1398,7 +1878,12 @@ assistantPrompts.forEach((button) => button.addEventListener('click', () => {
 }));
 assistantCaseButtons.forEach((button) => button.addEventListener('click', () => setAssistantScreen('case')));
 assistantHomeButtons.forEach((button) => button.addEventListener('click', () => setAssistantScreen('home')));
-returnStartButtons.forEach((button) => button.addEventListener('click', () => {
+returnStartButtons.forEach((button) => button.addEventListener('click', async () => {
+  const record = await selectMemberRental('active');
+  if (!record) {
+    showToast('目前沒有租借中訂單');
+    return;
+  }
   setActiveView('return');
   setReturnScreen('active');
 }));
@@ -1424,7 +1909,7 @@ returnSummaryBackButton.addEventListener('click', () => {
 });
 returnCompleteBackButton.addEventListener('click', () => setActiveView('return-summary'));
 returnSummaryButton.addEventListener('click', () => setActiveView('return-complete'));
-returnFinishButton.addEventListener('click', () => setActiveView('nearby'));
+returnFinishButton.addEventListener('click', () => { void finishMemberRental(); });
 cameraSwitchButtons.forEach((button) => button.addEventListener('click', (event) => {
   event.stopPropagation();
   void switchCamera();

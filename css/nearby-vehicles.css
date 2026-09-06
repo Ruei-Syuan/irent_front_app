@@ -1058,18 +1058,10 @@ body.front-app-body {
 .detail-notification svg { width: 27px; height: 27px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
 .detail-notification i { position: absolute; top: 5px; right: 2px; width: 9px; height: 9px; border: 2px solid #fff; border-radius: 50%; background: #f04443; }
 
-.vehicle-detail-hero {
-  position: relative;
-  height: 242px;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  background: radial-gradient(ellipse at 50% 75%, #e7edf2 0 13%, #f9fbfc 40%, #fff 72%);
-}
+.vehicle-detail-hero { position: relative; height: 56px; overflow: visible; background: #fff; }
 
-.vehicle-detail-hero::after { content: ""; position: absolute; right: -12%; bottom: -50%; left: -12%; height: 62%; border-radius: 50%; background: rgba(213, 224, 232, 0.3); filter: blur(8px); }
-.vehicle-hero-car { position: relative; z-index: 1; width: min(93%, 580px); height: 224px; overflow: visible; }
-.favorite-button { position: absolute; z-index: 3; top: 9px; right: 17px; width: 48px; height: 48px; border-radius: 50%; background: #fff; box-shadow: 0 7px 17px rgba(30, 66, 100, 0.13); color: #102f59; font-family: Arial, sans-serif; font-size: 35px; line-height: 1; }
+.vehicle-detail-hero::after { display: none; }
+.vehicle-detail-score .favorite-button { position: absolute; z-index: 1; top: 50%; right: 0; width: 44px; height: 44px; border-radius: 50%; background: #fff; box-shadow: 0 7px 17px rgba(30, 66, 100, 0.13); color: #102f59; font-family: Arial, sans-serif; font-size: 32px; line-height: 1; transform: translateY(-50%); }
 
 .vehicle-detail-content { padding: 0 17px 20px; }
 .vehicle-detail-summary { display: grid; grid-template-columns: minmax(0, 1fr) 185px; gap: 15px; align-items: end; padding: 10px 8px 12px; }
@@ -1080,7 +1072,7 @@ body.front-app-body {
 .detail-location svg { width: 21px; height: 21px; fill: none; stroke: #102f59; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; }
 .detail-location strong { font-size: 15px; }
 .detail-location span { padding: 5px 8px; border: 1px solid #e6ebf1; border-radius: 5px; color: #73849a; font-size: 11px; }
-.vehicle-detail-score { padding-bottom: 3px; }
+.vehicle-detail-score { position: relative; padding: 3px 58px 3px 0; }
 .vehicle-detail-score > span { display: block; color: #71849c; font-size: 11px; }
 .vehicle-detail-score > strong { display: inline-block; margin-top: 1px; color: #009c96; font-size: 31px; font-weight: 900; }
 .vehicle-detail-score > strong small { margin-left: 4px; color: #71849c; font-size: 16px; font-weight: 500; }
@@ -1092,7 +1084,8 @@ body.front-app-body {
 .condition-card header { display: flex; align-items: center; gap: 8px; }
 .condition-card header strong { font-size: 15px; }
 .condition-card header b { margin-left: auto; font-size: 25px; font-weight: 400; }
-.condition-icon { width: 27px; height: 27px; display: grid; place-items: center; border-radius: 9px; background: #e9fbf8; color: #00a49b; font-size: 18px; }
+.card-icon { display: grid; flex: 0 0 auto; width: 30px; height: 30px; place-items: center; border-radius: 10px; background: #00a49b; box-shadow: 0 4px 9px rgba(0, 164, 155, 0.2); }
+.card-icon svg { width: 19px; height: 19px; fill: none; stroke: #fff; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.9; }
 .condition-card > em { display: block; margin: 5px 0 0 35px; color: #00a47d; font-size: 15px; font-style: normal; font-weight: 800; }
 .condition-card ul { margin: 20px 0 0; padding: 0 0 0 5px; list-style: none; color: #394f6e; font-size: 12px; line-height: 2; }
 .condition-card li::before { content: ""; display: inline-block; width: 4px; height: 12px; margin-right: 6px; background: #f47c22; vertical-align: -1px; }
@@ -1100,55 +1093,39 @@ body.front-app-body {
 .condition-card li strong { color: #f47721; font-size: 14px; }
 .condition-card li + li strong { color: #00a49b; }
 .cabin-condition p { margin: 28px 0 0; color: #354b6a; font-size: 12px; }
-.condition-photo { position: absolute; right: 13px; bottom: 13px; width: 108px; height: 70px; overflow: hidden; border-radius: 10px; }
-.condition-photo--exterior { background: linear-gradient(145deg, #eef2f4 0 42%, #cad2d8 43% 48%, #e9edf0 49%); box-shadow: inset 0 0 0 1px #ced9de; }
-.condition-photo--exterior::before { content: ""; position: absolute; top: 13px; left: 23px; width: 62px; height: 38px; border: 1px solid #899aa4; border-radius: 4px; transform: skewY(-9deg); }
-.condition-photo--exterior i { position: absolute; top: 27px; left: 41px; width: 30px; height: 20px; border: 1px solid #ef9b42; border-radius: 50%; transform: rotate(23deg); }
-.condition-photo--cabin { background: linear-gradient(150deg, #20282c, #0d1113); }
-.condition-photo--cabin::before, .condition-photo--cabin::after { content: ""; position: absolute; bottom: -12px; width: 34px; height: 70px; border-radius: 14px 14px 4px 4px; background: linear-gradient(90deg, #161a1d, #41494c 48%, #111416); }
-.condition-photo--cabin::before { left: 10px; transform: skewX(5deg); }
-.condition-photo--cabin::after { right: 9px; transform: skewX(-5deg); }
-.condition-photo--cabin i { position: absolute; top: 8px; left: 0; width: 100%; height: 3px; background: #7b8588; opacity: .6; }
-.condition-photo--cabin b { position: absolute; right: 16px; bottom: 17px; width: 9px; height: 9px; border-radius: 50%; background: #b4a16e; }
+.condition-photo { position: absolute; right: 13px; bottom: 13px; width: 108px; height: 70px; overflow: hidden; border-radius: 10px; background: #edf2f5; box-shadow: inset 0 0 0 1px #ced9de; }
+.condition-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.condition-photo.is-missing::after { content: "暫無照片"; position: absolute; inset: 0; display: grid; place-items: center; background: #edf2f5; color: #71849c; font-size: 11px; }
 
 .rental-history-card,
 .rental-price-card,
-.current-location-card,
 .more-info-bar { margin-top: 12px; border: 1px solid #edf1f5; border-radius: 15px; background: #fff; box-shadow: 0 5px 16px rgba(32, 67, 104, 0.07); }
 .rental-history-card { padding: 13px 13px 11px; }
 .rental-history-card header { display: flex; align-items: center; justify-content: space-between; }
 .rental-history-card header > div { display: flex; align-items: center; gap: 9px; }
-.history-icon { width: 27px; height: 27px; display: grid; place-items: center; border: 2px solid #102f59; border-radius: 50%; font-size: 17px; }
+
 .rental-history-card header strong { font-size: 17px; }
 .rental-history-card header button { border: 0; background: transparent; color: #71849c; font-size: 11px; }
 .rental-history-card header button b { margin-left: 4px; color: #102f59; font-size: 21px; font-weight: 400; vertical-align: -2px; }
-.history-timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+.history-timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 10px; margin-top: 12px; }
 .history-timeline article { min-height: 99px; padding: 8px 10px; border: 1px solid #f0f3f7; border-radius: 10px; }
 .history-timeline article > span { display: block; color: #73849a; font-size: 12px; white-space: nowrap; }
 .history-timeline article > span i { display: inline-block; width: 8px; height: 8px; margin-left: 7px; border-radius: 50%; background: #00a49b; }
 .history-timeline article > span i.is-orange { background: #f47c22; }
 .history-timeline article > strong { display: block; margin-top: 8px; color: #173a67; font-size: 14px; }
 .history-timeline article > small { display: block; margin-top: 3px; color: #71849c; font-size: 10px; white-space: nowrap; }
+.maintenance-history-empty { grid-column: 1 / -1; margin: 0; padding: 14px 4px; color: #71849c; font-size: 12px; text-align: center; }
 
-.detail-info-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 12px; }
-.rental-price-card, .current-location-card { min-height: 124px; padding: 13px; }
-.rental-price-card header, .current-location-card header { display: flex; align-items: center; gap: 9px; }
-.rental-price-card header > span, .current-location-card header > span { width: 25px; height: 25px; display: grid; place-items: center; border: 2px solid #102f59; border-radius: 50%; font-size: 16px; font-weight: 800; }
-.current-location-card header > span { border: 0; color: #102f59; font-size: 26px; }
-.rental-price-card header strong, .current-location-card header strong { font-size: 16px; }
+.detail-info-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.rental-price-card { min-height: 124px; padding: 13px; }
+.rental-price-card header { display: flex; align-items: center; gap: 9px; }
+
+.rental-price-card header strong { font-size: 16px; }
 .rental-price-card > div { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
 .rental-price-card p { margin: 0; color: #71849c; font-size: 11px; }
 .rental-price-card p + p { padding-left: 10px; border-left: 1px solid #e5ebf1; }
 .rental-price-card p strong { display: block; margin-top: 6px; color: #009c96; font-size: 20px; }
 .rental-price-card p small { color: #71849c; font-size: 10px; font-weight: 500; }
-.current-location-card > div:nth-child(2) { padding-top: 12px; padding-left: 35px; }
-.current-location-card > div:nth-child(2) > strong, .current-location-card > div:nth-child(2) > small { display: block; }
-.current-location-card > div:nth-child(2) > strong { font-size: 14px; }
-.current-location-card > div:nth-child(2) > small { margin-top: 5px; color: #71849c; font-size: 11px; }
-.location-mini-map { position: absolute; right: 25px; bottom: 15px; width: 104px; height: 75px; overflow: hidden; border-radius: 9px; background: linear-gradient(140deg, #e9f3fa, #c8e3ee); }
-.current-location-card { position: relative; overflow: hidden; }
-.location-mini-map::before { content: ""; position: absolute; inset: -20% 20% 10% 20%; border-left: 14px solid rgba(255,255,255,.75); border-right: 5px solid rgba(150,207,229,.55); transform: rotate(22deg); }
-.location-mini-map i { position: absolute; top: 19px; left: 47px; color: #1387d5; font-size: 28px; font-style: normal; }
 
 .more-info-bar { min-height: 67px; display: flex; align-items: center; gap: 10px; padding: 10px 13px; }
 .more-info-bar > strong { font-size: 16px; white-space: nowrap; }
@@ -1183,11 +1160,10 @@ body.front-app-body {
 .order-card span, .order-card > div > span { display: block; color: #102f59; font-size: 16px; font-weight: 800; }.order-card strong { display: block; margin-top: 7px; color: #526a89; font-size: 15px; font-weight: 500; }
 .order-schedule-card { display: grid; grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1fr) auto; align-items: center; gap: 8px; }.order-schedule-card > b { color: #4f6a8b; font-size: 25px; font-weight: 400; text-align: center; }.order-schedule-card button { border: 0; background: transparent; color: #00a49b; font-size: 13px; font-weight: 800; white-space: nowrap; }
 .order-price-card { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }.order-price-card > div + div { padding-left: 23px; border-left: 1px solid #e5ebf1; }.order-price-card > div:first-child strong { color: #009c96; font-size: 29px; font-weight: 900; }.order-price-card > div:first-child strong small { display: inline; color: #71849c; font-size: 12px; }.order-price-card > div + div strong { color: #526a89; font-size: 15px; }.order-price-card p { grid-column: 1 / -1; margin: 0; padding-top: 11px; border-top: 1px solid #edf1f5; color: #71849c; font-size: 12px; }
-.order-location-card { display: grid; grid-template-columns: 1fr 260px; align-items: center; gap: 15px; }.order-location-card strong, .order-location-card small { display: block; }.order-location-card strong { color: #102f59; font-size: 17px; font-weight: 800; }.order-location-card small { margin-top: 6px; color: #71849c; font-size: 13px; }.order-mini-map { position: relative; min-height: 83px; overflow: hidden; border-radius: 10px; background: linear-gradient(140deg, #e9f3fa, #c8e3ee); }.order-mini-map::before { content: ""; position: absolute; inset: -20% 20% 10% 20%; border-left: 15px solid rgba(255,255,255,.75); border-right: 6px solid rgba(150,207,229,.55); transform: rotate(22deg); }.order-mini-map i { position: absolute; top: 23px; left: 50%; color: #1387d5; font-size: 32px; font-style: normal; transform: translateX(-50%); }
-.order-condition-card { display: grid; grid-template-columns: 1fr 192px; align-items: center; gap: 15px; }.order-condition-card span { color: #102f59; }.order-condition-card span i { display: inline-grid; width: 18px; height: 18px; place-items: center; margin-left: 5px; border: 1px solid #71849c; border-radius: 50%; color: #71849c; font-size: 11px; font-style: normal; }.order-condition-card strong { color: #71849c; font-size: 12px; }.order-condition-card strong b { margin-left: 5px; color: #009c96; font-size: 28px; }.order-condition-card strong small { display: inline; color: #71849c; font-size: 14px; }.order-condition-card em { display: block; margin-top: 6px; color: #00a47d; font-size: 16px; font-style: normal; font-weight: 800; }.order-cabin-photo { height: 106px; border-radius: 10px; background: linear-gradient(150deg, #20282c, #0d1113); position: relative; overflow: hidden; }.order-cabin-photo::before, .order-cabin-photo::after { content: ""; position: absolute; bottom: -12px; width: 57px; height: 105px; border-radius: 14px 14px 4px 4px; background: linear-gradient(90deg, #161a1d, #41494c 48%, #111416); }.order-cabin-photo::before { left: 19px; transform: skewX(5deg); }.order-cabin-photo::after { right: 15px; transform: skewX(-5deg); }.order-note-card { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px; }.order-note-card span, .order-note-card strong { grid-column: 1; }.order-note-card strong { margin-top: 5px; font-size: 13px; }.order-note-card b { grid-column: 2; grid-row: 1 / span 2; color: #526a89; font-size: 29px; font-weight: 400; }
-.order-primary { width: 100%; min-height: 61px; margin-top: 15px; border: 0; border-radius: 32px; background: linear-gradient(100deg, #00a99f, #00a29b); box-shadow: 0 7px 16px rgba(0, 164, 155, 0.18); color: #fff; font-size: 22px; font-weight: 800; }.order-text-action { display: block; margin: 10px auto 0; border: 0; background: transparent; color: #00a49b; font-size: 16px; font-weight: 800; }
+.order-location-card { display: block; }.order-location-card strong, .order-location-card small { display: block; }.order-location-card strong { color: #102f59; font-size: 17px; font-weight: 800; }.order-location-card small { margin-top: 6px; color: #71849c; font-size: 13px; }.order-mini-map { position: relative; min-height: 83px; overflow: hidden; border-radius: 10px; background: linear-gradient(140deg, #e9f3fa, #c8e3ee); }.order-mini-map::before { content: ""; position: absolute; inset: -20% 20% 10% 20%; border-left: 15px solid rgba(255,255,255,.75); border-right: 6px solid rgba(150,207,229,.55); transform: rotate(22deg); }.order-mini-map i { position: absolute; top: 23px; left: 50%; color: #1387d5; font-size: 32px; font-style: normal; transform: translateX(-50%); }
+.order-condition-card { display: grid; grid-template-columns: 1fr 192px; align-items: center; gap: 15px; }.order-condition-card span { color: #102f59; }.order-condition-card span i { display: inline-grid; width: 18px; height: 18px; place-items: center; margin-left: 5px; border: 1px solid #71849c; border-radius: 50%; color: #71849c; font-size: 11px; font-style: normal; }.order-condition-card strong { color: #71849c; font-size: 12px; }.order-condition-card strong b { margin-left: 5px; color: #009c96; font-size: 28px; }.order-condition-card strong small { display: inline; color: #71849c; font-size: 14px; }.order-condition-card em { display: block; margin-top: 6px; color: #00a47d; font-size: 16px; font-style: normal; font-weight: 800; }.order-cabin-photo { height: 106px; border-radius: 10px; background: linear-gradient(150deg, #20282c, #0d1113); position: relative; overflow: hidden; }.order-cabin-photo::before, .order-cabin-photo::after { content: ""; position: absolute; bottom: -12px; width: 57px; height: 105px; border-radius: 14px 14px 4px 4px; background: linear-gradient(90deg, #161a1d, #41494c 48%, #111416); }.order-cabin-photo::before { left: 19px; transform: skewX(5deg); }.order-cabin-photo::after { right: 15px; transform: skewX(-5deg); }.order-primary { width: 100%; min-height: 61px; margin-top: 15px; border: 0; border-radius: 32px; background: linear-gradient(100deg, #00a99f, #00a29b); box-shadow: 0 7px 16px rgba(0, 164, 155, 0.18); color: #fff; font-size: 22px; font-weight: 800; }.order-text-action { display: block; margin: 10px auto 0; border: 0; background: transparent; color: #00a49b; font-size: 16px; font-weight: 800; }
 .order-detail-scroll { max-width: 680px; }.order-detail-titlebar { padding-bottom: 15px; }.order-detail-card { padding: 0 20px 20px; }.order-number { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 13px; min-height: 67px; border-bottom: 1px solid #e5ebf1; }.order-number span { color: #71849c; font-size: 14px; }.order-number strong { color: #102f59; font-size: 18px; letter-spacing: .03em; }.order-number em { padding: 7px 12px; border: 1px solid #91ddd6; border-radius: 5px; color: #00a49b; font-size: 14px; font-style: normal; font-weight: 800; }.order-detail-vehicle { display: flex; align-items: center; gap: 19px; min-height: 122px; border-bottom: 1px solid #e5ebf1; }.order-detail-vehicle .order-car-art { width: 150px; }.order-detail-vehicle strong, .order-detail-vehicle small, .order-detail-vehicle span { display: block; }.order-detail-vehicle strong { color: #102f59; font-size: 19px; }.order-detail-vehicle small { margin-top: 4px; color: #526a89; font-size: 16px; }.order-detail-vehicle span { display: inline-block; margin-top: 7px; padding: 4px 7px; border: 1px solid #8edbd3; border-radius: 5px; color: #00a49b; font-size: 12px; }
-.order-detail-list { padding: 10px 0 14px; border-bottom: 1px solid #e5ebf1; }.order-detail-list > div { display: grid; grid-template-columns: 28px 115px 1fr; align-items: center; gap: 10px; min-height: 52px; }.order-list-icon { display: grid; width: 26px; height: 26px; place-items: center; border: 2px solid #00a49b; border-radius: 50%; color: #00a49b; font-size: 16px; font-weight: 800; }.order-detail-list strong, .order-detail-row > strong { color: #102f59; font-size: 16px; }.order-detail-list b { color: #526a89; font-size: 16px; font-weight: 500; }.order-detail-list > small { display: block; margin-left: 0; color: #71849c; font-size: 14px; }.order-detail-row { display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 10px; min-height: 70px; border-bottom: 1px solid #e5ebf1; }.order-detail-row > b { color: #009c96; font-size: 28px; }.order-detail-row > b i { margin-left: 8px; color: #526a89; font-size: 21px; font-style: normal; }.order-detail-location { grid-template-columns: 28px 115px 1fr 168px; min-height: 91px; }.order-detail-location > div:not(.order-mini-map) b, .order-detail-location > div:not(.order-mini-map) small, .order-plan-row > div b, .order-plan-row > div small { display: block; }.order-detail-location > div:not(.order-mini-map) b, .order-plan-row > div b { color: #102f59; font-size: 16px; }.order-detail-location > div:not(.order-mini-map) small, .order-plan-row > div small { margin-top: 5px; color: #71849c; font-size: 13px; }.order-detail-location .order-mini-map { min-height: 62px; }.order-detail-location .order-mini-map i { top: 12px; font-size: 26px; }.order-plan-row { grid-template-columns: 28px 1fr auto; }.order-plan-row > div { text-align: right; }.order-reminder { display: flex; align-items: flex-start; gap: 13px; margin-top: 14px; padding: 14px 15px; border: 1px solid #dfeaf7; border-radius: 12px; background: #f3f8ff; color: #1689e8; }.order-reminder > span { font-size: 24px; line-height: 1; }.order-reminder strong { display: block; color: #1689e8; font-size: 16px; }.order-reminder p { margin: 5px 0 0; color: #526a89; font-size: 12px; line-height: 1.6; }.order-detail-action { display: flex; align-items: center; justify-content: center; gap: 13px; }.order-detail-action span { font-size: 28px; }
+.order-detail-list { padding: 10px 0 14px; border-bottom: 1px solid #e5ebf1; }.order-detail-list > div { display: grid; grid-template-columns: 28px 115px 1fr; align-items: center; gap: 10px; min-height: 52px; }.order-list-icon { display: grid; width: 26px; height: 26px; place-items: center; border: 2px solid #00a49b; border-radius: 50%; color: #00a49b; font-size: 16px; font-weight: 800; }.order-detail-list strong, .order-detail-row > strong { color: #102f59; font-size: 16px; }.order-detail-list b { color: #526a89; font-size: 16px; font-weight: 500; }.order-detail-list > small { display: block; margin-left: 0; color: #71849c; font-size: 14px; }.order-detail-row { display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 10px; min-height: 70px; border-bottom: 1px solid #e5ebf1; }.order-detail-row > b { color: #009c96; font-size: 28px; }.order-detail-row > b i { margin-left: 8px; color: #526a89; font-size: 21px; font-style: normal; }.order-detail-location { grid-template-columns: 28px 115px 1fr; min-height: 91px; }.order-detail-location > div b, .order-detail-location > div small, .order-plan-row > div b, .order-plan-row > div small { display: block; }.order-detail-location > div b, .order-plan-row > div b { color: #102f59; font-size: 16px; }.order-detail-location > div small, .order-plan-row > div small { margin-top: 5px; color: #71849c; font-size: 13px; }.order-plan-row { grid-template-columns: 28px 1fr auto; }.order-plan-row > div { text-align: right; }.order-reminder { display: flex; align-items: flex-start; gap: 13px; margin-top: 14px; padding: 14px 15px; border: 1px solid #dfeaf7; border-radius: 12px; background: #f3f8ff; color: #1689e8; }.order-reminder > span { font-size: 24px; line-height: 1; }.order-reminder strong { display: block; color: #1689e8; font-size: 16px; }.order-reminder p { margin: 5px 0 0; color: #526a89; font-size: 12px; line-height: 1.6; }.order-detail-action { display: flex; align-items: center; justify-content: center; gap: 13px; }.order-detail-action span { font-size: 28px; }
 
 @media (max-width: 520px) {
   .vehicle-detail-summary { grid-template-columns: 1fr; gap: 8px; }
@@ -1209,8 +1185,8 @@ body.front-app-body {
   .order-vehicle-card strong { font-size: 17px; }.order-vehicle-card small { font-size: 14px; }
   .order-card { padding: 14px 13px; }.order-card span, .order-card > div > span { font-size: 14px; }.order-card strong { font-size: 13px; }
   .order-schedule-card { grid-template-columns: 1fr 18px 1fr; gap: 4px; }.order-schedule-card button { grid-column: 1 / -1; justify-self: end; margin-top: 6px; }.order-schedule-card > b { font-size: 20px; }.order-price-card { gap: 8px; }.order-price-card > div + div { padding-left: 10px; }.order-price-card > div:first-child strong { font-size: 24px; }.order-price-card p { font-size: 10px; }
-  .order-location-card { grid-template-columns: 1fr 122px; gap: 8px; }.order-location-card strong { font-size: 15px; }.order-location-card small { font-size: 11px; }.order-condition-card { grid-template-columns: 1fr 112px; gap: 8px; }.order-cabin-photo { height: 78px; }.order-cabin-photo::before, .order-cabin-photo::after { width: 36px; height: 82px; }.order-cabin-photo::before { left: 10px; }.order-cabin-photo::after { right: 8px; }.order-condition-card strong b { font-size: 24px; }.order-condition-card em { font-size: 13px; }.order-note-card strong { font-size: 11px; }.order-primary { font-size: 20px; }
-  .order-number { grid-template-columns: 1fr auto; gap: 4px; }.order-number strong { grid-column: 1; grid-row: 2; font-size: 15px; }.order-number em { grid-column: 2; grid-row: 1 / span 2; font-size: 12px; }.order-detail-card { padding-right: 13px; padding-left: 13px; }.order-detail-vehicle { gap: 8px; }.order-detail-vehicle .order-car-art { width: 125px; }.order-detail-vehicle strong { font-size: 16px; }.order-detail-vehicle small { font-size: 14px; }.order-detail-list > div { grid-template-columns: 26px 90px 1fr; gap: 7px; }.order-detail-list strong, .order-detail-row > strong { font-size: 14px; }.order-detail-list b { font-size: 12px; }.order-detail-location { grid-template-columns: 26px 78px 1fr 96px; gap: 7px; }.order-detail-location > div:not(.order-mini-map) b, .order-plan-row > div b { font-size: 13px; }.order-detail-location > div:not(.order-mini-map) small, .order-plan-row > div small { font-size: 10px; }.order-detail-location .order-mini-map { min-height: 55px; }.order-reminder { padding: 12px; }.order-reminder strong { font-size: 14px; }.order-reminder p { font-size: 10px; }
+  .order-location-card { grid-template-columns: 1fr 122px; gap: 8px; }.order-location-card strong { font-size: 15px; }.order-location-card small { font-size: 11px; }.order-condition-card { grid-template-columns: 1fr 112px; gap: 8px; }.order-cabin-photo { height: 78px; }.order-cabin-photo::before, .order-cabin-photo::after { width: 36px; height: 82px; }.order-cabin-photo::before { left: 10px; }.order-cabin-photo::after { right: 8px; }.order-condition-card strong b { font-size: 24px; }.order-condition-card em { font-size: 13px; }.order-primary { font-size: 20px; }
+  .order-number { grid-template-columns: 1fr auto; gap: 4px; }.order-number strong { grid-column: 1; grid-row: 2; font-size: 15px; }.order-number em { grid-column: 2; grid-row: 1 / span 2; font-size: 12px; }.order-detail-card { padding-right: 13px; padding-left: 13px; }.order-detail-vehicle { gap: 8px; }.order-detail-vehicle .order-car-art { width: 125px; }.order-detail-vehicle strong { font-size: 16px; }.order-detail-vehicle small { font-size: 14px; }.order-detail-list > div { grid-template-columns: 26px 90px 1fr; gap: 7px; }.order-detail-list strong, .order-detail-row > strong { font-size: 14px; }.order-detail-list b { font-size: 12px; }.order-detail-location { grid-template-columns: 26px 78px 1fr; gap: 7px; }.order-detail-location > div:not(.order-mini-map) b, .order-plan-row > div b { font-size: 13px; }.order-detail-location > div:not(.order-mini-map) small, .order-plan-row > div small { font-size: 10px; }.order-reminder { padding: 12px; }.order-reminder strong { font-size: 14px; }.order-reminder p { font-size: 10px; }
 }
 
 /* Return cabin inspection states */
@@ -3222,3 +3198,101 @@ body.front-app-body {
 /* 已選取的推薦車輛以淺綠底提示，未選車時主操作按鈕維持停用。 */
 .nearby-row.is-selected { background: #e8f8f3; box-shadow: inset 4px 0 0 #00a49b; border-radius: 12px; }
 .quick-rent:disabled { cursor: not-allowed; background: #b9c8ca; box-shadow: none; color: #f7fbfb; opacity: .78; }
+
+
+/* ???????????????????????? */
+.search-tools {
+  position: relative;
+  z-index: 8;
+}
+
+
+
+
+
+
+
+.location-toggle {
+  display: flex;
+  min-width: 108px;
+  height: 42px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  border: 1px solid #d6e9e7;
+  border-radius: 11px;
+  background: #fff;
+  box-shadow: 0 6px 15px rgba(31, 91, 87, 0.12);
+  color: #526a89;
+  cursor: pointer;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.location-toggle input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.location-toggle__switch {
+  position: relative;
+  width: 31px;
+  height: 18px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: #c8d8d8;
+  transition: background .2s ease;
+}
+
+.location-toggle__switch::after {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(25, 67, 67, .22);
+  content: "";
+  transition: transform .2s ease;
+}
+
+.location-toggle input:checked + .location-toggle__switch {
+  background: #00a49b;
+}
+
+.location-toggle input:checked + .location-toggle__switch::after {
+  transform: translateX(13px);
+}
+
+.location-toggle input:focus-visible + .location-toggle__switch {
+  outline: 3px solid rgba(0, 164, 155, .25);
+  outline-offset: 2px;
+}
+
+.location-toggle input:checked ~ .location-toggle__label {
+  color: #008f89;
+  font-weight: 800;
+}
+
+@media (max-width: 520px) {
+  .search-tools {
+    margin-right: 14px;
+    margin-left: 14px;
+  }
+
+  .location-toggle {
+    min-width: 97px;
+    height: 40px;
+    padding: 0 6px;
+    font-size: 10px;
+  }
+}
+
+.rental-time-field { display: block; min-width: 0; }
+.rental-time-field input { width: 100%; min-height: 38px; margin-top: 7px; box-sizing: border-box; border: 1px solid #cfe2e1; border-radius: 9px; padding: 0 9px; background: #f8fcfc; color: #25426a; font: inherit; font-size: 14px; }
+.rental-time-field input:focus { outline: 3px solid rgba(0, 164, 155, .18); border-color: #00a49b; }
+.order-rental-duration { grid-column: 1 / -1; display: block; color: #71849c; font-size: 13px; }
+@media (max-width: 520px) { .rental-time-field input { min-height: 36px; padding: 0 6px; font-size: 11px; } .order-rental-duration { font-size: 11px; } }

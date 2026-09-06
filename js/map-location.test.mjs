@@ -2,8 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-test('requests the current location after MapLibre has loaded', async () => {
+test('waits for the location toggle before requesting the current location', async () => {
   const script = await readFile(new URL('./nearby-vehicles.js', import.meta.url), 'utf8');
 
-  assert.match(script, /map\.on\('load', \(\) => \{[\s\S]*?locateUser\(\);/);
+  assert.match(script, /data-location-toggle/);
+  assert.doesNotMatch(script, /fetchStationMapData\(\);\s*locateUser\(\);/);
 });

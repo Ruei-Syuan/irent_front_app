@@ -63,10 +63,11 @@
         </div>
 
         <div class="search-tools">
-          <label class="vehicle-search">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6" /><path d="m16 16 4 4" /></svg>
-            <input data-vehicle-search type="search" placeholder="搜尋地點、站點或車型" aria-label="搜尋車輛" />
-          </label>
+            <label class="location-toggle">
+              <input data-location-toggle type="checkbox" />
+              <span class="location-toggle__switch" aria-hidden="true"></span>
+              <span class="location-toggle__label">開啟定位</span>
+            </label>
         </div>
 
         <div class="map-canvas" data-nearby-map aria-label="附近車輛地圖"></div>
@@ -101,7 +102,7 @@
           </div>
         </div>
         <div class="vehicle-list" data-vehicle-list></div>
-        <button class="quick-rent" data-quick-rent data-nav-view="scan" type="button" disabled aria-disabled="true">
+        <button class="quick-rent" data-quick-rent data-nav-view="vehicle" type="button" disabled aria-disabled="true">
           <!-- <span> -->
             <strong>查看車輛狀況</strong>
             <!-- <small>掃碼取車，即刻出發</small> -->
@@ -116,32 +117,21 @@
           <a class="detail-wordmark" href="index.html" aria-label="iRent 附近車輛">iRent</a>
           <button class="detail-notification" type="button" aria-label="通知"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg><i aria-hidden="true"></i></button>
         </header>
-        <div class="vehicle-detail-hero">
-          <svg class="vehicle-hero-car" aria-label="Toyota Yaris 車輛圖片" role="img" viewBox="0 0 700 360">
-            <defs><linearGradient id="hero-car-body" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#ffffff" /><stop offset="0.55" stop-color="#f0f3f5" /><stop offset="1" stop-color="#c8d1d7" /></linearGradient><linearGradient id="hero-car-window" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#1f3544" /><stop offset="1" stop-color="#091a26" /></linearGradient></defs>
-            <ellipse cx="350" cy="303" rx="238" ry="23" fill="#b8c5ce" opacity=".35" />
-            <path d="M137 241 187 144c15-28 43-45 75-45h178c36 0 61 16 80 49l45 88c29 7 48 26 48 55v13H81v-13c0-27 20-48 56-50Z" fill="url(#hero-car-body)" stroke="#9caab3" stroke-width="4" />
-            <path d="m212 145 43-35h145c25 0 43 11 56 33l28 48H183l29-46Z" fill="url(#hero-car-window)" stroke="#71818b" stroke-width="3" />
-            <path d="M331 111v80M183 196h301M154 236h391" fill="none" stroke="#c0cbd1" stroke-width="4" />
-            <path d="M113 231h56l-20 30h-49c1-13 4-22 13-30ZM586 231h-55l20 30h49c-1-13-4-22-14-30Z" fill="#e6f8f8" stroke="#7ea4a8" stroke-width="3" />
-            <path d="M259 214h185l-18 54H277l-18-54Z" fill="#182934" stroke="#566873" stroke-width="4" /><path d="M288 247h125" stroke="#12a39d" stroke-width="7" /><text x="351" y="241" text-anchor="middle" fill="#0ca59e" font-size="18" font-family="Arial">iRent</text>
-            <circle cx="199" cy="273" r="40" fill="#26333b" /><circle cx="199" cy="273" r="19" fill="#aab7be" /><circle cx="503" cy="273" r="40" fill="#26333b" /><circle cx="503" cy="273" r="19" fill="#aab7be" />
-            <path d="M165 203c42-11 90-16 139-16M401 187c48 2 89 8 128 18" fill="none" stroke="#ffffff" stroke-width="5" opacity=".75" />
-          </svg>
-          <button class="favorite-button" type="button" aria-label="加入收藏">♡</button>
-        </div>
+
         <div class="vehicle-detail-content">
           <div class="vehicle-detail-summary">
-            <div class="vehicle-detail-title"><h1>Toyota Yaris <span>|</span> <small>ABC-1234</small></h1><div class="detail-location"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z" /><circle cx="12" cy="10" r="2" /></svg><strong>台北車站東停車場</strong><span>步行約 3 分鐘・120m</span></div></div>
-            <div class="vehicle-detail-score"><span>車輛健康分數</span><strong>92<small>/100</small></strong><i><b></b></i></div>
+            <div class="vehicle-detail-title"><h1><span data-vehicle-detail-name>Toyota Yaris</span> <span>|</span> <small data-vehicle-detail-plate>ABC-1234</small></h1><div class="detail-location"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z" /><circle cx="12" cy="10" r="2" /></svg><strong>台北車站東停車場</strong><span>步行約 3 分鐘・120m</span></div></div>
+            <div class="vehicle-detail-score"><span>車輛健康分數</span><strong>92<small>/100</small></strong><button class="favorite-button" type="button" aria-label="加入收藏">♡</button><i><b></b></i></div>
           </div>
           <div class="condition-grid">
-            <article class="condition-card exterior-condition"><header><span class="condition-icon">▰</span><strong>外觀狀態</strong><b>›</b></header><em>良好</em><ul><li>既有損傷 <strong>3</strong> 處</li><li>新增異常 <strong>0</strong> 處</li></ul><div class="condition-photo condition-photo--exterior" aria-label="車門外觀照片"><i></i></div></article>
-            <article class="condition-card cabin-condition"><header><span class="condition-icon">♟</span><strong>車內狀態</strong><b>›</b></header><em>良好</em><p>後座地板稍有灰塵</p><div class="condition-photo condition-photo--cabin" aria-label="車內照片"><i></i><b></b></div></article>
+            <article class="condition-card exterior-condition"><header><span class="card-icon card-icon--exterior" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m4 13 2-4h12l2 4v5H4zM7 9l2-3h6l2 3M7 18h.01M17 18h.01" /></svg></span><strong>外觀狀態</strong><b>›</b></header><em>良好</em><ul><li>既有損傷 <strong>3</strong> 處</li><li>新增異常 <strong>0</strong> 處</li></ul><div class="condition-photo" aria-label="車門外觀照片"><img data-vehicle-condition-photo="exterior" alt="車門外觀照片" /></div></article>
+            <article class="condition-card cabin-condition"><header><span class="card-icon card-icon--cabin" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4v9m0-9h3a4 4 0 0 1 4 4v5H7m7 0h3a2 2 0 0 1 2 2v2H5m2 0v3m10-3v3" /></svg></span><strong>車內狀態</strong><b>›</b></header><em>良好</em><p>後座地板稍有灰塵</p><div class="condition-photo" aria-label="車內照片"><img data-vehicle-condition-photo="cabin" alt="車內照片" /></div></article>
           </div>
-          <section class="rental-history-card"><header><div><span class="history-icon">◔</span><strong>租賃紀錄</strong></div><button type="button">查看完整紀錄 <b>›</b></button></header><div class="history-timeline"><article><span>2026/07/21 <i class="is-teal"></i></span><strong>清潔完成</strong><small>內裝清潔完成</small><small>清潔人員：王小明</small></article><article><span>2026/07/10 <i class="is-teal"></i></span><strong>清潔完成</strong><small>內裝清潔完成</small><small>清潔人員：李大華</small></article><article><span>2026/06/25 <i class="is-orange"></i></span><strong>維修完成</strong><small>左後門鈑金修復</small><small>維修人員：張師傅</small></article></div></section>
-          <div class="detail-info-grid"><article class="rental-price-card"><header><span>$</span><strong>租金資訊</strong></header><div><p>每分鐘費率<strong>$3.2<small> / 分</small></strong></p><p>每日上限<strong>$980<small> / 日</small></strong></p></div></article><article class="current-location-card"><header><span>●</span><strong>目前位置</strong></header><div><strong>台北車站東停車場</strong><small>步行約 3 分鐘・120m</small></div><div class="location-mini-map"><i>●</i></div></article></div>
-          <div class="more-info-bar"><strong>更多資訊</strong><b>›</b><button type="button"><span>▱</span>車輛規格</button><button type="button"><span>▣</span>使用教學</button><button type="button"><span>!</span>注意事項</button></div>
+          <section class="rental-history-card">
+            <header><div><span class="card-icon card-icon--maintenance" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 8V6h10v2M5 9h14v10H5zM9 13h6" /></svg></span><strong>維護紀錄</strong></div></header>
+            <div class="history-timeline" data-maintenance-history-list aria-live="polite"><p class="maintenance-history-empty">載入維護紀錄中</p></div>
+          </section>
+          <div class="detail-info-grid"><article class="rental-price-card"><header><span class="card-icon card-icon--price" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8h16v11H4zM4 11h16M16 15h.01" /><path d="M7 5h10v3H7z" /></svg></span><strong>租金資訊</strong></header><div><p>每分鐘費率<strong>$3.2<small> / 分</small></strong></p><p>每日上限<strong>$980<small> / 日</small></strong></p></div></article></div>
           <button class="detail-reserve" data-nav-view="order-confirm" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m5 11 2-5h10l2 5M4 11h16v7H4zM7 18v2M17 18v2M7 14h.01M17 14h.01" /></svg>立即預約</button>
         </div>
       </section>
@@ -160,25 +150,25 @@
             <div><strong>Toyota Yaris <span>汽油</span></strong><small>ABC-1234</small></div>
           </article>
           <article class="order-card order-schedule-card">
-            <div><span>取車時間</span><strong>2025/05/20 (二) 09:30</strong></div>
-            <b aria-hidden="true">→</b>
-            <div><span>還車時間</span><strong>2025/05/20 (二) 11:30</strong></div>
-            <button type="button">更改時間</button>
+            <label class="rental-time-field"><span>取車時間</span><input data-rental-start-time type="datetime-local" value="2026-09-05T09:30" required /></label>
+            <b aria-hidden="true">&plus;</b>
+            <label class="rental-time-field"><span>&#38928;&#35336;&#31199;&#20511;&#26178;&#25976;</span><input data-rental-hours type="number" min="0.5" step="0.5" value="2" required /></label>
+            <small class="order-rental-duration" data-rental-duration>&#20849; 2 &#23567;&#26178;</small>
           </article>
           <article class="order-card order-price-card">
-            <div><span>預估金額</span><strong>$485 <small>(含稅)</small></strong></div>
+            <div><span>預估金額</span><strong><span data-order-estimated-price>$384</span> <small>(含稅)</small></strong></div>
             <div><span>一般方案</span><strong>每日上限 $980</strong></div>
             <p>計費說明：$3.2 / 分鐘，按分鐘計費，無租期綁約</p>
           </article>
           <article class="order-card order-location-card">
             <div><span>取車地點</span><strong>台北車站東停車場</strong><small>步行約 3 分鐘・120m</small></div>
-            <div class="order-mini-map" aria-label="取車地點地圖"><i>●</i></div>
           </article>
           <article class="order-card order-condition-card">
-            <div><span>車輛狀態 <i aria-hidden="true">i</i></span><strong>車輛健康分數 <b>92</b><small>/100</small></strong><em>清潔程度　良好</em></div>
-            <div class="order-cabin-photo" aria-label="車內狀態照片"></div>
+            <div><span>車輛狀態 
+              <!-- <i aria-hidden="true">i</i> -->
+            </span><strong>車輛健康分數 <b>92</b><small>/100</small></strong><em>清潔程度　良好</em></div>
+            <!-- <div class="order-cabin-photo" aria-label="車內狀態照片"></div> -->
           </article>
-          <article class="order-card order-note-card"><span>訂單備註</span><strong>請經閘車門，還車時請將車輛停回原停車格。</strong><b aria-hidden="true">›</b></article>
           <button class="order-primary" data-order-submit data-nav-view="order-detail" type="button">送出訂單</button>
           <button class="order-text-action" data-nav-view="vehicle" type="button">返回修改</button>
         </div>
@@ -197,12 +187,12 @@
             <div class="order-number"><span>訂單編號</span><strong>IR-20250721-00123</strong><em>預約中</em></div>
             <div class="order-detail-vehicle"><svg class="order-car-art" aria-hidden="true" viewBox="0 0 160 80"><ellipse class="car-shadow" cx="80" cy="67" rx="57" ry="7" /><path class="car-fill" d="M31 52 43 29c2-4 6-7 11-7h49c6 0 10 3 13 8l12 22c6 1 10 5 10 10v3H22v-3c0-5 3-9 9-10Z" /><path class="car-window" d="M49 28h48c4 0 7 2 9 6l6 11H39l6-12c1-3 2-5 4-5Z" /><path class="car-line" d="M79 28v17M39 48h82" /><circle class="car-wheel" cx="46" cy="61" r="9" /><circle class="car-wheel" cx="114" cy="61" r="9" /><circle class="car-hub" cx="46" cy="61" r="4" /><circle class="car-hub" cx="114" cy="61" r="4" /><path class="car-light" d="m29 50 8-2 5 6H29zM131 50l-8-2 5 6h13z" /></svg><div><strong>Toyota Yaris</strong><small>ABC-1234</small><span>5門　汽油</span></div></div>
             <div class="order-detail-list">
-              <div><span class="order-list-icon">◷</span><strong>取車時間</strong><b>2025/07/21 (一) 09:30</b></div>
-              <div><span class="order-list-icon">◷</span><strong>還車時間</strong><b>2025/07/21 (一) 11:30</b></div>
-              <small>共 2 小時</small>
+              <div><span class="order-list-icon">◷</span><strong>取車時間</strong><b data-order-detail-start-time>2026/09/05 09:30</b></div>
+              <div><span class="order-list-icon">◷</span><strong>還車時間</strong><b data-order-detail-end-time>2026/09/05 11:30</b></div>
+              <small data-rental-duration>&#20849; 2 &#23567;&#26178;</small>
             </div>
-            <div class="order-detail-row"><span class="order-list-icon">$</span><strong>預估金額</strong><b>$ 485 <i>⌄</i></b></div>
-            <div class="order-detail-row order-detail-location"><span class="order-list-icon">●</span><strong>取車地點</strong><div><b>台北車站東停車場</b><small>步行約 3 分鐘・120m</small></div><div class="order-mini-map" aria-label="取車地點地圖"><i>●</i></div></div>
+            <div class="order-detail-row"><span class="order-list-icon">$</span><strong>預估金額</strong><b><span data-order-estimated-price>$384</span> <i>⌄</i></b></div>
+            <div class="order-detail-row order-detail-location"><span class="order-list-icon">●</span><strong>取車地點</strong><div><b>台北車站東停車場</b><small>步行約 3 分鐘・120m</small></div></div>
             <div class="order-detail-row order-plan-row"><span class="order-list-icon">☷</span><strong>方案</strong><div><b>一般方案</b><small>基本保障</small></div></div>
             <div class="order-reminder"><span>♡</span><div><strong>取車提醒</strong><p>請於取車前完成駕照資格驗證，並攜帶有效駕照，確保順利取車。</p></div></div>
             <button class="order-primary order-detail-action" data-nav-view="scan" type="button"><span aria-hidden="true">⌗</span>前往取車準備</button>
@@ -221,7 +211,7 @@
             <article><div><span class="inspection-card-icon">♧</span><strong>車內 AI 引導拍攝</strong><em>檢查內裝與隨身物品</em><p>依序拍攝前座、後座、地板與後車廂，確認車內清潔與是否遺留物品。</p></div><div class="inspection-cabin-art"><i></i><b></b></div></article>
           </div>
           <p class="inspection-section-label">請先選擇拍攝環境</p>
-          <div class="inspection-mode-options"><button class="is-selected" type="button"><span>✓</span><strong>A. 空曠空間</strong><small>可 2–3 公尺環車錄影</small></button><button type="button"><span>○</span><strong>B. 狹窄空間</strong><small>改採四角定點拍攝</small></button></div>
+          <div class="inspection-mode-options"><button class="is-selected" data-inspection-mode="open" type="button" aria-pressed="true"><span>✓</span><strong>A. 空曠空間</strong><small>可 2–3 公尺環車錄影</small></button><button data-inspection-mode="tight" type="button" aria-pressed="false"><span>○</span><strong>B. 狹窄空間</strong><small>改採四角定點拍攝</small></button></div>
           <section class="inspection-checkpoints"><strong>AI 檢查重點</strong><div><span>🚗<small>車身外觀</small></span><span>♧<small>內裝清潔</small></span><span>▣<small>遺留物品</small></span><span>ABC-1234<small>車牌比對</small></span></div><p>當車外照片中的車牌清晰可見時，系統將自動與本次訂單車牌比對，請清晰且充分拍攝。</p></section>
           <button class="inspection-primary" data-scan-start type="button"><span>⌗</span>開始檢查</button>
         </section>
@@ -312,7 +302,7 @@
           <article class="rental-vehicle-card"><div><strong>ABC-1234</strong><small>iRent GO / Toyota Yaris</small><span>⌾　忠孝復興站</span></div><div class="rental-car-visual"><div class="inspection-car inspection-car--rental"><i class="inspection-car__roof"></i><i class="inspection-car__body"></i><b></b><b></b></div></div></article>
           <section class="rental-summary"><h2>本次車況摘要</h2><div class="rental-summary-grid"><article><span>▱</span><div><strong>車外狀況 <em>合格</em></strong><p>既有車損 3 處，<br>已完成歷史比對</p></div></article><article><span>♧</span><div><strong>車內狀況 <em>合格</em></strong><p>整潔分數 94 / 100，<br>判定乾淨</p></div></article></div><p class="rental-success">✓　AI 已完成取車前檢查，車況符合租借標準</p></section>
           <section class="rental-alternatives"><h2>若不想租這台車</h2><button data-nav-view="nearby" type="button">取消借車</button><small>取消後可改租附近車輛</small><div><strong>附近仍可租借且車況合格</strong><p>🚗　DEF-5678　| 忠孝敦化　| 180m　<b>車況合格</b>　›</p><p>🚗　GHI-9012　| 大安站　| 260m　<b>車況合格</b>　›</p><p>🚗　JKL-3456　| 南京復興站　| 320m　<b>車況合格</b>　›</p></div></section>
-          <button class="rental-primary" data-nav-view="renting" type="button"><span>▣</span>確認借車</button>
+          <button class="rental-primary" data-rental-start type="button"><span>▣</span>確認借車</button>
         </div>
       </section>
 
@@ -501,6 +491,7 @@
       </div>
       <nav class="function-menu__nav" aria-label="主要功能">
         <button class="is-active" data-menu-action data-view="nearby" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s7-5.5 7-12a7 7 0 1 0-14 0c0 6.5 7 12 7 12Z" /><circle cx="12" cy="9" r="2" /></svg>找車</button>
+        <button data-menu-action data-pickup-menu data-view="order-detail" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 9h14v9H5zM7 9l2-4h6l2 4M8 18h.01M16 18h.01" /></svg>&#21462;&#36554;</button>
         <button data-menu-action data-view="return" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h5" /></svg>還車</button>
         <button data-menu-action data-view="trips" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2" /><path d="M8 2v4M16 2v4M5 9h14" /></svg>租借歷史</button>
         <!-- <button data-menu-action data-view="feedback" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 3 20h18L12 3Z" /><path d="M12 9v4M12 17h.01" /></svg>異常回饋</button> -->

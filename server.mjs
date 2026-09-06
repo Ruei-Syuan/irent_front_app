@@ -4,6 +4,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const rootDirectory = path.dirname(fileURLToPath(import.meta.url));
+const conditionAssetDirectories = {
+  '/assets/vehicle-exterior-condition/': path.resolve(rootDirectory, '..', 'irent-project', 'assets', 'vehicle-exterior-condition'),
+  '/assets/vehicle-cabin-condition/': path.resolve(rootDirectory, '..', 'irent-project', 'assets', 'vehicle-cabin-condition'),
+};
 const defaultHost = process.env.HOST || '127.0.0.1';
 const defaultPort = Number.parseInt(process.env.PORT || '5000', 10);
 
@@ -13,6 +17,11 @@ const contentTypes = {
   '.js': 'text/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
   '.mjs': 'text/javascript; charset=utf-8',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.webp': 'image/webp',
+  '.avif': 'image/avif',
   '.svg': 'image/svg+xml',
 };
 
@@ -26,18 +35,27 @@ function getRequestPath(requestUrl) {
   return pathname;
 }
 
-function resolveFilePath(requestPath) {
-  const relativePath = requestPath === '/' ? 'index.html' : requestPath.slice(1);
-  const filePath = path.resolve(rootDirectory, relativePath);
-  const relativeToRoot = path.relative(rootDirectory, filePath);
+function resolvePathWithin(directory, relativePath) {
+  const filePath = path.resolve(directory, relativePath);
+  const relativeToDirectory = path.relative(directory, filePath);
 
-  if (relativeToRoot.startsWith('..') || path.isAbsolute(relativeToRoot)) {
+  if (relativeToDirectory.startsWith('..') || path.isAbsolute(relativeToDirectory)) {
     return null;
   }
 
   return filePath;
 }
 
+function resolveFilePath(requestPath) {
+  for (const [prefix, directory] of Object.entries(conditionAssetDirectories)) {
+    if (requestPath.startsWith(prefix)) {
+      return resolvePathWithin(directory, requestPath.slice(prefix.length));
+    }
+  }
+
+  const relativePath = requestPath === '/' ? 'index.html' : requestPath.slice(1);
+  return resolvePathWithin(rootDirectory, relativePath);
+}
 async function serveFile(request, response) {
   let requestPath;
 
