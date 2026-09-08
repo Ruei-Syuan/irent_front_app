@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <!-- 網頁基本設定：使用繁體中文、手機版視窗與品牌主題色。 -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#00a79b" />
+    <title>iRent｜附近車輛地圖</title>
+    <!-- 載入 MapLibre 地圖元件與本網站主要樣式。 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css"
+    />
+    <link rel="stylesheet" href="css/nearby-vehicles.css" />
+  </head>
+  <body class="front-app-body" data-initial-page="nearby">
+    <main data-app-loading role="status">頁面載入中…</main>
+    <template data-page-content="nearby">
+      <section class="map-panel" data-nearby-view aria-label="附近車輛地圖">
+        <div class="app-topline">
+          <button
+            class="menu-trigger"
+            data-menu-toggle
+            type="button"
+            aria-label="開啟功能選單"
+            aria-expanded="false"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </button>
+          <a class="app-wordmark" href="index.html" aria-label="iRent 附近車輛"
+            >iRent</a
+          >
+          <button
+            class="icon-button notification-button"
+            type="button"
+            aria-label="通知"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
+            </svg>
+            <i aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <div class="search-tools">
+          <label class="location-toggle">
+            <input data-location-toggle type="checkbox" />
+            <span class="location-toggle__switch" aria-hidden="true"></span>
+            <span class="location-toggle__label">開啟定位</span>
+          </label>
+        </div>
+
+        <div class="map-canvas" data-nearby-map aria-label="附近車輛地圖"></div>
+        <div class="map-fallback" data-map-fallback aria-hidden="true">
+          <span class="map-road road-one"></span>
+          <span class="map-road road-two"></span>
+          <span class="map-road road-three"></span>
+          <span class="map-block block-one"></span>
+          <span class="map-block block-two"></span>
+          <span class="map-block block-three"></span>
+          <span class="map-block block-four"></span>
+          <span class="map-place place-park">大安森林公園</span>
+          <span class="map-place place-school">國立台灣大學</span>
+          <span class="map-place place-district">信義區</span>
+          <span class="map-place place-school-two">師範大學</span>
+        </div>
+        <button
+          class="locate-button"
+          data-locate
+          type="button"
+          aria-label="定位目前位置"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M12 3v3M12 18v3M3 12h3M18 12h3" />
+          </svg>
+        </button>
+      </section>
+      <section class="nearby-sheet" data-nearby-view aria-label="附近推薦車輛">
+        <div class="sheet-grip" aria-hidden="true"></div>
+        <div class="sheet-heading">
+          <div class="sheet-heading__copy">
+            <strong
+              >附近推薦車輛<span
+                class="vehicle-count"
+                data-vehicle-count
+                aria-live="polite"
+                >距離你最近的 3 台</span
+              ></strong
+            >
+            <p class="detected-location">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z" />
+                <circle cx="12" cy="10" r="2" />
+              </svg>
+              <small data-current-location-label aria-live="polite"
+                >目前位置：台南火車站</small
+              >
+            </p>
+          </div>
+        </div>
+        <div class="vehicle-list" data-vehicle-list></div>
+        <button
+          class="quick-rent"
+          data-quick-rent
+          data-nav-view="vehicle"
+          type="button"
+          disabled
+          aria-disabled="true"
+        >
+          <!-- <span> -->
+          <strong>查看車輛狀況</strong>
+          <!-- <small>掃碼取車，即刻出發</small> -->
+          <!-- </span> -->
+        </button>
+      </section>
+    </template>
+    <noscript>請啟用 JavaScript 以使用 iRent。</noscript>
+    <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+    <script type="module" src="js/pages.js"></script>
+  </body>
+</html>

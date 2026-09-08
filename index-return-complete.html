@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <!-- 網頁基本設定：使用繁體中文、手機版視窗與品牌主題色。 -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#00a79b" />
+    <title>iRent｜還車完成</title>
+    <!-- 載入 MapLibre 地圖元件與本網站主要樣式。 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css"
+    />
+    <link rel="stylesheet" href="css/nearby-vehicles.css" />
+  </head>
+  <body class="front-app-body" data-initial-page="return-complete">
+    <main data-app-loading role="status">頁面載入中…</main>
+    <template data-page-content="return-complete">
+      <section
+        class="feature-view return-complete-view"
+        data-view-panel="return-complete"
+        aria-label="還車完成"
+      >
+        <header class="completion-topbar">
+          <button
+            class="completion-back"
+            data-return-complete-back
+            type="button"
+            aria-label="返回還車摘要"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="m15 5-7 7 7 7" />
+            </svg></button
+          ><a class="completion-wordmark" href="index.html" aria-label="iRent"
+            >iRent</a
+          ><button class="completion-headset" type="button" aria-label="客服">
+            ◉
+          </button>
+        </header>
+        <div class="completion-content completion-content--done">
+          <div class="complete-heading">
+            <span>✓</span>
+            <h1>還車完成！</h1>
+          </div>
+          <section class="complete-alert">
+            <span>!</span>
+            <div>
+              <strong>已偵測異常，客服已收到通知</strong
+              ><small>客服人員已接獲通知，將盡快處理</small>
+            </div>
+          </section>
+          <div class="complete-timeline">
+            <span>✓<small>AI 檢查完成</small></span
+            ><i></i><span>➤<small>已送出客服通知</small></span
+            ><i class="is-pending"></i
+            ><span class="is-pending">◷<small>等待人工複核</small></span>
+          </div>
+          <section class="complete-vehicle">
+            <div class="complete-car-art"><i></i></div>
+            <div>
+              <strong>iRent GO</strong><span>ABC-1234</span><span>Toyota Yaris</span>
+            </div>
+            <em>5門</em><em>油電</em>
+          </section>
+          <section class="complete-trip-card">
+            <div><small>借車時間</small><strong>05/24 09:30</strong></div>
+            <div><small>還車時間</small><strong>05/24 11:42</strong></div>
+            <div class="complete-metrics">
+              <span
+                >◷<small>租借總時長<strong>2 小時 12 分</strong></small></span
+              ><span
+                >⌁<small>行駛里程<strong>48 公里</strong></small></span
+              ><span
+                >▱<small>油耗<strong>2.1 公升</strong></small></span
+              >
+            </div>
+          </section>
+          <section class="complete-fee-card">
+            <h2>費用明細 <small>實際收費</small></h2>
+            <p>租金（依方案計費）<b>$ 278</b></p>
+            <p>里程費（48 公里）<b>$ 0</b></p>
+            <p>優惠折扣<b>-$ 0</b></p>
+            <strong>總金額（預估） <b>$ 278</b></strong>
+          </section>
+          <section class="complete-ai-card">
+            <header>
+              <strong>AI 還車檢測摘要</strong><small>✓ AI 報告已建立</small>
+            </header>
+            <p>
+              <span>▱</span><strong>車外</strong><em>1 處疑似新增車損，客服已通知</em
+              ><b>›</b>
+            </p>
+            <p>
+              <span>♧</span><strong>車內</strong><em>輕微髒污，待客服確認／已同步</em
+              ><b>✓</b>
+            </p>
+          </section>
+          <div class="complete-support">
+            <span>◉</span><strong>客服狀態</strong><em>已接獲通知，待人工複核</em>
+          </div>
+          <div class="complete-note">
+            <strong>ⓘ　若無異常，系統將直接完成還車。</strong>
+            <p>本次已偵測異常，已送出客服通知，請安心等待處理。</p>
+          </div>
+          <button class="completion-primary" data-return-finish type="button">
+            確認完成還車
+          </button>
+        </div>
+      </section>
+    </template>
+    <noscript>請啟用 JavaScript 以使用 iRent。</noscript>
+    <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+    <script type="module" src="js/pages.js"></script>
+  </body>
+</html>

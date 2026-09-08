@@ -18,540 +18,396 @@
     <main class="nearby-app" aria-label="iRent 附近車輛">
       <!-- 共用上方 Bar：由 JavaScript 依目前頁面更新標題與返回目的地。 -->
       <header class="app-header is-home" data-app-header>
-        <button class="app-header__menu" data-menu-toggle type="button" aria-label="開啟功能選單" aria-expanded="false">
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+        <button
+          class="app-header__menu"
+          data-menu-toggle
+          type="button"
+          aria-label="開啟功能選單"
+          aria-expanded="false"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
         </button>
-        <a class="app-header__wordmark" href="index.html" aria-label="iRent">iRent</a>
+        <a class="app-header__wordmark" href="index.html" aria-label="iRent"
+          >iRent</a
+        >
         <strong class="app-header__title" data-header-title></strong>
-        <button class="notification-button app-header__notification" type="button" aria-label="通知" aria-expanded="false">
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg>
+        <button
+          class="notification-button app-header__notification"
+          type="button"
+          aria-label="通知"
+          aria-expanded="false"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
+          </svg>
           <i aria-hidden="true"></i>
         </button>
         <!-- 右上角會員功能：登入後顯示會員姓名，展開後可登出。 -->
         <div class="member-menu" data-member-menu>
-          <button class="member-menu__trigger" data-member-menu-toggle type="button" aria-haspopup="menu" aria-expanded="false">
-            <span class="member-menu__avatar" data-member-initials aria-hidden="true">-</span>
-            <span class="member-menu__copy"><strong data-member-name>登入會員</strong><small data-member-status>尚未登入</small></span>
-            <svg class="member-menu__chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5" /></svg>
+          <button
+            class="member-menu__trigger"
+            data-member-menu-toggle
+            type="button"
+            aria-haspopup="menu"
+            aria-expanded="false"
+          >
+            <span
+              class="member-menu__avatar"
+              data-member-initials
+              aria-hidden="true"
+              >-</span
+            >
+            <span class="member-menu__copy"
+              ><strong data-member-name>登入會員</strong
+              ><small data-member-status>尚未登入</small></span
+            >
+            <svg
+              class="member-menu__chevron"
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+            >
+              <path d="m7 9 5 5 5-5" />
+            </svg>
           </button>
           <div class="member-menu__panel" data-member-panel role="menu" hidden>
-            <button type="button" data-member-login role="menuitem">登入會員</button>
-            <button type="button" data-member-logout role="menuitem" hidden>登出</button>
+            <button type="button" data-member-login role="menuitem">
+              登入會員
+            </button>
+            <button type="button" data-member-logout role="menuitem" hidden>
+              登出
+            </button>
           </div>
         </div>
       </header>
 
       <!-- 浮動 AI 客服：固定在右下角，點擊後開啟 AI 助手頁面。 -->
-      <button class="floating-assistant" data-floating-assistant type="button" aria-label="開啟 AI 助手">
+      <button
+        class="floating-assistant"
+        data-floating-assistant
+        type="button"
+        aria-label="開啟 AI 助手"
+      >
         <span class="floating-assistant__avatar" aria-hidden="true">
-          <svg viewBox="0 0 48 48"><path d="M24 8v4M20 8h8" /><rect x="7" y="12" width="34" height="25" rx="11" fill="#071b38" stroke="#fff" stroke-width="2" /><circle cx="18" cy="24" r="2.7" fill="#08cabb" /><circle cx="30" cy="24" r="2.7" fill="#08cabb" /><path d="M19 31h10" stroke="#08cabb" stroke-width="2" /></svg>
+          <svg viewBox="0 0 48 48">
+            <path d="M24 8v4M20 8h8" />
+            <rect
+              x="7"
+              y="12"
+              width="34"
+              height="25"
+              rx="11"
+              fill="#071b38"
+              stroke="#fff"
+              stroke-width="2"
+            />
+            <circle cx="18" cy="24" r="2.7" fill="#08cabb" />
+            <circle cx="30" cy="24" r="2.7" fill="#08cabb" />
+            <path d="M19 31h10" stroke="#08cabb" stroke-width="2" />
+          </svg>
         </span>
         <small>AI 助手</small>
       </button>
 
       <!-- 首頁：地圖、搜尋與定位功能。 -->
-      <section class="map-panel" data-nearby-view aria-label="附近車輛地圖">
-        <div class="app-topline">
-          <button class="menu-trigger" data-menu-toggle type="button" aria-label="開啟功能選單" aria-expanded="false">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
-          </button>
-          <a class="app-wordmark" href="index.html" aria-label="iRent 附近車輛">iRent</a>
-          <button class="icon-button notification-button" type="button" aria-label="通知">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg>
-            <i aria-hidden="true"></i>
-          </button>
-        </div>
-
-        <div class="search-tools">
-            <label class="location-toggle">
-              <input data-location-toggle type="checkbox" />
-              <span class="location-toggle__switch" aria-hidden="true"></span>
-              <span class="location-toggle__label">開啟定位</span>
-            </label>
-        </div>
-
-        <div class="map-canvas" data-nearby-map aria-label="附近車輛地圖"></div>
-        <div class="map-fallback" data-map-fallback aria-hidden="true">
-          <span class="map-road road-one"></span>
-          <span class="map-road road-two"></span>
-          <span class="map-road road-three"></span>
-          <span class="map-block block-one"></span>
-          <span class="map-block block-two"></span>
-          <span class="map-block block-three"></span>
-          <span class="map-block block-four"></span>
-          <span class="map-place place-park">大安森林公園</span>
-          <span class="map-place place-school">國立台灣大學</span>
-          <span class="map-place place-district">信義區</span>
-          <span class="map-place place-school-two">師範大學</span>
-        </div>
-        <button class="locate-button" data-locate type="button" aria-label="定位目前位置">
-          <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M12 3v3M12 18v3M3 12h3M18 12h3" /></svg>
-        </button>
-      </section>
+      <template data-page-slot="nearby"></template>
 
       <!-- 首頁：附近推薦車輛清單與車輛狀況入口。 -->
-      <section class="nearby-sheet" data-nearby-view aria-label="附近推薦車輛">
-        <div class="sheet-grip" aria-hidden="true"></div>
-        <div class="sheet-heading">
-          <div class="sheet-heading__copy">
-            <strong>附近推薦車輛<span class="vehicle-count" data-vehicle-count aria-live="polite">距離你最近的 3 台</span></strong>
-            <p class="detected-location">
-              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z" /><circle cx="12" cy="10" r="2" /></svg>
-              <small data-current-location-label aria-live="polite">目前位置：台南火車站</small>
-            </p>
-          </div>
-        </div>
-        <div class="vehicle-list" data-vehicle-list></div>
-        <button class="quick-rent" data-quick-rent data-nav-view="vehicle" type="button" disabled aria-disabled="true">
-          <!-- <span> -->
-            <strong>查看車輛狀況</strong>
-            <!-- <small>掃碼取車，即刻出發</small> -->
-          <!-- </span> -->
-        </button>
-      </section>
 
       <!-- 車輛詳情：顯示車況、位置、租金與預約入口。 -->
-      <section class="feature-view vehicle-detail-view" data-view-panel="vehicle" aria-label="車輛詳情">
-        <header class="vehicle-detail-topbar">
-          <button class="detail-back" data-nav-view="nearby" type="button" aria-label="返回附近車輛"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7" /></svg></button>
-          <a class="detail-wordmark" href="index.html" aria-label="iRent 附近車輛">iRent</a>
-          <button class="detail-notification" type="button" aria-label="通知"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg><i aria-hidden="true"></i></button>
-        </header>
-
-        <div class="vehicle-detail-content">
-          <div class="vehicle-detail-summary">
-            <div class="vehicle-detail-title"><h1><span data-vehicle-detail-name>Toyota Yaris</span> <span>|</span> <small data-vehicle-detail-plate>ABC-1234</small></h1><div class="detail-location"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z" /><circle cx="12" cy="10" r="2" /></svg><strong>台北車站東停車場</strong><span>步行約 3 分鐘・120m</span></div></div>
-            <div class="vehicle-detail-score"><span>車輛健康分數</span><strong>92<small>/100</small></strong><button class="favorite-button" type="button" aria-label="加入收藏">♡</button><i><b></b></i></div>
-          </div>
-          <div class="condition-grid">
-            <article class="condition-card exterior-condition"><header><span class="card-icon card-icon--exterior" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m4 13 2-4h12l2 4v5H4zM7 9l2-3h6l2 3M7 18h.01M17 18h.01" /></svg></span><strong>外觀狀態</strong><b>›</b></header><em>良好</em><ul><li>既有損傷 <strong>3</strong> 處</li><li>新增異常 <strong>0</strong> 處</li></ul><div class="condition-photo" aria-label="車門外觀照片"><img data-vehicle-condition-photo="exterior" alt="車門外觀照片" /></div></article>
-            <article class="condition-card cabin-condition"><header><span class="card-icon card-icon--cabin" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4v9m0-9h3a4 4 0 0 1 4 4v5H7m7 0h3a2 2 0 0 1 2 2v2H5m2 0v3m10-3v3" /></svg></span><strong>車內狀態</strong><b>›</b></header><em>良好</em><p>後座地板稍有灰塵</p><div class="condition-photo" aria-label="車內照片"><img data-vehicle-condition-photo="cabin" alt="車內照片" /></div></article>
-          </div>
-          <section class="rental-history-card">
-            <header><div><span class="card-icon card-icon--maintenance" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 8V6h10v2M5 9h14v10H5zM9 13h6" /></svg></span><strong>維護紀錄</strong></div></header>
-            <div class="history-timeline" data-maintenance-history-list aria-live="polite"><p class="maintenance-history-empty">載入維護紀錄中</p></div>
-          </section>
-          <div class="detail-info-grid"><article class="rental-price-card"><header><span class="card-icon card-icon--price" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8h16v11H4zM4 11h16M16 15h.01" /><path d="M7 5h10v3H7z" /></svg></span><strong>租金資訊</strong></header><div><p>每分鐘費率<strong>$3.2<small> / 分</small></strong></p><p>每日上限<strong>$980<small> / 日</small></strong></p></div></article></div>
-          <button class="detail-reserve" data-nav-view="order-confirm" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m5 11 2-5h10l2 5M4 11h16v7H4zM7 18v2M17 18v2M7 14h.01M17 14h.01" /></svg>立即預約</button>
-        </div>
-      </section>
+      <template data-page-slot="vehicle"></template>
 
       <!-- 訂單流程：確認預約內容與送出訂單。 -->
-      <section class="feature-view order-flow-view" data-view-panel="order-confirm" aria-label="確認訂單">
-        <header class="order-topbar">
-          <button class="order-back" data-nav-view="vehicle" type="button" aria-label="返回車輛詳情"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7" /></svg></button>
-          <a class="order-wordmark" href="index.html" aria-label="iRent">iRent</a>
-          <button class="order-notification" type="button" aria-label="通知"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg><i aria-hidden="true"></i></button>
-        </header>
-        <div class="order-scroll">
-          <div class="order-titlebar"><h1>確認訂單</h1></div>
-          <article class="order-vehicle-card">
-            <svg class="order-car-art" aria-hidden="true" viewBox="0 0 160 80"><ellipse class="car-shadow" cx="80" cy="67" rx="57" ry="7" /><path class="car-fill" d="M31 52 43 29c2-4 6-7 11-7h49c6 0 10 3 13 8l12 22c6 1 10 5 10 10v3H22v-3c0-5 3-9 9-10Z" /><path class="car-window" d="M49 28h48c4 0 7 2 9 6l6 11H39l6-12c1-3 2-5 4-5Z" /><path class="car-line" d="M79 28v17M39 48h82" /><circle class="car-wheel" cx="46" cy="61" r="9" /><circle class="car-wheel" cx="114" cy="61" r="9" /><circle class="car-hub" cx="46" cy="61" r="4" /><circle class="car-hub" cx="114" cy="61" r="4" /><path class="car-light" d="m29 50 8-2 5 6H29zM131 50l-8-2 5 6h13z" /></svg>
-            <div><strong>Toyota Yaris <span>汽油</span></strong><small>ABC-1234</small></div>
-          </article>
-          <article class="order-card order-schedule-card">
-            <label class="rental-time-field"><span>取車時間</span><input data-rental-start-time type="datetime-local" value="2026-09-05T09:30" required /></label>
-            <b aria-hidden="true">&plus;</b>
-            <label class="rental-time-field"><span>&#38928;&#35336;&#31199;&#20511;&#26178;&#25976;</span><input data-rental-hours type="number" min="0.5" step="0.5" value="2" required /></label>
-            <small class="order-rental-duration" data-rental-duration>&#20849; 2 &#23567;&#26178;</small>
-          </article>
-          <article class="order-card order-price-card">
-            <div><span>預估金額</span><strong><span data-order-estimated-price>$384</span> <small>(含稅)</small></strong></div>
-            <div><span>一般方案</span><strong>每日上限 $980</strong></div>
-            <p>計費說明：$3.2 / 分鐘，按分鐘計費，無租期綁約</p>
-          </article>
-          <article class="order-card order-location-card">
-            <div><span>取車地點</span><strong>台北車站東停車場</strong><small>步行約 3 分鐘・120m</small></div>
-          </article>
-          <article class="order-card order-condition-card">
-            <div><span>車輛狀態 
-              <!-- <i aria-hidden="true">i</i> -->
-            </span><strong>車輛健康分數 <b>92</b><small>/100</small></strong><em>清潔程度　良好</em></div>
-            <!-- <div class="order-cabin-photo" aria-label="車內狀態照片"></div> -->
-          </article>
-          <button class="order-primary" data-order-submit data-nav-view="order-detail" type="button">送出訂單</button>
-          <button class="order-text-action" data-nav-view="vehicle" type="button">返回修改</button>
-        </div>
-      </section>
+      <template data-page-slot="order-confirm"></template>
 
       <!-- 訂單詳情：顯示目前預約的時間、車輛與取車資訊。 -->
-      <section class="feature-view order-flow-view" data-view-panel="order-detail" aria-label="訂單詳情">
-        <header class="order-topbar">
-          <button class="order-back" data-nav-view="order-confirm" type="button" aria-label="返回確認訂單"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7" /></svg></button>
-          <a class="order-wordmark" href="index.html" aria-label="iRent">iRent</a>
-          <button class="order-notification" type="button" aria-label="通知"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg><i aria-hidden="true"></i></button>
-        </header>
-        <div class="order-scroll order-detail-scroll">
-          <div class="order-titlebar order-detail-titlebar"><h1>訂單詳情</h1></div>
-          <article class="order-detail-card">
-            <div class="order-number"><span>訂單編號</span><strong>IR-20250721-00123</strong><em>預約中</em></div>
-            <div class="order-detail-vehicle"><svg class="order-car-art" aria-hidden="true" viewBox="0 0 160 80"><ellipse class="car-shadow" cx="80" cy="67" rx="57" ry="7" /><path class="car-fill" d="M31 52 43 29c2-4 6-7 11-7h49c6 0 10 3 13 8l12 22c6 1 10 5 10 10v3H22v-3c0-5 3-9 9-10Z" /><path class="car-window" d="M49 28h48c4 0 7 2 9 6l6 11H39l6-12c1-3 2-5 4-5Z" /><path class="car-line" d="M79 28v17M39 48h82" /><circle class="car-wheel" cx="46" cy="61" r="9" /><circle class="car-wheel" cx="114" cy="61" r="9" /><circle class="car-hub" cx="46" cy="61" r="4" /><circle class="car-hub" cx="114" cy="61" r="4" /><path class="car-light" d="m29 50 8-2 5 6H29zM131 50l-8-2 5 6h13z" /></svg><div><strong>Toyota Yaris</strong><small>ABC-1234</small><span>5門　汽油</span></div></div>
-            <div class="order-detail-list">
-              <div><span class="order-list-icon">◷</span><strong>取車時間</strong><b data-order-detail-start-time>2026/09/05 09:30</b></div>
-              <div><span class="order-list-icon">◷</span><strong>還車時間</strong><b data-order-detail-end-time>2026/09/05 11:30</b></div>
-              <small data-rental-duration>&#20849; 2 &#23567;&#26178;</small>
-            </div>
-            <div class="order-detail-row"><span class="order-list-icon">$</span><strong>預估金額</strong><b><span data-order-estimated-price>$384</span> <i>⌄</i></b></div>
-            <div class="order-detail-row order-detail-location"><span class="order-list-icon">●</span><strong>取車地點</strong><div><b>台北車站東停車場</b><small>步行約 3 分鐘・120m</small></div></div>
-            <div class="order-detail-row order-plan-row"><span class="order-list-icon">☷</span><strong>方案</strong><div><b>一般方案</b><small>基本保障</small></div></div>
-            <div class="order-reminder"><span>♡</span><div><strong>取車提醒</strong><p>請於取車前完成駕照資格驗證，並攜帶有效駕照，確保順利取車。</p></div></div>
-            <button class="order-primary order-detail-action" data-nav-view="scan" type="button"><span aria-hidden="true">⌗</span>前往取車準備</button>
-          </article>
-        </div>
-      </section>
+      <template data-page-slot="order-detail"></template>
 
       <!-- AI 取車檢查：開始、錄影、拍照、結果與車內檢測流程。 -->
-      <section class="feature-view app-flow-view inspection-view" data-view-panel="scan" aria-label="AI 取車檢查">
-        <!-- 檢查首頁：選擇拍攝環境並開始檢查。 -->
-        <section class="inspection-screen is-active" data-inspection-screen="start">
-          <header class="inspection-topbar"><a class="inspection-wordmark" href="index.html" aria-label="iRent">iRent</a><button class="inspection-notification" type="button" aria-label="通知"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg><i aria-hidden="true"></i></button></header>
-          <div class="inspection-heading"><h1 data-inspection-title>開始取車檢查</h1><p data-inspection-subtitle>請依 AI 引導完成車外觀與內裝檢查</p></div>
-          <div class="inspection-start-cards">
-            <article><div><span class="inspection-card-icon">▣</span><strong>車外 AI 引導拍攝</strong><em>檢查車身外觀狀況</em><p>依序拍攝四個角落後偵查車牌，確認車身是否有刮痕或損傷。</p></div><div class="inspection-illustration inspection-illustration--exterior"><div class="inspection-loop"></div><div class="inspection-car"><i class="inspection-car__roof"></i><i class="inspection-car__body"></i><b></b><b></b></div></div></article>
-            <article><div><span class="inspection-card-icon">♧</span><strong>車內 AI 引導拍攝</strong><em>檢查內裝與隨身物品</em><p>依序拍攝前座、後座、地板與後車廂，確認車內清潔與是否遺留物品。</p></div><div class="inspection-cabin-art"><i></i><b></b></div></article>
-          </div>
-          <p class="inspection-section-label">請先選擇拍攝環境</p>
-          <div class="inspection-mode-options"><button class="is-selected" data-inspection-mode="open" type="button" aria-pressed="true"><span>✓</span><strong>A. 空曠空間</strong><small>可 2–3 公尺環車錄影</small></button><button data-inspection-mode="tight" type="button" aria-pressed="false"><span>○</span><strong>B. 狹窄空間</strong><small>改採四角定點拍攝</small></button></div>
-          <section class="inspection-checkpoints"><strong>AI 檢查重點</strong><div><span>🚗<small>車身外觀</small></span><span>♧<small>內裝清潔</small></span><span>▣<small>遺留物品</small></span><span>ABC-1234<small>車牌比對</small></span></div><p>當車外照片中的車牌清晰可見時，系統將自動與本次訂單車牌比對，請清晰且充分拍攝。</p></section>
-          <button class="inspection-primary" data-scan-start type="button"><span>⌗</span>開始檢查</button>
-        </section>
-
-        <!-- 車外錄影：開啟相機並依照指引拍攝車輛外觀。 -->
-        <section class="inspection-screen return-recording-screen" data-inspection-screen="recording">
-          <header class="inspection-topbar return-recording-topbar"><a class="inspection-wordmark" href="index.html" aria-label="iRent">iRent</a><strong>AI 引導車外錄影</strong><button class="inspection-help" type="button" aria-label="說明">?</button></header>
-          <div class="inspection-mode-banner"><span>♙</span><div><strong>開闊空間模式</strong><small>請保持 2–3 公尺距離，沿車身緩慢移動</small></div></div>
-          <div class="inspection-progress-head"><span>進度 <strong data-scan-count>3 / 8</strong></span><span>目前角度 <strong>右後 45°</strong></span></div><div class="inspection-progress"><i></i><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
-          <div class="inspection-camera inspection-camera--recording"><div class="inspection-scene"><div class="inspection-sky"></div><div class="inspection-building"></div><div class="inspection-car inspection-car--rear"><i class="inspection-car__roof"></i><i class="inspection-car__body"></i><b></b><b></b></div></div><div class="inspection-ai-badge"><span>●</span><strong>車牌確認成功</strong><small>ABC-1234</small></div><div class="inspection-status-stack"><span>✓ 距離正常<small>2.4 公尺</small></span><span>☼ 光線正常</span><span>▣ 車身完整入鏡</span></div><div class="inspection-angle-badge">右後45°</div><div class="inspection-camera-tip">●　沿著箭頭方向，繼續移動到下一個角度　›</div></div>
-          <div class="inspection-angle-strip"><strong>拍攝角度指引（8 個角度）</strong><div><span>1<br><small>車頭</small></span><span>2<br><small>右前45°</small></span><span>3<br><small>右側</small></span><span class="is-current">4<br><small>右後45°</small></span><span>5<br><small>車尾</small></span><span>6<br><small>左後45°</small></span><span>7<br><small>左側</small></span><span>8<br><small>左前45°</small></span></div></div>
-          <div class="inspection-permission">✓　僅限現場錄影，不可上傳相簿<br><small>為確保檢查真實性，請允許現場即時錄影，系統不支援相簿上傳。</small></div>
-          <div class="inspection-camera-controls"><button type="button">ϟ<small>閃光燈<br>關閉</small></button><button class="inspection-shutter" data-scan-record-next type="button" aria-label="前往下一個角度"></button><button type="button">▣<small>切換鏡頭<br>後鏡頭</small></button></div>
-        </section>
-
-        <!-- 車外定點拍照：在狹窄空間模式下拍攝車輛四角。 -->
-        <section class="inspection-screen return-capture-screen" data-inspection-screen="capture">
-          <header class="inspection-topbar"><button class="inspection-back" data-inspection-back type="button" aria-label="返回檢查首頁"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7" /></svg></button><a class="inspection-wordmark" href="index.html" aria-label="iRent">iRent</a><div class="inspection-top-actions"><button type="button" aria-label="說明">?</button><button class="inspection-notification" type="button" aria-label="通知"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg><i aria-hidden="true"></i></button></div></header>
-          <div class="inspection-heading return-capture-heading"><h1>AI 引導車外拍照</h1></div>
-          <div class="inspection-mode-banner"><span>♙</span><div><strong>狹窄空間模式</strong><small>請依序拍攝四個角落</small></div></div>
-          <div class="inspection-camera inspection-camera--capture"><div class="inspection-scene"><div class="inspection-garage"></div><div class="inspection-car inspection-car--front"><i class="inspection-car__roof"></i><i class="inspection-car__body"></i><b></b><b></b></div></div><div class="inspection-frame"></div><div class="inspection-capture-badge"><strong>1/4</strong><span>左前角</span></div><div class="inspection-capture-tip">●　車牌比對成功 ABC-1234　可安心拍攝</div><div class="inspection-camera-tip">ⓘ　空間狹窄，請保持固定角度拍攝</div></div>
-          <div class="inspection-thumbnails"><span class="is-current"><b>1</b><i></i><small>左前角</small></span><span><b>2</b><i></i><small>右前角</small></span><span><b>3</b><i></i><small>左後角</small></span><span><b>4</b><i></i><small>右後角</small></span></div>
-          <div class="inspection-validation"><span>✓<small>角度正常<br>AI 檢測通過</small></span><span>☼<small>光線正常<br>AI 檢測通過</small></span><span>▣<small>車身清楚<br>AI 檢測通過</small></span></div>
-          <div class="inspection-camera-controls inspection-camera-controls--capture"><button type="button">▣<small>僅限現場拍攝<br>確保保密與安全</small></button><button class="inspection-shutter inspection-shutter--teal" data-scan-capture-next type="button" aria-label="拍攝下一張"></button><button type="button">♧<small>拍攝提示</small></button></div>
-        </section>
-
-        <!-- 車外檢測結果：顯示歷史車損與本次 AI 判定。 -->
-        <section class="inspection-screen return-result-screen" data-inspection-screen="result">
-          <header class="inspection-topbar"><button class="inspection-back" data-return-result-back type="button" aria-label="返回還車流程"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7" /></svg></button><a class="inspection-wordmark" href="index.html" aria-label="iRent">iRent</a><div class="inspection-top-actions"><button type="button" aria-label="說明">?</button><button class="inspection-notification" type="button" aria-label="通知"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-7-3-9M10 21h4" /></svg><i aria-hidden="true"></i></button></div></header>
-          <div class="inspection-heading"><h1>還車車外歷史比對結果</h1></div>
-          <div class="inspection-result-banner"><span>✓</span><div><strong>AI 已完成歷史比對</strong><p>本次還車前已比對歷史車況資料<br>僅顯示系統未有紀錄或疑似新增問題</p></div></div>
-          <div class="inspection-result-car"><div class="inspection-car inspection-car--result"><i class="inspection-car__roof"></i><i class="inspection-car__body"></i><b></b><b></b></div><span>1</span></div>
-          <section class="inspection-history"><h2>▤　歷史紀錄摘要</h2><div class="inspection-history-tags"><span>既有車損 3 處</span><span>已存在系統紀錄</span><span>本次無需逐筆確認</span></div><div><p>✓　左前門 刮痕 <em>既有車損</em><small>已記錄 2024/05/18　⌄</small></p><p>✓　後保桿 刮痕 <em>既有車損</em><small>已記錄 2024/04/30　⌄</small></p><p>✓　右後門 凹痕 <em>既有車損</em><small>已記錄 2024/03/15　⌄</small></p></div></section>
-          <section class="inspection-new-issue"><h2>!　需注意的新問題 <span>僅顯示未記錄問題</span></h2><div><strong>1</strong><p><b>右後保桿 擦傷</b><small>系統無歷史紀錄　AI 信心度 <em>91%</em></small><small>◷ 首次發現於本次還車檢測</small></p><i></i><span>›</span></div><p>💡　建議使用者確認並回報，避免後續爭議。</p></section>
-           <button class="inspection-primary" data-return-submit type="button">提交還車結果</button>
-         </section>
-
-         <!-- 車內拍照：拍攝座椅、地板、中控與後車廂。 -->
-         <section class="inspection-screen return-cabin-capture-screen" data-inspection-screen="cabin-capture">
-           <header class="inspection-topbar"><button class="inspection-back" data-inspection-back type="button" aria-label="返回檢查首頁"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7" /></svg></button><a class="inspection-wordmark" href="index.html" aria-label="iRent">iRent</a><button class="inspection-notification" type="button" aria-label="通知"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg><i aria-hidden="true"></i></button></header>
-           <div class="inspection-heading return-cabin-heading"><h1>AI 引導車內拍攝</h1></div>
-           <div class="inspection-mode-banner"><span>♧</span><div><strong>車內模式</strong><small>請依序拍攝前座、後座、地板與後車廂</small></div></div>
-           <div class="cabin-camera"><div class="cabin-interior-art"><i></i><b></b><span></span></div><div class="inspection-frame"></div><div class="cabin-capture-badge"><strong>2/4</strong><span>後座</span></div><div class="cabin-camera-tip">●　請拍攝後座椅面與靠背，確保無遺留物品</div></div>
-           <div class="inspection-thumbnails cabin-thumbnails"><span><b>1</b><i></i><small>前座</small></span><span class="is-current"><b>2</b><i></i><small>後座</small></span><span><b>3</b><i></i><small>地板</small></span><span><b>4</b><i></i><small>後車廂</small></span></div>
-           <div class="inspection-validation"><span>✓<small>車內清楚<br>AI 辨識通過</small></span><span>✓<small>範圍完整<br>AI 檢測通過</small></span><span>☼<small>光線正常<br>AI 檢測通過</small></span></div>
-           <div class="inspection-camera-controls inspection-camera-controls--capture"><button type="button">▣<small>僅限現場拍攝<br>請勿上傳相簿</small></button><button class="inspection-shutter inspection-shutter--teal" data-cabin-capture-next type="button" aria-label="完成車內拍攝"></button><button type="button">♧<small>拍攝提示</small></button></div>
-         </section>
-
-         <section class="inspection-screen cabin-result-screen return-cabin-result-screen" data-inspection-screen="cabin-clean">
-           <header class="inspection-topbar"><button class="inspection-back" data-inspection-back type="button" aria-label="返回車內拍攝"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7" /></svg></button><a class="inspection-wordmark" href="index.html" aria-label="iRent">iRent</a><button class="inspection-help" type="button" aria-label="說明">?</button></header>
-           <div class="inspection-heading"><h1>AI 車內清潔檢測結果</h1></div>
-           <div class="cabin-status-banner cabin-status-banner--clean"><span>✓</span><div><strong>車內狀況　良好</strong><p>車內乾淨整潔，無任何需要處理項目</p></div></div>
-           <div class="cabin-result-photo cabin-result-photo--clean"><i></i><b></b></div>
-           <section class="cabin-summary"><h2>▤　車內檢測狀況摘要</h2><div class="cabin-score-row"><div class="cabin-score cabin-score--clean"><strong>95</strong><small>/100</small></div><div><span>車內清潔度分類</span><strong>●　乾淨整潔</strong><p>車內清潔度良好，環境整潔無異味，無需處理，請繼續保持。</p></div></div><div class="cabin-check-list"><p>♟　座椅 <em>良好</em><small>⌄</small></p><p>▰　地板 <em>良好</em><small>⌄</small></p><p>▱　中控/儀錶板 <em>良好</em><small>⌄</small></p><p>▣　門板/置物空間 <em>良好</em><small>⌄</small></p><p>▣　後車廂 <em>良好</em><small>⌄</small></p><p>♨　異味檢測 <em>良好</em><small>⌄</small></p></div></section>
-           <section class="cabin-trash-card cabin-trash-card--clean"><strong>可自行清潔的大型垃圾</strong><b>無</b><small>未偵測到可自行清潔的大型垃圾</small></section>
-           <section class="cabin-action-grid"><article><span>★</span><strong>預估處理方式</strong><b>無需處理</b></article><article><span>$</span><strong>預估清潔費用</strong><b>$0</b><small>（含稅）</small></article><article><span>!</span><strong>預計記入違規點數</strong><b>0 <small>點</small></b><small>維持良好紀錄</small></article></section>
-           <button class="inspection-primary cabin-finish-button" data-cabin-return-submit type="button">選擇還車</button>
-         </section>
-
-         <section class="inspection-screen cabin-result-screen return-cabin-result-screen" data-inspection-screen="cabin-normal">
-           <header class="inspection-topbar"><button class="inspection-back" data-inspection-back type="button" aria-label="返回車內拍攝"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7" /></svg></button><a class="inspection-wordmark" href="index.html" aria-label="iRent">iRent</a><button class="inspection-help" type="button" aria-label="說明">?</button></header>
-           <div class="inspection-heading"><h1>AI 車內清潔檢測結果</h1></div>
-           <div class="cabin-status-banner cabin-status-banner--normal"><span>!</span><div><strong>車內狀況　普通</strong><p>有可自行清理的大型垃圾，建議清理後再還車</p></div></div>
-           <div class="cabin-result-photo cabin-result-photo--normal"><i></i><b></b></div>
-           <section class="cabin-summary"><h2>▤　車內檢測狀況摘要</h2><div class="cabin-score-row"><div class="cabin-score cabin-score--normal"><strong>78</strong><small>/100</small></div><div><span>車內清潔度分類</span><strong>●　尚可</strong><p>車內有大型垃圾，建議清理後重新評分，再完成還車。</p></div></div><div class="cabin-check-list"><p>♟　座椅 <em>良好</em><small>⌄</small></p><p>▰　地板 <em>良好</em><small>⌄</small></p><p>▱　中控/儀錶板 <em>良好</em><small>⌄</small></p><p>▣　門板/置物空間 <em>大型垃圾 1 項</em><b>待清理</b><small>⌄</small></p><p>▣　後車廂 <em>良好</em><small>⌄</small></p><p>♨　異味檢測 <em>良好</em><small>⌄</small></p></div></section>
-           <section class="cabin-trash-card cabin-trash-card--normal"><strong>可自行清潔的大型垃圾 <small>共 1 項（每項記錄 1 點）</small></strong><div class="cabin-trash-item"><i></i><span><b>塑膠袋</b><small>後座地板</small></span></div></section>
-           <section class="cabin-action-grid"><article><span>★</span><strong>預估處理方式</strong><b>可自行清理</b><small>無需送洗</small></article><article><span>$</span><strong>預估清潔費用</strong><b>$0</b><small>（含稅）</small></article><article><span>!</span><strong>預計記入違規點數</strong><b>1 <small>點</small></b><small>大型垃圾 1 項</small></article></section>
-           <button class="cabin-secondary-action" data-cabin-recheck type="button">自主清潔後重新評分</button><button class="inspection-primary cabin-finish-button" data-cabin-return-submit type="button">選擇還車</button>
-         </section>
-
-         <section class="inspection-screen cabin-result-screen return-cabin-result-screen" data-inspection-screen="cabin-dirty">
-           <header class="inspection-topbar"><button class="inspection-back" data-inspection-back type="button" aria-label="返回車內拍攝"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7" /></svg></button><a class="inspection-wordmark" href="index.html" aria-label="iRent">iRent</a><button class="inspection-help" type="button" aria-label="說明">?</button></header>
-           <div class="inspection-heading"><h1>AI 車內清潔檢測結果</h1></div>
-           <div class="cabin-status-banner cabin-status-banner--dirty"><span>!</span><div><strong>車內狀況　髒污</strong><p>有污漬需清潔，並有大型垃圾，建議送洗處理</p></div></div>
-           <div class="cabin-result-photo cabin-result-photo--dirty"><i></i><b></b></div>
-           <section class="cabin-summary"><h2>▤　車內檢測狀況摘要</h2><div class="cabin-score-row"><div class="cabin-score cabin-score--dirty"><strong>42</strong><small>/100</small></div><div><span>車內清潔度分類</span><strong>●　需清潔</strong><p>車內清潔度較差，影響乘坐體驗，建議送洗處理以恢復整潔。</p></div></div><div class="cabin-check-list"><p>♟　座椅 <em>污漬</em><b>有污漬</b><small>⌄</small></p><p>▰　地板 <em>髒污</em><b>有大型垃圾</b><small>⌄</small></p><p>▱　中控/儀錶板 <em>良好</em><small>⌄</small></p><p>▣　門板/置物空間 <em>大型垃圾 2 項</em><b>待清理</b><small>⌄</small></p><p>▣　後車廂 <em>髒污</em><b>需清潔</b><small>⌄</small></p><p>♨　異味檢測 <em>異味明顯</em><b>異常</b><small>⌄</small></p></div><div class="cabin-issues"><strong>⚠　偵測到的問題</strong><span>•　座椅　有污漬　　　•　異味檢測　異味明顯</span><span>•　地板　有大型垃圾　•　門板/置物空間　大型垃圾 2 項</span><span>•　後車廂　需清潔處理</span></div></section>
-           <section class="cabin-trash-card cabin-trash-card--dirty"><strong>可自行清潔的大型垃圾 <small>共 2 項（每項記錄 1 點）</small></strong><div class="cabin-trash-grid"><div class="cabin-trash-item"><i></i><span><b>飲料杯</b><small>前座置物架</small></span></div><div class="cabin-trash-item"><i></i><span><b>零食包裝</b><small>後座椅面</small></span></div></div></section>
-           <section class="cabin-action-grid"><article><span>★</span><strong>預估處理方式</strong><b>建議送洗處理</b><small>需專業清潔</small></article><article><span>$</span><strong>預估清潔費用</strong><b>$600</b><small>（含稅）起</small></article><article><span>!</span><strong>預計記入違規點數</strong><b>5 <small>點</small></b><small>髒污 3 點＋垃圾 2 點</small></article></section>
-           <button class="cabin-secondary-action" data-cabin-recheck type="button">自主清潔後重新評分</button><button class="inspection-primary cabin-finish-button" data-cabin-return-submit type="button">選擇還車</button>
-         </section>
-       </section>
+      <template data-page-slot="scan"></template>
 
       <!-- 租借流程：確認 AI 車況後開始租借。 -->
-      <section class="feature-view rental-flow-view" data-view-panel="rental-ready" aria-label="取車前車況確認">
-        <header class="rental-topbar"><a class="rental-wordmark" href="index.html" aria-label="iRent">iRent</a></header>
-        <div class="rental-content">
-          <div class="rental-heading"><h1>取車前車況確認</h1><p>請確認車內外狀況後再開始租車</p></div>
-          <article class="rental-vehicle-card"><div><strong>ABC-1234</strong><small>iRent GO / Toyota Yaris</small><span>⌾　忠孝復興站</span></div><div class="rental-car-visual"><div class="inspection-car inspection-car--rental"><i class="inspection-car__roof"></i><i class="inspection-car__body"></i><b></b><b></b></div></div></article>
-          <section class="rental-summary"><h2>本次車況摘要</h2><div class="rental-summary-grid"><article><span>▱</span><div><strong>車外狀況 <em>合格</em></strong><p>既有車損 3 處，<br>已完成歷史比對</p></div></article><article><span>♧</span><div><strong>車內狀況 <em>合格</em></strong><p>整潔分數 94 / 100，<br>判定乾淨</p></div></article></div><p class="rental-success">✓　AI 已完成取車前檢查，車況符合租借標準</p></section>
-          <section class="rental-alternatives"><h2>若不想租這台車</h2><button data-nav-view="nearby" type="button">取消借車</button><small>取消後可改租附近車輛</small><div><strong>附近仍可租借且車況合格</strong><p>🚗　DEF-5678　| 忠孝敦化　| 180m　<b>車況合格</b>　›</p><p>🚗　GHI-9012　| 大安站　| 260m　<b>車況合格</b>　›</p><p>🚗　JKL-3456　| 南京復興站　| 320m　<b>車況合格</b>　›</p></div></section>
-          <button class="rental-primary" data-rental-start type="button"><span>▣</span>確認借車</button>
-        </div>
-      </section>
+      <template data-page-slot="rental-ready"></template>
 
       <!-- 租借中：顯示剩餘時間、費用與車況紀錄。 -->
-      <section class="feature-view rental-flow-view renting-view" data-view-panel="renting" aria-label="租借中">
-        <header class="rental-topbar"><a class="rental-wordmark" href="index.html" aria-label="iRent">iRent</a><button class="rental-help" type="button" aria-label="說明">?</button></header>
-        <div class="rental-content">
-          <div class="rental-heading renting-heading"><h1>租借中 <span>進行中</span></h1><p>用車愉快，請注意行車安全！</p></div>
-          <article class="rental-vehicle-card renting-vehicle-card"><div><strong>ABC-1234</strong><small>iRent GO</small><small>Toyota Yaris</small><span>⌾　忠孝復興站</span></div><button type="button">查看合約　›</button><div class="rental-car-visual"><div class="inspection-car inspection-car--rental"><i class="inspection-car__roof"></i><i class="inspection-car__body"></i><b></b><b></b></div></div></article>
-          <section class="rental-timer"><span>剩餘時間</span><strong>02:18:33</strong><small>預計 05/20 (二) 12:00 前還車</small><button type="button">ⓘ　計費說明</button></section>
-          <div class="rental-actions"><button type="button"><span>♧</span>解鎖</button><button type="button"><span>♧</span>上鎖</button><button type="button"><span>⌁</span>尋車</button><button type="button"><span>◷</span>延長租借</button><button type="button"><span>➤</span>導航</button><button class="rental-return" data-nav-view="return" type="button"><span>▣</span>開始還車</button></div>
-          <section class="rental-record"><div><h2>本次車況紀錄 <em>已保存</em></h2><p>已於 05/20 09:41 完成檢查</p><button type="button">查看紀錄　›</button></div><span class="rental-record-icon">▤</span></section>
-        </div>
-      </section>
+      <template data-page-slot="renting"></template>
 
       <!-- 還車流程：選擇還車方式、拍攝車況並提交。 -->
-      <section class="feature-view return-flow-view" data-view-panel="return" aria-label="還車">
-        <section class="return-screen is-active" data-return-screen="choice">
-          <header class="return-topbar"><a class="return-wordmark" href="index.html" aria-label="iRent">iRent</a><button class="return-notification" type="button" aria-label="通知"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg><i aria-hidden="true"></i></button></header>
-          <div class="return-content return-choice-content">
-            <div class="return-heading"><h1>選擇還車拍攝方式</h1><p>依現場空間選擇最適合的還車拍攝模式</p></div>
-            <div class="return-mode-list">
-              <button class="return-mode-card" data-return-start type="button">
-                <span class="return-mode-icon return-mode-icon--tight" aria-hidden="true"><i></i><b></b></span>
-                <span class="return-mode-copy"><strong>狹窄空間</strong><em>車位較窄，無法後退 2–3 公尺</em><i></i><small>改用四角定點拍攝，<br />逐步完成外觀檢查</small></span>
-                <span class="return-tight-art" aria-hidden="true"><i></i><b></b><b></b></span>
-              </button>
-              <button class="return-mode-card" data-return-start type="button">
-                <span class="return-mode-icon return-mode-icon--open" aria-hidden="true"><i></i><b></b></span>
-                <span class="return-mode-copy"><strong>開闊空間</strong><em>車輛四周空曠，可完整環車</em><i></i><small>使用 AI 引導環車錄影，<br />快速完成檢查</small></span>
-                <span class="return-open-art" aria-hidden="true"><i></i><b></b></span>
-              </button>
-            </div>
-            <button class="return-ai-recommendation" data-return-start type="button"><span>✦</span><span><strong>AI 推薦：</strong><small>可先回答 3 個問題，系統會自動推薦模式</small></span><b>›</b></button>
-            <button class="return-primary" data-return-start type="button">啟動還車時間</button>
-          </div>
-        </section>
-
-        <section class="return-screen" data-return-screen="active">
-          <header class="return-topbar"><a class="return-wordmark" href="index.html" aria-label="iRent">iRent</a><button class="return-notification" type="button" aria-label="通知"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg><i aria-hidden="true"></i></button></header>
-          <div class="return-content return-active-content">
-            <div class="return-heading return-active-heading"><h1>啟動還車</h1><p>已啟動，10 分鐘還車緩衝時間</p></div>
-            <article class="return-timer-card"><div class="return-timer-status"><span class="return-shield">✓</span><strong>仍在緩衝時間內！</strong><p>在 10 分鐘內完成還車，<br />不加收逾期還車費用</p></div><div class="return-timer-divider"></div><div class="return-timer-value"><span>剩餘緩衝時間</span><strong data-return-timer>10:00</strong><i><b></b></i><small>總緩衝時間 10:00</small></div></article>
-            <section class="return-note-card"><p><span>◷</span>在 10 分鐘內完成還車拍攝與提交，<strong>不加收逾期還車費用</strong></p><p><span>!</span>超過緩衝時間後，才開始計入逾期還車費用</p><p><span>▣</span>請盡快完成車外、車內拍攝與還車確認</p></section>
-            <section class="return-fee-card"><h2>費用資訊</h2><p><span class="return-fee-icon">$</span><span>目前逾期費用</span><strong>NT$ 0</strong></p><p><span class="return-fee-icon return-fee-icon--clock">◷</span><span>超時後開始計費</span><small>逾期還車費將依方案規則計算　›</small></p></section>
-            <section class="return-progress-card"><h2>還車流程 <small>（剩餘步驟）</small></h2><div class="return-step"><span>1</span><i></i><div><strong>車外拍攝</strong><small>拍攝車輛四周與車牌</small></div><b>待完成</b></div><div class="return-step"><span>2</span><i></i><div><strong>車內拍攝</strong><small>拍攝車內狀態與設備</small></div><b>待完成</b></div><div class="return-step"><span>3</span><div><strong>確認還車結果</strong><small>確認資訊並提交還車</small></div><b>待完成</b></div></section>
-            <button class="return-info-link" type="button"><span>i</span>查看逾時收費說明　›</button>
-            <button class="return-primary" data-return-scan-start type="button">開始還車拍攝</button>
-          </div>
-        </section>
-      </section>
+      <template data-page-slot="return"></template>
 
       <!-- 還車摘要：整理車外、車內檢查結果與預估費用。 -->
-      <section class="feature-view return-summary-view" data-view-panel="return-summary" aria-label="還車檢查摘要">
-        <header class="completion-topbar"><button class="completion-back" data-return-summary-back type="button" aria-label="返回車內檢測結果"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7" /></svg></button><a class="completion-wordmark" href="index.html" aria-label="iRent">iRent</a><button class="completion-headset" type="button" aria-label="客服">◉</button></header>
-        <div class="completion-content">
-          <div class="completion-title"><h1>還車檢查摘要</h1></div>
-          <section class="completion-success"><span>✓</span><div><strong>AI 檢查完成！</strong><p>感謝您的使用，祝您有美好的一天！</p></div></section>
-          <section class="return-summary-card return-summary-card--exterior"><header><span class="summary-card-icon">▱</span><div><h2>車外 <em>!</em> <b>1 處疑似新增車損</b></h2><p>疑似新增擦傷：右後保險桿<br />其餘既有車損已比對完成。</p></div><strong>›</strong></header><div class="summary-card-body"><div><small>受損部位預覽</small><div class="summary-thumbs"><i></i><i></i><i></i><span>▧<small>查看全部<br />12 張</small></span></div></div><div class="summary-ai"><small>AI 判定</small><p>✓　疑似新增 1 處<br /><span>　其餘車損為既有</span></p><small>預估修理費用小計</small><strong>NT$ 3,600</strong></div></div></section>
-          <section class="return-summary-card return-summary-card--cabin"><header><span class="summary-card-icon">♧</span><div><h2>車內</h2><p>後座少量垃圾與地板碎屑</p></div><div class="summary-score"><small>清潔分數</small><strong>72 <i>/100</i></strong><span>☺</span></div></header><div class="summary-card-body"><div><small>車內狀況預覽</small><div class="summary-thumbs summary-thumbs--cabin"><i></i><i></i><i></i><span>▧<small>查看全部<br />8 張</small></span></div></div><div class="summary-ai"><small>清潔分類</small><strong class="summary-normal">普通</strong><small>預估清潔費用小計</small><strong>NT$ 300</strong></div></div></section>
-          <section class="return-cost-summary"><div><h2>本次預估費用小計</h2><p>車外修理費 <b>NT$ 3,600</b></p><p>車內清潔費 <b>NT$ 300</b></p><strong>合計 <b>NT$ 3,900</b></strong></div><div class="return-points"><span>☆</span><h2>計點結果</h2><p>依車內狀況評估，<br />本次計點結果：</p><strong>扣點 1 點</strong><small>扣點將影響您的會員權益，請維持良好用車習慣。</small></div></section>
-          <button class="completion-primary" data-return-summary-next type="button">確認完成還車</button><button class="completion-secondary" data-return-summary-report type="button"><span>▤</span>查看詳細報告</button>
-        </div>
-      </section>
+      <template data-page-slot="return-summary"></template>
 
       <!-- 還車完成：顯示費用、客服通知與最終狀態。 -->
-      <section class="feature-view return-complete-view" data-view-panel="return-complete" aria-label="還車完成">
-        <header class="completion-topbar"><button class="completion-back" data-return-complete-back type="button" aria-label="返回還車摘要"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7" /></svg></button><a class="completion-wordmark" href="index.html" aria-label="iRent">iRent</a><button class="completion-headset" type="button" aria-label="客服">◉</button></header>
-        <div class="completion-content completion-content--done">
-          <div class="complete-heading"><span>✓</span><h1>還車完成！</h1></div>
-          <section class="complete-alert"><span>!</span><div><strong>已偵測異常，客服已收到通知</strong><small>客服人員已接獲通知，將盡快處理</small></div></section>
-          <div class="complete-timeline"><span>✓<small>AI 檢查完成</small></span><i></i><span>➤<small>已送出客服通知</small></span><i class="is-pending"></i><span class="is-pending">◷<small>等待人工複核</small></span></div>
-          <section class="complete-vehicle"><div class="complete-car-art"><i></i></div><div><strong>iRent GO</strong><span>ABC-1234</span><span>Toyota Yaris</span></div><em>5門</em><em>油電</em></section>
-          <section class="complete-trip-card"><div><small>借車時間</small><strong>05/24 09:30</strong></div><div><small>還車時間</small><strong>05/24 11:42</strong></div><div class="complete-metrics"><span>◷<small>租借總時長<strong>2 小時 12 分</strong></small></span><span>⌁<small>行駛里程<strong>48 公里</strong></small></span><span>▱<small>油耗<strong>2.1 公升</strong></small></span></div></section>
-          <section class="complete-fee-card"><h2>費用明細 <small>實際收費</small></h2><p>租金（依方案計費）<b>$ 278</b></p><p>里程費（48 公里）<b>$ 0</b></p><p>優惠折扣<b>-$ 0</b></p><strong>總金額（預估） <b>$ 278</b></strong></section>
-          <section class="complete-ai-card"><header><strong>AI 還車檢測摘要</strong><small>✓ AI 報告已建立</small></header><p><span>▱</span><strong>車外</strong><em>1 處疑似新增車損，客服已通知</em><b>›</b></p><p><span>♧</span><strong>車內</strong><em>輕微髒污，待客服確認／已同步</em><b>✓</b></p></section>
-          <div class="complete-support"><span>◉</span><strong>客服狀態</strong><em>已接獲通知，待人工複核</em></div><div class="complete-note"><strong>ⓘ　若無異常，系統將直接完成還車。</strong><p>本次已偵測異常，已送出客服通知，請安心等待處理。</p></div>
-          <button class="completion-primary" data-return-finish type="button">確認完成還車</button>
-        </div>
-      </section>
+      <template data-page-slot="return-complete"></template>
 
       <!-- 異常回饋：讓使用者回報車輛清潔、外觀或設備問題。 -->
-      <section class="feature-view app-flow-view" data-view-panel="feedback" aria-label="異常回饋">
-        <header class="feature-view__header"><span>車況回饋</span><strong>發現髒污車輛</strong></header>
-        <article class="feedback-alert"><span>!</span><strong>髒污車輛不會開放借用</strong><p>若你遇到不符合預期的車況，請重新選擇車輛；我們會保留這筆回饋並安排處理。</p></article>
-        <section class="feedback-card"><span>本次回饋</span><strong>車內座椅與置物區有明顯髒污</strong><div class="feedback-options"><button class="is-selected" type="button">車內髒污</button><button type="button">外觀異常</button><button type="button">設備問題</button></div></section>
-        <div class="feedback-points"><span>＋1</span><div><strong>回饋點數</strong><small>完成回報後將加入你的帳戶</small></div></div>
-        <button class="page-action flow-primary" data-feedback-submit type="button">送出回饋並重新選車</button>
-      </section>
+      <template data-page-slot="feedback"></template>
 
       <!-- AI 助手：提供常見問題、異常處理與客服轉接入口。 -->
-      <section class="feature-view app-flow-view assistant-view" data-view-panel="assistant" aria-label="AI 助手">
-        <section class="assistant-screen is-active" data-assistant-screen="home" aria-label="AI助手首頁">
-          <header class="assistant-topbar"><a class="assistant-wordmark" href="index.html" aria-label="iRent">iRent</a></header>
-          <div class="assistant-content">
-            <div class="assistant-subbar"><button class="assistant-back" data-assistant-home type="button" aria-label="返回首頁">‹</button><h1>iRent 智慧客服</h1><button class="assistant-history" type="button">◷ <span>服務紀錄</span></button></div>
-            <div class="assistant-hero"><div class="assistant-robot" aria-hidden="true"><i></i><b></b><span>⌣</span></div><div class="assistant-welcome"><strong>哈囉！我是 iRent 智慧客服</strong><p>有任何租車相關的問題，<br />我都可以協助您喔！</p></div></div>
-            <div class="assistant-feature-grid"><button data-assistant-case type="button"><span class="assistant-feature-icon assistant-feature-icon--teach">◆</span><strong>租借教學</strong><small>如何預約與用車</small><b>›</b></button><button data-assistant-case type="button"><span class="assistant-feature-icon assistant-feature-icon--alert">!</span><strong>異常回報</strong><small>車輛問題回報</small><b>›</b></button><button data-nav-view="feedback" type="button"><span class="assistant-feature-icon assistant-feature-icon--clean">▣</span><strong>清潔回報</strong><small>車廂清潔問題</small><b>›</b></button><button data-assistant-case type="button"><span class="assistant-feature-icon assistant-feature-icon--faq">?</span><strong>常見問題</strong><small>熱門問題總覽</small><b>›</b></button></div>
-            <h2 class="assistant-question-title">猜你想問</h2><div class="assistant-question-list"><button data-assistant-prompt="無法解鎖怎麼辦？" type="button">無法解鎖怎麼辦？　›</button><button data-assistant-prompt="發現刮痕如何處理？" type="button">發現刮痕如何處理？　›</button><button data-assistant-prompt="如何延長租借時間？" type="button">如何延長租借時間？　›</button></div>
-            <div class="assistant-composer"><span>●</span><input type="text" placeholder="請輸入您的問題…" aria-label="輸入問題" /><button type="button">➤</button><small>服務時間：24 小時全年無休</small></div>
-          </div>
-        </section>
-
-        <section class="assistant-screen" data-assistant-screen="case">
-          <header class="assistant-topbar"><a class="assistant-wordmark" href="index.html" aria-label="iRent">iRent</a></header>
-          <div class="assistant-content assistant-case-content">
-            <div class="assistant-subbar"><button class="assistant-back" data-assistant-home type="button" aria-label="返回 AI 助手首頁">‹</button><h1>iRent 智慧客服</h1><button class="assistant-history" type="button">◷ <span>服務紀錄</span></button></div>
-            <div class="assistant-case-tag">▰　取車檢查中</div><section class="assistant-alert"><span>!</span><div><strong>異常案例</strong><h2>右後保桿發現疑似新增擦傷</h2><p>AI 信心度 91%　|　系統查無歷史紀錄</p></div></section>
-            <div class="assistant-chat"><div class="assistant-message assistant-message--user">我在取車前發現右後保桿有刮痕，<br />這樣可以直接借車嗎？<span class="assistant-user-avatar">●</span></div><div class="assistant-message assistant-message--bot"><span class="assistant-mini-robot">AI</span><p data-assistant-response>我已讀取本次 AI 檢測結果。<br />右後保桿疑似新增擦傷，系統目前沒有歷史紀錄。<br />建議您先完成異常回報並保留照片，<br />確認後再決定是否借車。</p></div><div class="assistant-message assistant-message--bot assistant-message--steps"><span class="assistant-mini-robot">AI</span><p>我已為您整理可執行步驟：<br /><b>1. 查看異常照片</b><br /><b>2. 提交車損回報</b><br /><b>3. 改租附近合格車輛</b></p></div></div>
-            <div class="assistant-case-actions"><button type="button">▧　查看異常照片　›</button><button type="button">▤　提交車損回報　›</button><button data-nav-view="nearby" type="button">▱　改租附近車輛　›</button></div>
-            <section class="assistant-human-card"><header><span>♧</span><div><strong>需要人工客服？</strong><small>即時線上客服為您協助</small></div></header><div class="assistant-queue"><span>👥<small>線上客服人數<strong>5 人</strong></small></span><span>◷<small>目前等待人數<strong>2 人</strong></small></span><span>◴<small>預估等候時間<strong>1 分鐘</strong></small></span><span>●<small>客服狀態<strong>可立即排隊</strong></small></span></div><button type="button">♧　轉接人工客服</button></section>
-            <div class="assistant-case-composer"><span>●</span><input type="text" placeholder="請輸入您的問題…" aria-label="輸入問題" /><button type="button">➤</button><small>服務時間：24 小時全年無休</small></div>
-          </div>
-        </section>
-      </section>
+      <template data-page-slot="assistant"></template>
 
       <!-- 租借歷史：依日期、站點與關鍵字篩選過去租借紀錄。 -->
-      <section class="feature-view history-view" data-view-panel="trips" aria-label="租借歷史">
-        <header class="feature-view__header"><span>租借歷史</span><strong>查看你的租借紀錄</strong></header>
-        <form class="history-filters" data-history-filters>
-          <div class="history-filter-heading"><strong>篩選租借紀錄</strong><button data-history-reset type="reset">清除條件</button></div>
-          <div class="history-filter-dates">
-            <label>開始日期<input data-history-start type="date" /></label>
-            <span aria-hidden="true">至</span>
-            <label>結束日期<input data-history-end type="date" /></label>
-          </div>
-          <label class="history-filter-field">租借站點<select data-history-station><option value="">全部站點</option><option>台北車站東停車場</option><option>市民大道停車場</option><option>忠孝敦化站</option><option>大安站</option></select></label>
-          <label class="history-filter-field">搜尋車輛或車牌<input data-history-keyword type="search" placeholder="例如 Toyota、ABC-1234" /></label>
-        </form>
-        <div class="history-result-heading"><strong data-history-result-count>共 4 筆租借紀錄</strong><span>依開始時間排序</span></div>
-        <div class="history-record-list" data-history-record-list></div>
-      </section>
+      <template data-page-slot="trips"></template>
 
       <!-- 點數紀錄：顯示目前點數、過去違規與獲得點數紀錄。 -->
-      <section class="feature-view points-view" data-view-panel="points" aria-label="點數紀錄">
-        <header class="feature-view__header"><span>點數紀錄</span><strong>查看你的回饋與會員點數</strong></header>
-        <article class="points-balance-card"><div><span>目前可用點數</span><strong>8<small> 點</small></strong></div><span class="points-balance-card__icon">✦</span><p>完成良好用車與回饋，可累積更多點數。</p></article>
-        <section class="points-record-card">
-          <header><div><strong>過去違規紀錄</strong><small>造成扣點的使用紀錄</small></div><span>共 2 筆</span></header>
-          <div class="points-record-list">
-            <article><span class="points-record-icon points-record-icon--warning">!</span><div><strong>車內遺留大型垃圾</strong><small>2026/07/21・還車檢查</small></div><b class="points-value points-value--negative">-1 點</b></article>
-            <article><span class="points-record-icon points-record-icon--warning">!</span><div><strong>未依規定完成車況回報</strong><small>2026/06/25・行程結束</small></div><b class="points-value points-value--negative">-2 點</b></article>
-          </div>
-        </section>
-        <section class="points-record-card">
-          <header><div><strong>獲得點數紀錄</strong><small>完成任務與回饋所得點數</small></div><span>共 3 筆</span></header>
-          <div class="points-record-list">
-            <article><span class="points-record-icon points-record-icon--success">✓</span><div><strong>完成車況回饋</strong><small>2026/07/21・回饋任務</small></div><b class="points-value points-value--positive">+1 點</b></article>
-            <article><span class="points-record-icon points-record-icon--success">✓</span><div><strong>完成首次租車檢查</strong><small>2026/05/20・新手任務</small></div><b class="points-value points-value--positive">+5 點</b></article>
-            <article><span class="points-record-icon points-record-icon--success">✓</span><div><strong>連續三次準時還車</strong><small>2026/04/30・會員獎勵</small></div><b class="points-value points-value--positive">+4 點</b></article>
-          </div>
-        </section>
-      </section>
+      <template data-page-slot="points"></template>
 
       <!-- 客服中心：提供常見租車問題與線上客服入口。 -->
-      <section class="feature-view" data-view-panel="support" aria-label="客服中心">
-        <header class="feature-view__header"><span>客服中心</span><strong>需要協助嗎？</strong></header>
-        <div class="support-list"><button type="button"><span>?</span><div><strong>取車前遇到問題</strong><small>找不到車輛、車門無法開啟</small></div><b>›</b></button><button type="button"><span>!</span><div><strong>行程中異常回報</strong><small>車況、事故或臨停相關協助</small></div><b>›</b></button><button type="button"><span>i</span><div><strong>使用與付款說明</strong><small>方案、費率與付款紀錄</small></div><b>›</b></button></div><button class="support-call" type="button">聯絡線上客服</button>
-      </section>
+      <template data-page-slot="support"></template>
 
       <!-- 設定：管理會員資料、付款、通知與隱私設定。 -->
-      <section class="feature-view" data-view-panel="settings" aria-label="設定">
-        <header class="feature-view__header"><span>設定</span><strong>帳戶與偏好</strong></header>
-        <button class="profile-card" data-login-open type="button" aria-haspopup="dialog"><span data-profile-initials>訪</span><div><strong data-profile-name>登入會員</strong><small data-profile-status>登入後查看會員資料</small></div><b>›</b></button>
-        <div class="settings-list"><button type="button"><span>付款方式</span><b>›</b></button><button type="button"><span>通知設定</span><b>›</b></button><button type="button"><span>隱私權與安全</span><b>›</b></button><button type="button"><span>關於 iRent</span><b>›</b></button></div>
-      </section>
+      <template data-page-slot="settings"></template>
 
       <!-- 底部導覽：切換找車、租借歷史、開門、點數紀錄與我的頁面。 -->
       <nav class="app-nav" aria-label="App 導覽">
         <!-- <button class="is-active" data-nav-view="nearby" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s7-5.5 7-12a7 7 0 1 0-14 0c0 6.5 7 12 7 12Z" /><circle cx="12" cy="9" r="2" /></svg><span>找車(主畫面)</span></button> -->
-        <button data-nav-view="trips" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2" /><path d="M8 2v4M16 2v4M5 9h14" /></svg><span>租借歷史</span></button>
-        <button class="take-car" data-nav-view="scan" type="button"><span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 3h10M7 21h10M5 6h14v12H5zM9 9h6v6H9z" /></svg></span><small>開門</small></button>
-        <button data-nav-view="points" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 14.8 9l6.2.6-4.7 4.1 1.4 6.1-5.7-3.2-5.7 3.2 1.4-6.1L3 9.6 9.2 9 12 3Z" /></svg><span>點數紀錄</span></button>
-        <button data-nav-view="settings" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5" /><path d="M5 21c.4-4 2.7-6 7-6s6.6 2 7 6" /></svg><span>帳號設定</span></button>
+        <button data-nav-view="trips" type="button">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <rect x="5" y="4" width="14" height="17" rx="2" />
+            <path d="M8 2v4M16 2v4M5 9h14" /></svg
+          ><span>租借歷史</span>
+        </button>
+        <button class="take-car" data-nav-view="scan" type="button">
+          <span
+            ><svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M7 3h10M7 21h10M5 6h14v12H5zM9 9h6v6H9z" /></svg></span
+          ><small>開門</small>
+        </button>
+        <button data-nav-view="points" type="button">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path
+              d="M12 3 14.8 9l6.2.6-4.7 4.1 1.4 6.1-5.7-3.2-5.7 3.2 1.4-6.1L3 9.6 9.2 9 12 3Z"
+            /></svg
+          ><span>點數紀錄</span>
+        </button>
+        <button data-nav-view="settings" type="button">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="3.5" />
+            <path d="M5 21c.4-4 2.7-6 7-6s6.6 2 7 6" /></svg
+          ><span>帳號設定</span>
+        </button>
       </nav>
     </main>
 
     <!-- 側邊功能選單：由 JavaScript 控制開啟、關閉與頁面切換。 -->
-    <button class="menu-backdrop" data-menu-close type="button" aria-label="關閉功能選單"></button>
-    <aside class="function-menu" data-function-menu aria-hidden="true" aria-label="功能選單">
+    <button
+      class="menu-backdrop"
+      data-menu-close
+      type="button"
+      aria-label="關閉功能選單"
+    ></button>
+    <aside
+      class="function-menu"
+      data-function-menu
+      aria-hidden="true"
+      aria-label="功能選單"
+    >
       <div class="function-menu__header">
         <strong>功能選單</strong>
-        <button class="icon-button" data-menu-close type="button" aria-label="關閉功能選單">
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" /></svg>
+        <button
+          class="icon-button"
+          data-menu-close
+          type="button"
+          aria-label="關閉功能選單"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m6 6 12 12M18 6 6 18" />
+          </svg>
         </button>
       </div>
       <nav class="function-menu__nav" aria-label="主要功能">
-        <button class="is-active" data-menu-action data-view="nearby" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s7-5.5 7-12a7 7 0 1 0-14 0c0 6.5 7 12 7 12Z" /><circle cx="12" cy="9" r="2" /></svg>找車</button>
-        <button data-menu-action data-pickup-menu data-view="order-detail" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 9h14v9H5zM7 9l2-4h6l2 4M8 18h.01M16 18h.01" /></svg>&#21462;&#36554;</button>
-        <button data-menu-action data-view="return" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h5" /></svg>還車</button>
-        <button data-menu-action data-view="trips" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2" /><path d="M8 2v4M16 2v4M5 9h14" /></svg>租借歷史</button>
+        <button
+          class="is-active"
+          data-menu-action
+          data-view="nearby"
+          type="button"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M12 21s7-5.5 7-12a7 7 0 1 0-14 0c0 6.5 7 12 7 12Z" />
+            <circle cx="12" cy="9" r="2" /></svg
+          >找車
+        </button>
+        <button
+          data-menu-action
+          data-pickup-menu
+          data-view="order-detail"
+          type="button"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M5 9h14v9H5zM7 9l2-4h6l2 4M8 18h.01M16 18h.01" /></svg
+          >&#21462;&#36554;
+        </button>
+        <button data-menu-action data-view="return" type="button">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M5 4h14v16H5zM8 8h8M8 12h5" /></svg
+          >還車
+        </button>
+        <button data-menu-action data-view="trips" type="button">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <rect x="5" y="4" width="14" height="17" rx="2" />
+            <path d="M8 2v4M16 2v4M5 9h14" /></svg
+          >租借歷史
+        </button>
         <!-- <button data-menu-action data-view="feedback" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 3 20h18L12 3Z" /><path d="M12 9v4M12 17h.01" /></svg>異常回饋</button> -->
-        <button data-menu-action data-view="points" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 14.8 9l6.2.6-4.7 4.1 1.4 6.1-5.7-3.2-5.7 3.2 1.4-6.1L3 9.6 9.2 9 12 3Z" /></svg>點數紀錄</button>
-        <button data-menu-action data-view="settings" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5" /><path d="M5 21c.4-4 2.7-6 7-6s6.6 2 7 6" /></svg>帳戶偏好</button>
+        <button data-menu-action data-view="points" type="button">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path
+              d="M12 3 14.8 9l6.2.6-4.7 4.1 1.4 6.1-5.7-3.2-5.7 3.2 1.4-6.1L3 9.6 9.2 9 12 3Z"
+            /></svg
+          >點數紀錄
+        </button>
+        <button data-menu-action data-view="settings" type="button">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="3.5" />
+            <path d="M5 21c.4-4 2.7-6 7-6s6.6 2 7 6" /></svg
+          >帳戶偏好
+        </button>
       </nav>
       <!-- <div class="function-menu__footer">iRent 前端預覽</div> -->
     </aside>
 
     <!-- 登入視窗：送出一般會員 API，成功後由 HttpOnly Cookie 維持登入。 -->
-    <section class="login-modal" data-login-modal aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="login-title">
+    <section
+      class="login-modal"
+      data-login-modal
+      aria-hidden="true"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="login-title"
+    >
       <div class="login-modal__card">
         <div class="login-modal__header">
-          <div><span>iRent</span><h2 id="login-title">登入會員</h2></div>
-          <button class="login-modal__close" data-login-close type="button" aria-label="關閉登入視窗">×</button>
+          <div>
+            <span>iRent</span>
+            <h2 id="login-title">登入會員</h2>
+          </div>
+          <button
+            class="login-modal__close"
+            data-login-close
+            type="button"
+            aria-label="關閉登入視窗"
+          >
+            ×
+          </button>
         </div>
         <p class="login-modal__intro">登入後即可查看點數紀錄與會員資訊。</p>
         <form class="login-form" data-login-form>
-          <label>帳號或手機<input data-login-account name="account" type="text" autocomplete="username" placeholder="請輸入帳號或手機號碼" required /></label>
-          <label>密碼
-  <span class="login-password-field">
-    <input data-login-password name="password" type="password" autocomplete="current-password" placeholder="請輸入密碼" minlength="8" required />
-    <button class="login-password-toggle" data-login-password-toggle type="button" aria-label="顯示密碼" aria-pressed="false">顯示</button>
-  </span>
-</label>
-          <p class="login-form__error" data-login-error role="alert" aria-live="polite"></p>
+          <label
+            >帳號或手機<input
+              data-login-account
+              name="account"
+              type="text"
+              autocomplete="username"
+              placeholder="請輸入帳號或手機號碼"
+              required
+          /></label>
+          <label
+            >密碼
+            <span class="login-password-field">
+              <input
+                data-login-password
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                placeholder="請輸入密碼"
+                minlength="8"
+                required
+              />
+              <button
+                class="login-password-toggle"
+                data-login-password-toggle
+                type="button"
+                aria-label="顯示密碼"
+                aria-pressed="false"
+              >
+                顯示
+              </button>
+            </span>
+          </label>
+          <p
+            class="login-form__error"
+            data-login-error
+            role="alert"
+            aria-live="polite"
+          ></p>
           <button class="login-form__submit" type="submit">登入</button>
-          <button class="login-form__logout" data-login-logout type="button" hidden>登出目前帳號</button>
+          <button
+            class="login-form__logout"
+            data-login-logout
+            type="button"
+            hidden
+          >
+            登出目前帳號
+          </button>
         </form>
       </div>
     </section>
 
     <!-- 通知中心：由右上角鈴鐺開啟，顯示提醒並可一次標記為已讀。 -->
-    <aside class="notification-panel" data-notification-panel aria-hidden="true" aria-label="通知中心">
+    <aside
+      class="notification-panel"
+      data-notification-panel
+      aria-hidden="true"
+      aria-label="通知中心"
+    >
       <div class="notification-panel__header">
         <strong>通知</strong>
-        <button class="notification-panel__close" data-notification-close type="button" aria-label="關閉通知">
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" /></svg>
+        <button
+          class="notification-panel__close"
+          data-notification-close
+          type="button"
+          aria-label="關閉通知"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m6 6 12 12M18 6 6 18" />
+          </svg>
         </button>
       </div>
       <div class="notification-list">
         <article class="notification-item is-unread">
           <span class="notification-item__icon">⌁</span>
-          <div><strong>取車提醒</strong><p>您的 Toyota Yaris 預約即將開始，請準備前往取車。</p><small>剛剛</small></div>
+          <div>
+            <strong>取車提醒</strong>
+            <p>您的 Toyota Yaris 預約即將開始，請準備前往取車。</p>
+            <small>剛剛</small>
+          </div>
         </article>
         <article class="notification-item is-unread">
           <span class="notification-item__icon">✓</span>
-          <div><strong>AI 車況檢查完成</strong><p>車輛已完成檢查，目前車況符合租借標準。</p><small>10 分鐘前</small></div>
+          <div>
+            <strong>AI 車況檢查完成</strong>
+            <p>車輛已完成檢查，目前車況符合租借標準。</p>
+            <small>10 分鐘前</small>
+          </div>
         </article>
         <article class="notification-item">
           <span class="notification-item__icon">i</span>
-          <div><strong>服務公告</strong><p>請於還車後完成車外與車內照片拍攝。</p><small>昨天</small></div>
+          <div>
+            <strong>服務公告</strong>
+            <p>請於還車後完成車外與車內照片拍攝。</p>
+            <small>昨天</small>
+          </div>
         </article>
       </div>
-      <button class="notification-panel__mark-read" data-notification-mark-read type="button">全部標記為已讀</button>
+      <button
+        class="notification-panel__mark-read"
+        data-notification-mark-read
+        type="button"
+      >
+        全部標記為已讀
+      </button>
     </aside>
 
     <!-- 先載入 MapLibre，再載入網站互動邏輯，確保手機瀏覽器可取得全域 maplibregl。 -->
     <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
-    <script type="module" src="js/nearby-vehicles.js"></script>
-    <div class="app-toast" data-app-toast role="status" aria-live="polite"></div>
+    <script type="module" src="js/pages.js"></script>
+    <div
+      class="app-toast"
+      data-app-toast
+      role="status"
+      aria-live="polite"
+    ></div>
   </body>
 </html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <!-- 網頁基本設定：使用繁體中文、手機版視窗與品牌主題色。 -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#00a79b" />
+    <title>iRent｜AI 取車檢查</title>
+    <!-- 載入 MapLibre 地圖元件與本網站主要樣式。 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css"
+    />
+    <link rel="stylesheet" href="css/nearby-vehicles.css" />
+  </head>
+  <body class="front-app-body" data-initial-page="scan">
+    <main data-app-loading role="status">頁面載入中…</main>
+    <template data-page-content="scan">
+      <section
+        class="feature-view app-flow-view inspection-view"
+        data-view-panel="scan"
+        aria-label="AI 取車檢查"
+      >
+        <!-- 檢查首頁：選擇拍攝環境並開始檢查。 -->
+        <template data-page-slot="scan/start"></template>
+
+        <!-- 車外錄影：開啟相機並依照指引拍攝車輛外觀。 -->
+        <template data-page-slot="scan/recording"></template>
+
+        <!-- 車外定點拍照：在狹窄空間模式下拍攝車輛四角。 -->
+        <template data-page-slot="scan/capture"></template>
+
+        <!-- 車外檢測結果：顯示歷史車損與本次 AI 判定。 -->
+        <template data-page-slot="scan/result"></template>
+
+        <!-- 車內拍照：拍攝座椅、地板、中控與後車廂。 -->
+        <template data-page-slot="scan/cabin-capture"></template>
+
+        <template data-page-slot="scan/cabin-clean"></template>
+
+        <template data-page-slot="scan/cabin-normal"></template>
+
+        <template data-page-slot="scan/cabin-dirty"></template>
+      </section>
+    </template>
+    <noscript>請啟用 JavaScript 以使用 iRent。</noscript>
+    <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+    <script type="module" src="js/pages.js"></script>
+  </body>
+</html>

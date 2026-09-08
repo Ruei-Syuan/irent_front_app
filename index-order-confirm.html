@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <!-- 網頁基本設定：使用繁體中文、手機版視窗與品牌主題色。 -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#00a79b" />
+    <title>iRent｜確認訂單</title>
+    <!-- 載入 MapLibre 地圖元件與本網站主要樣式。 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css"
+    />
+    <link rel="stylesheet" href="css/nearby-vehicles.css" />
+  </head>
+  <body class="front-app-body" data-initial-page="order-confirm">
+    <main data-app-loading role="status">頁面載入中…</main>
+    <template data-page-content="order-confirm">
+      <section
+        class="feature-view order-flow-view"
+        data-view-panel="order-confirm"
+        aria-label="確認訂單"
+      >
+        <header class="order-topbar">
+          <button
+            class="order-back"
+            data-nav-view="vehicle"
+            type="button"
+            aria-label="返回車輛詳情"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="m15 5-7 7 7 7" />
+            </svg>
+          </button>
+          <a class="order-wordmark" href="index.html" aria-label="iRent">iRent</a>
+          <button class="order-notification" type="button" aria-label="通知">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path
+                d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"
+              /></svg
+            ><i aria-hidden="true"></i>
+          </button>
+        </header>
+        <div class="order-scroll">
+          <div class="order-titlebar"><h1>確認訂單</h1></div>
+          <article class="order-vehicle-card">
+            <svg class="order-car-art" aria-hidden="true" viewBox="0 0 160 80">
+              <ellipse class="car-shadow" cx="80" cy="67" rx="57" ry="7" />
+              <path
+                class="car-fill"
+                d="M31 52 43 29c2-4 6-7 11-7h49c6 0 10 3 13 8l12 22c6 1 10 5 10 10v3H22v-3c0-5 3-9 9-10Z"
+              />
+              <path
+                class="car-window"
+                d="M49 28h48c4 0 7 2 9 6l6 11H39l6-12c1-3 2-5 4-5Z"
+              />
+              <path class="car-line" d="M79 28v17M39 48h82" />
+              <circle class="car-wheel" cx="46" cy="61" r="9" />
+              <circle class="car-wheel" cx="114" cy="61" r="9" />
+              <circle class="car-hub" cx="46" cy="61" r="4" />
+              <circle class="car-hub" cx="114" cy="61" r="4" />
+              <path class="car-light" d="m29 50 8-2 5 6H29zM131 50l-8-2 5 6h13z" />
+            </svg>
+            <div>
+              <strong data-order-vehicle-plate></strong>
+              <small>
+                <span data-order-vehicle-name></span>
+                <span data-order-vehicle-fuel></span>
+              </small>
+            </div>
+          </article>
+          <article class="order-card order-schedule-card">
+            <label class="rental-time-field"
+              ><span>取車時間</span
+              ><input
+                data-rental-start-time
+                type="datetime-local"
+                value="2026-09-05T09:30"
+                required
+            /></label>
+            <b aria-hidden="true">&plus;</b>
+            <label class="rental-time-field"
+              ><span>&#38928;&#35336;&#31199;&#20511;&#26178;&#25976;</span
+              ><input
+                data-rental-hours
+                type="number"
+                min="0.5"
+                step="0.5"
+                value="2"
+                required
+            /></label>
+            <small class="order-rental-duration" data-rental-duration
+              >&#20849; 2 &#23567;&#26178;</small
+            >
+          </article>
+          <article class="order-card order-price-card">
+            <div>
+              <span>預估金額</span
+              ><strong
+                ><span data-order-estimated-price>$384</span>
+                <small>(含稅)</small></strong
+              >
+            </div>
+            <div><span>一般方案</span><strong>每日上限 $980</strong></div>
+            <p>計費說明：$3.2 / 分鐘，按分鐘計費，無租期綁約</p>
+          </article>
+          <article class="order-card order-location-card">
+            <div>
+              <span>取車地點</span><strong>台北車站東停車場</strong
+              ><small>步行約 3 分鐘・120m</small>
+            </div>
+          </article>
+          <article class="order-card order-condition-card">
+            <div>
+              <span
+                >車輛狀態
+                <!-- <i aria-hidden="true">i</i> --> </span
+              ><strong>車輛健康分數 <b>92</b><small>/100</small></strong
+              ><em>清潔程度　良好</em>
+            </div>
+            <!-- <div class="order-cabin-photo" aria-label="車內狀態照片"></div> -->
+          </article>
+          <button
+            class="order-primary"
+            data-order-submit
+            data-nav-view="order-detail"
+            type="button"
+          >
+            送出訂單
+          </button>
+          <button class="order-text-action" data-nav-view="vehicle" type="button">
+            返回修改
+          </button>
+        </div>
+      </section>
+    </template>
+    <noscript>請啟用 JavaScript 以使用 iRent。</noscript>
+    <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+    <script type="module" src="js/pages.js"></script>
+  </body>
+</html>

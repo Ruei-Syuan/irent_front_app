@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <!-- 網頁基本設定：使用繁體中文、手機版視窗與品牌主題色。 -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#00a79b" />
+    <title>iRent｜訂單詳情</title>
+    <!-- 載入 MapLibre 地圖元件與本網站主要樣式。 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css"
+    />
+    <link rel="stylesheet" href="css/nearby-vehicles.css" />
+  </head>
+  <body class="front-app-body" data-initial-page="order-detail">
+    <main data-app-loading role="status">頁面載入中…</main>
+    <template data-page-content="order-detail">
+      <section
+        class="feature-view order-flow-view"
+        data-view-panel="order-detail"
+        aria-label="訂單詳情"
+      >
+        <header class="order-topbar">
+          <button
+            class="order-back"
+            data-nav-view="order-confirm"
+            type="button"
+            aria-label="返回確認訂單"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="m15 5-7 7 7 7" />
+            </svg>
+          </button>
+          <a class="order-wordmark" href="index.html" aria-label="iRent">iRent</a>
+          <button class="order-notification" type="button" aria-label="通知">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path
+                d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"
+              /></svg
+            ><i aria-hidden="true"></i>
+          </button>
+        </header>
+        <div class="order-scroll order-detail-scroll">
+          <div class="order-titlebar order-detail-titlebar"><h1>訂單詳情</h1></div>
+          <article class="order-detail-card">
+            <div class="order-number">
+              <span>訂單編號</span><strong>IR-20250721-00123</strong><em>預約中</em>
+            </div>
+            <div class="order-detail-vehicle">
+              <svg class="order-car-art" aria-hidden="true" viewBox="0 0 160 80">
+                <ellipse class="car-shadow" cx="80" cy="67" rx="57" ry="7" />
+                <path
+                  class="car-fill"
+                  d="M31 52 43 29c2-4 6-7 11-7h49c6 0 10 3 13 8l12 22c6 1 10 5 10 10v3H22v-3c0-5 3-9 9-10Z"
+                />
+                <path
+                  class="car-window"
+                  d="M49 28h48c4 0 7 2 9 6l6 11H39l6-12c1-3 2-5 4-5Z"
+                />
+                <path class="car-line" d="M79 28v17M39 48h82" />
+                <circle class="car-wheel" cx="46" cy="61" r="9" />
+                <circle class="car-wheel" cx="114" cy="61" r="9" />
+                <circle class="car-hub" cx="46" cy="61" r="4" />
+                <circle class="car-hub" cx="114" cy="61" r="4" />
+                <path class="car-light" d="m29 50 8-2 5 6H29zM131 50l-8-2 5 6h13z" />
+              </svg>
+              <div>
+                <strong>ABC-1234</strong><small>Toyota Yaris</small
+                ><span>5門　汽油</span>
+              </div>
+            </div>
+            <div class="order-detail-list">
+              <div>
+                <span class="order-list-icon">◷</span><strong>取車時間</strong
+                ><b data-order-detail-start-time>2026/09/05 09:30</b>
+              </div>
+              <div>
+                <span class="order-list-icon">◷</span><strong>還車時間</strong
+                ><b data-order-detail-end-time>2026/09/05 11:30</b>
+              </div>
+              <small data-rental-duration>&#20849; 2 &#23567;&#26178;</small>
+            </div>
+            <div class="order-detail-row">
+              <span class="order-list-icon">$</span><strong>預估金額</strong
+              ><b><span data-order-estimated-price>$384</span> <i>⌄</i></b>
+            </div>
+            <div class="order-detail-row order-detail-location">
+              <span class="order-list-icon">●</span><strong>取車地點</strong>
+              <div><b>台北車站東停車場</b><small>步行約 3 分鐘・120m</small></div>
+            </div>
+            <div class="order-detail-row order-plan-row">
+              <span class="order-list-icon">☷</span><strong>方案</strong>
+              <div><b>一般方案</b><small>基本保障</small></div>
+            </div>
+            <div class="order-reminder">
+              <span>♡</span>
+              <div>
+                <strong>取車提醒</strong>
+                <p>請於取車前完成駕照資格驗證，並攜帶有效駕照，確保順利取車。</p>
+              </div>
+            </div>
+            <button
+              class="order-primary order-detail-action"
+              data-nav-view="scan"
+              type="button"
+            >
+              <span aria-hidden="true">⌗</span>前往取車準備
+            </button>
+          </article>
+        </div>
+      </section>
+    </template>
+    <noscript>請啟用 JavaScript 以使用 iRent。</noscript>
+    <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+    <script type="module" src="js/pages.js"></script>
+  </body>
+</html>

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <!-- 網頁基本設定：使用繁體中文、手機版視窗與品牌主題色。 -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#00a79b" />
+    <title>iRent｜車輛詳情</title>
+    <!-- 載入 MapLibre 地圖元件與本網站主要樣式。 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css"
+    />
+    <link rel="stylesheet" href="css/nearby-vehicles.css" />
+  </head>
+  <body class="front-app-body" data-initial-page="vehicle">
+    <main data-app-loading role="status">頁面載入中…</main>
+    <template data-page-content="vehicle">
+      <section
+        class="feature-view vehicle-detail-view"
+        data-view-panel="vehicle"
+        aria-label="車輛詳情"
+      >
+        <header class="vehicle-detail-topbar">
+          <button
+            class="detail-back"
+            data-nav-view="nearby"
+            type="button"
+            aria-label="返回附近車輛"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="m15 5-7 7 7 7" />
+            </svg>
+          </button>
+          <a class="detail-wordmark" href="index.html" aria-label="iRent 附近車輛"
+            >iRent</a
+          >
+          <button class="detail-notification" type="button" aria-label="通知">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path
+                d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"
+              /></svg
+            ><i aria-hidden="true"></i>
+          </button>
+        </header>
+
+        <div class="vehicle-detail-content">
+          <div class="vehicle-detail-summary">
+            <div class="vehicle-detail-title">
+              <h1>
+                <span data-vehicle-detail-name>Toyota Yaris</span> <span>|</span>
+                <small data-vehicle-detail-plate>ABC-1234</small>
+              </h1>
+              <div class="detail-location">
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                  <path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z" />
+                  <circle cx="12" cy="10" r="2" /></svg
+                ><strong>台北車站東停車場</strong><span>步行約 3 分鐘・120m</span>
+              </div>
+            </div>
+            <div class="vehicle-detail-score">
+              <span>車輛健康分數</span><strong>92<small>/100</small></strong
+              ><button class="favorite-button" type="button" aria-label="加入收藏">
+                ♡</button
+              ><i><b></b></i>
+            </div>
+          </div>
+          <div class="condition-grid">
+            <article class="condition-card exterior-condition">
+              <header>
+                <span class="card-icon card-icon--exterior" aria-hidden="true"
+                  ><svg viewBox="0 0 24 24">
+                    <path
+                      d="m4 13 2-4h12l2 4v5H4zM7 9l2-3h6l2 3M7 18h.01M17 18h.01"
+                    /></svg></span
+                ><strong>外觀狀態</strong><b>›</b>
+              </header>
+              <em>良好</em>
+              <ul>
+                <li>既有損傷 <strong>3</strong> 處</li>
+                <li>新增異常 <strong>0</strong> 處</li>
+              </ul>
+              <div class="condition-photo" aria-label="車門外觀照片">
+                <img data-vehicle-condition-photo="exterior" alt="車門外觀照片" />
+              </div>
+            </article>
+            <article class="condition-card cabin-condition">
+              <header>
+                <span class="card-icon card-icon--cabin" aria-hidden="true"
+                  ><svg viewBox="0 0 24 24">
+                    <path
+                      d="M7 4v9m0-9h3a4 4 0 0 1 4 4v5H7m7 0h3a2 2 0 0 1 2 2v2H5m2 0v3m10-3v3"
+                    /></svg></span
+                ><strong>車內狀態</strong><b>›</b>
+              </header>
+              <em>良好</em>
+              <p>後座地板稍有灰塵</p>
+              <div class="condition-photo" aria-label="車內照片">
+                <img data-vehicle-condition-photo="cabin" alt="車內照片" />
+              </div>
+            </article>
+          </div>
+          <section class="rental-history-card">
+            <header>
+              <div>
+                <span class="card-icon card-icon--maintenance" aria-hidden="true"
+                  ><svg viewBox="0 0 24 24">
+                    <path d="M7 8V6h10v2M5 9h14v10H5zM9 13h6" /></svg></span
+                ><strong>維護紀錄</strong>
+              </div>
+            </header>
+            <div
+              class="history-timeline"
+              data-maintenance-history-list
+              aria-live="polite"
+            >
+              <p class="maintenance-history-empty">載入維護紀錄中</p>
+            </div>
+          </section>
+          <div class="detail-info-grid">
+            <article class="rental-price-card">
+              <header>
+                <span class="card-icon card-icon--price" aria-hidden="true"
+                  ><svg viewBox="0 0 24 24">
+                    <path d="M4 8h16v11H4zM4 11h16M16 15h.01" />
+                    <path d="M7 5h10v3H7z" /></svg></span
+                ><strong>租金資訊</strong>
+              </header>
+              <div>
+                <p>
+                  每分鐘費率<strong>$3.2<small> / 分</small></strong>
+                </p>
+                <p>
+                  每日上限<strong>$980<small> / 日</small></strong>
+                </p>
+              </div>
+            </article>
+          </div>
+          <button class="detail-reserve" data-nav-view="order-confirm" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path
+                d="m5 11 2-5h10l2 5M4 11h16v7H4zM7 18v2M17 18v2M7 14h.01M17 14h.01"
+              /></svg
+            >立即預約
+          </button>
+        </div>
+      </section>
+    </template>
+    <noscript>請啟用 JavaScript 以使用 iRent。</noscript>
+    <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+    <script type="module" src="js/pages.js"></script>
+  </body>
+</html>

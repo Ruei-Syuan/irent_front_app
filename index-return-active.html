@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <!-- 網頁基本設定：使用繁體中文、手機版視窗與品牌主題色。 -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#00a79b" />
+    <title>iRent｜iRent</title>
+    <!-- 載入 MapLibre 地圖元件與本網站主要樣式。 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css"
+    />
+    <link rel="stylesheet" href="css/nearby-vehicles.css" />
+  </head>
+  <body class="front-app-body" data-initial-page="return/active">
+    <main data-app-loading role="status">頁面載入中…</main>
+    <template data-page-content="return/active">
+      <section class="return-screen" data-return-screen="active">
+        <header class="return-topbar">
+          <a class="return-wordmark" href="index.html" aria-label="iRent">iRent</a
+          ><button class="return-notification" type="button" aria-label="通知">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path
+                d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"
+              /></svg
+            ><i aria-hidden="true"></i>
+          </button>
+        </header>
+        <div class="return-content return-active-content">
+          <div class="return-heading return-active-heading">
+            <h1>啟動還車</h1>
+            <p>已啟動，10 分鐘還車緩衝時間</p>
+          </div>
+          <article class="return-timer-card">
+            <div class="return-timer-status">
+              <span class="return-shield">✓</span><strong>仍在緩衝時間內！</strong>
+              <p>在 10 分鐘內完成還車，<br />不加收逾期還車費用</p>
+            </div>
+            <div class="return-timer-divider"></div>
+            <div class="return-timer-value">
+              <span>剩餘緩衝時間</span><strong data-return-timer>10:00</strong
+              ><i><b></b></i><small>總緩衝時間 10:00</small>
+            </div>
+          </article>
+          <section class="return-note-card">
+            <p>
+              <span>◷</span>在 10 分鐘內完成還車拍攝與提交，<strong
+                >不加收逾期還車費用</strong
+              >
+            </p>
+            <p><span>!</span>超過緩衝時間後，才開始計入逾期還車費用</p>
+            <p><span>▣</span>請盡快完成車外、車內拍攝與還車確認</p>
+          </section>
+          <section class="return-fee-card">
+            <h2>費用資訊</h2>
+            <p>
+              <span class="return-fee-icon">$</span><span>目前逾期費用</span
+              ><strong>NT$ 0</strong>
+            </p>
+            <p>
+              <span class="return-fee-icon return-fee-icon--clock">◷</span
+              ><span>超時後開始計費</span><small>逾期還車費將依方案規則計算　›</small>
+            </p>
+          </section>
+          <section class="return-progress-card">
+            <h2>還車流程 <small>（剩餘步驟）</small></h2>
+            <div class="return-step">
+              <span>1</span><i></i>
+              <div><strong>車外拍攝</strong><small>拍攝車輛四周與車牌</small></div>
+              <b>待完成</b>
+            </div>
+            <div class="return-step">
+              <span>2</span><i></i>
+              <div><strong>車內拍攝</strong><small>拍攝車內狀態與設備</small></div>
+              <b>待完成</b>
+            </div>
+            <div class="return-step">
+              <span>3</span>
+              <div>
+                <strong>確認還車結果</strong><small>確認資訊並提交還車</small>
+              </div>
+              <b>待完成</b>
+            </div>
+          </section>
+          <button class="return-info-link" type="button">
+            <span>i</span>查看逾時收費說明　›
+          </button>
+          <button class="return-primary" data-return-scan-start type="button">
+            開始還車拍攝
+          </button>
+        </div>
+      </section>
+    </template>
+    <noscript>請啟用 JavaScript 以使用 iRent。</noscript>
+    <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+    <script type="module" src="js/pages.js"></script>
+  </body>
+</html>

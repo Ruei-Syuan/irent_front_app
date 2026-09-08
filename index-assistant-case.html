@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <!-- 網頁基本設定：使用繁體中文、手機版視窗與品牌主題色。 -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#00a79b" />
+    <title>iRent｜iRent</title>
+    <!-- 載入 MapLibre 地圖元件與本網站主要樣式。 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css"
+    />
+    <link rel="stylesheet" href="css/nearby-vehicles.css" />
+  </head>
+  <body class="front-app-body" data-initial-page="assistant/case">
+    <main data-app-loading role="status">頁面載入中…</main>
+    <template data-page-content="assistant/case">
+      <section class="assistant-screen" data-assistant-screen="case">
+        <header class="assistant-topbar">
+          <a class="assistant-wordmark" href="index.html" aria-label="iRent">iRent</a>
+        </header>
+        <div class="assistant-content assistant-case-content">
+          <div class="assistant-subbar">
+            <button
+              class="assistant-back"
+              data-assistant-home
+              type="button"
+              aria-label="返回 AI 助手首頁"
+            >
+              ‹
+            </button>
+            <h1>iRent 智慧客服</h1>
+            <button class="assistant-history" type="button">
+              ◷ <span>服務紀錄</span>
+            </button>
+          </div>
+          <div class="assistant-case-tag">▰　取車檢查中</div>
+          <section class="assistant-alert">
+            <span>!</span>
+            <div>
+              <strong>異常案例</strong>
+              <h2>右後保桿發現疑似新增擦傷</h2>
+              <p>AI 信心度 91%　|　系統查無歷史紀錄</p>
+            </div>
+          </section>
+          <div class="assistant-chat">
+            <div class="assistant-message assistant-message--user">
+              我在取車前發現右後保桿有刮痕，<br />這樣可以直接借車嗎？<span
+                class="assistant-user-avatar"
+                >●</span
+              >
+            </div>
+            <div class="assistant-message assistant-message--bot">
+              <span class="assistant-mini-robot">AI</span>
+              <p data-assistant-response>
+                我已讀取本次 AI 檢測結果。<br />右後保桿疑似新增擦傷，系統目前沒有歷史紀錄。<br />建議您先完成異常回報並保留照片，<br />確認後再決定是否借車。
+              </p>
+            </div>
+            <div
+              class="assistant-message assistant-message--bot assistant-message--steps"
+            >
+              <span class="assistant-mini-robot">AI</span>
+              <p>
+                我已為您整理可執行步驟：<br /><b>1. 查看異常照片</b><br /><b
+                  >2. 提交車損回報</b
+                ><br /><b>3. 改租附近合格車輛</b>
+              </p>
+            </div>
+          </div>
+          <div class="assistant-case-actions">
+            <button type="button">▧　查看異常照片　›</button
+            ><button type="button">▤　提交車損回報　›</button
+            ><button data-nav-view="nearby" type="button">▱　改租附近車輛　›</button>
+          </div>
+          <section class="assistant-human-card">
+            <header>
+              <span>♧</span>
+              <div>
+                <strong>需要人工客服？</strong><small>即時線上客服為您協助</small>
+              </div>
+            </header>
+            <div class="assistant-queue">
+              <span
+                >👥<small>線上客服人數<strong>5 人</strong></small></span
+              ><span
+                >◷<small>目前等待人數<strong>2 人</strong></small></span
+              ><span
+                >◴<small>預估等候時間<strong>1 分鐘</strong></small></span
+              ><span
+                >●<small>客服狀態<strong>可立即排隊</strong></small></span
+              >
+            </div>
+            <button type="button">♧　轉接人工客服</button>
+          </section>
+          <div class="assistant-case-composer">
+            <span>●</span
+            ><input
+              type="text"
+              placeholder="請輸入您的問題…"
+              aria-label="輸入問題"
+            /><button type="button">➤</button><small>服務時間：24 小時全年無休</small>
+          </div>
+        </div>
+      </section>
+    </template>
+    <noscript>請啟用 JavaScript 以使用 iRent。</noscript>
+    <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+    <script type="module" src="js/pages.js"></script>
+  </body>
+</html>

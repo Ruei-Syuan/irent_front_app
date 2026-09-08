@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <!-- 網頁基本設定：使用繁體中文、手機版視窗與品牌主題色。 -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#00a79b" />
+    <title>iRent｜返回檢查首頁</title>
+    <!-- 載入 MapLibre 地圖元件與本網站主要樣式。 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css"
+    />
+    <link rel="stylesheet" href="css/nearby-vehicles.css" />
+  </head>
+  <body class="front-app-body" data-initial-page="scan/capture">
+    <main data-app-loading role="status">頁面載入中…</main>
+    <template data-page-content="scan/capture">
+      <section
+        class="inspection-screen return-capture-screen"
+        data-inspection-screen="capture"
+      >
+        <header class="inspection-topbar">
+          <button
+            class="inspection-back"
+            data-inspection-back
+            type="button"
+            aria-label="返回檢查首頁"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="m15 5-7 7 7 7" />
+            </svg></button
+          ><a class="inspection-wordmark" href="index.html" aria-label="iRent"
+            >iRent</a
+          >
+          <div class="inspection-top-actions">
+            <button type="button" aria-label="說明">?</button
+            ><button class="inspection-notification" type="button" aria-label="通知">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path
+                  d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"
+                /></svg
+              ><i aria-hidden="true"></i>
+            </button>
+          </div>
+        </header>
+        <div class="inspection-heading return-capture-heading">
+          <h1>AI 引導車外拍照</h1>
+        </div>
+        <div class="inspection-mode-banner">
+          <span>♙</span>
+          <div><strong>狹窄空間模式</strong><small>請依序拍攝四個角落</small></div>
+        </div>
+        <div class="inspection-camera inspection-camera--capture">
+          <div class="inspection-scene">
+            <div class="inspection-garage"></div>
+            <div class="inspection-car inspection-car--front">
+              <i class="inspection-car__roof"></i><i class="inspection-car__body"></i
+              ><b></b><b></b>
+            </div>
+          </div>
+          <div class="inspection-frame"></div>
+          <div class="inspection-capture-badge">
+            <strong>1/4</strong><span>左前角</span>
+          </div>
+          <div class="inspection-capture-tip">
+            ●　車牌比對成功 ABC-1234　可安心拍攝
+          </div>
+          <div class="inspection-camera-tip">ⓘ　空間狹窄，請保持固定角度拍攝</div>
+        </div>
+        <div class="inspection-thumbnails">
+          <span class="is-current"><b>1</b><i></i><small>左前角</small></span
+          ><span><b>2</b><i></i><small>右前角</small></span
+          ><span><b>3</b><i></i><small>左後角</small></span
+          ><span><b>4</b><i></i><small>右後角</small></span>
+        </div>
+        <div class="inspection-validation">
+          <span
+            >✓<small>角度正常<br />AI 檢測通過</small></span
+          ><span
+            >☼<small>光線正常<br />AI 檢測通過</small></span
+          ><span
+            >▣<small>車身清楚<br />AI 檢測通過</small></span
+          >
+        </div>
+        <div class="inspection-camera-controls inspection-camera-controls--capture">
+          <button type="button">
+            ▣<small>僅限現場拍攝<br />確保保密與安全</small></button
+          ><button
+            class="inspection-shutter inspection-shutter--teal"
+            data-scan-capture-next
+            type="button"
+            aria-label="拍攝下一張"
+          ></button
+          ><button type="button">♧<small>拍攝提示</small></button>
+        </div>
+      </section>
+    </template>
+    <noscript>請啟用 JavaScript 以使用 iRent。</noscript>
+    <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+    <script type="module" src="js/pages.js"></script>
+  </body>
+</html>

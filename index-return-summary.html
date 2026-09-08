@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <!-- 網頁基本設定：使用繁體中文、手機版視窗與品牌主題色。 -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#00a79b" />
+    <title>iRent｜還車檢查摘要</title>
+    <!-- 載入 MapLibre 地圖元件與本網站主要樣式。 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css"
+    />
+    <link rel="stylesheet" href="css/nearby-vehicles.css" />
+  </head>
+  <body class="front-app-body" data-initial-page="return-summary">
+    <main data-app-loading role="status">頁面載入中…</main>
+    <template data-page-content="return-summary">
+      <section
+        class="feature-view return-summary-view"
+        data-view-panel="return-summary"
+        aria-label="還車檢查摘要"
+      >
+        <header class="completion-topbar">
+          <button
+            class="completion-back"
+            data-return-summary-back
+            type="button"
+            aria-label="返回車內檢測結果"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="m15 5-7 7 7 7" />
+            </svg></button
+          ><a class="completion-wordmark" href="index.html" aria-label="iRent"
+            >iRent</a
+          ><button class="completion-headset" type="button" aria-label="客服">
+            ◉
+          </button>
+        </header>
+        <div class="completion-content">
+          <div class="completion-title"><h1>還車檢查摘要</h1></div>
+          <section class="completion-success">
+            <span>✓</span>
+            <div>
+              <strong>AI 檢查完成！</strong>
+              <p>感謝您的使用，祝您有美好的一天！</p>
+            </div>
+          </section>
+          <section class="return-summary-card return-summary-card--exterior">
+            <header>
+              <span class="summary-card-icon">▱</span>
+              <div>
+                <h2>車外 <em>!</em> <b>1 處疑似新增車損</b></h2>
+                <p>疑似新增擦傷：右後保險桿<br />其餘既有車損已比對完成。</p>
+              </div>
+              <strong>›</strong>
+            </header>
+            <div class="summary-card-body">
+              <div>
+                <small>受損部位預覽</small>
+                <div class="summary-thumbs">
+                  <i></i><i></i><i></i
+                  ><span
+                    >▧<small>查看全部<br />12 張</small></span
+                  >
+                </div>
+              </div>
+              <div class="summary-ai">
+                <small>AI 判定</small>
+                <p>✓　疑似新增 1 處<br /><span>　其餘車損為既有</span></p>
+                <small>預估修理費用小計</small><strong>NT$ 3,600</strong>
+              </div>
+            </div>
+          </section>
+          <section class="return-summary-card return-summary-card--cabin">
+            <header>
+              <span class="summary-card-icon">♧</span>
+              <div>
+                <h2>車內</h2>
+                <p>後座少量垃圾與地板碎屑</p>
+              </div>
+              <div class="summary-score">
+                <small>清潔分數</small><strong>72 <i>/100</i></strong
+                ><span>☺</span>
+              </div>
+            </header>
+            <div class="summary-card-body">
+              <div>
+                <small>車內狀況預覽</small>
+                <div class="summary-thumbs summary-thumbs--cabin">
+                  <i></i><i></i><i></i
+                  ><span
+                    >▧<small>查看全部<br />8 張</small></span
+                  >
+                </div>
+              </div>
+              <div class="summary-ai">
+                <small>清潔分類</small><strong class="summary-normal">普通</strong
+                ><small>預估清潔費用小計</small><strong>NT$ 300</strong>
+              </div>
+            </div>
+          </section>
+          <section class="return-cost-summary">
+            <div>
+              <h2>本次預估費用小計</h2>
+              <p>車外修理費 <b>NT$ 3,600</b></p>
+              <p>車內清潔費 <b>NT$ 300</b></p>
+              <strong>合計 <b>NT$ 3,900</b></strong>
+            </div>
+            <div class="return-points">
+              <span>☆</span>
+              <h2>計點結果</h2>
+              <p>依車內狀況評估，<br />本次計點結果：</p>
+              <strong>扣點 1 點</strong
+              ><small>扣點將影響您的會員權益，請維持良好用車習慣。</small>
+            </div>
+          </section>
+          <button class="completion-primary" data-return-summary-next type="button">
+            確認完成還車</button
+          ><button
+            class="completion-secondary"
+            data-return-summary-report
+            type="button"
+          >
+            <span>▤</span>查看詳細報告
+          </button>
+        </div>
+      </section>
+    </template>
+    <noscript>請啟用 JavaScript 以使用 iRent。</noscript>
+    <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+    <script type="module" src="js/pages.js"></script>
+  </body>
+</html>

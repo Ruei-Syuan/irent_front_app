@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <!-- 網頁基本設定：使用繁體中文、手機版視窗與品牌主題色。 -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#00a79b" />
+    <title>iRent｜iRent</title>
+    <!-- 載入 MapLibre 地圖元件與本網站主要樣式。 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css"
+    />
+    <link rel="stylesheet" href="css/nearby-vehicles.css" />
+  </head>
+  <body class="front-app-body" data-initial-page="scan/recording">
+    <main data-app-loading role="status">頁面載入中…</main>
+    <template data-page-content="scan/recording">
+      <section
+        class="inspection-screen return-recording-screen"
+        data-inspection-screen="recording"
+      >
+        <header class="inspection-topbar return-recording-topbar">
+          <a class="inspection-wordmark" href="index.html" aria-label="iRent">iRent</a
+          ><strong>AI 引導車外錄影</strong
+          ><button class="inspection-help" type="button" aria-label="說明">?</button>
+        </header>
+        <div class="inspection-mode-banner">
+          <span>♙</span>
+          <div>
+            <strong>開闊空間模式</strong
+            ><small>請保持 2–3 公尺距離，沿車身緩慢移動</small>
+          </div>
+        </div>
+        <div class="inspection-progress-head">
+          <span>進度 <strong data-scan-count>3 / 8</strong></span
+          ><span>目前角度 <strong>右後 45°</strong></span>
+        </div>
+        <div class="inspection-progress">
+          <i></i><b></b><b></b><b></b><b></b><b></b><b></b><b></b>
+        </div>
+        <div class="inspection-camera inspection-camera--recording">
+          <div class="inspection-scene">
+            <div class="inspection-sky"></div>
+            <div class="inspection-building"></div>
+            <div class="inspection-car inspection-car--rear">
+              <i class="inspection-car__roof"></i><i class="inspection-car__body"></i
+              ><b></b><b></b>
+            </div>
+          </div>
+          <div class="inspection-ai-badge">
+            <span>●</span><strong>車牌確認成功</strong><small>ABC-1234</small>
+          </div>
+          <div class="inspection-status-stack">
+            <span>✓ 距離正常<small>2.4 公尺</small></span
+            ><span>☼ 光線正常</span><span>▣ 車身完整入鏡</span>
+          </div>
+          <div class="inspection-angle-badge">右後45°</div>
+          <div class="inspection-camera-tip">
+            ●　沿著箭頭方向，繼續移動到下一個角度　›
+          </div>
+        </div>
+        <div class="inspection-angle-strip">
+          <strong>拍攝角度指引（8 個角度）</strong>
+          <div>
+            <button type="button" data-scan-angle="0" aria-pressed="false">
+              1<br /><small>車頭</small>
+            </button>
+            <button type="button" data-scan-angle="1" aria-pressed="false">
+              2<br /><small>右前45°</small>
+            </button>
+            <button type="button" data-scan-angle="2" aria-pressed="false">
+              3<br /><small>右側</small>
+            </button>
+            <button
+              type="button"
+              data-scan-angle="3"
+              aria-pressed="true"
+              class="is-current"
+            >
+              4<br /><small>右後45°</small>
+            </button>
+            <button type="button" data-scan-angle="4" aria-pressed="false">
+              5<br /><small>車尾</small>
+            </button>
+            <button type="button" data-scan-angle="5" aria-pressed="false">
+              6<br /><small>左後45°</small>
+            </button>
+            <button type="button" data-scan-angle="6" aria-pressed="false">
+              7<br /><small>左側</small>
+            </button>
+            <button type="button" data-scan-angle="7" aria-pressed="false">
+              8<br /><small>左前45°</small>
+            </button>
+          </div>
+        </div>
+        <div class="inspection-permission">
+          ✓　僅限現場錄影，不可上傳相簿<br /><small
+            >為確保檢查真實性，請允許現場即時錄影，系統不支援相簿上傳。</small
+          >
+        </div>
+        <div class="inspection-camera-controls">
+          <button type="button">
+            ϟ<small>閃光燈<br />關閉</small></button
+          ><button
+            class="inspection-shutter"
+            data-scan-record-next
+            type="button"
+            aria-label="前往下一個角度"
+          ></button
+          ><button type="button">
+            ▣<small>切換鏡頭<br />後鏡頭</small>
+          </button>
+        </div>
+      </section>
+    </template>
+    <noscript>請啟用 JavaScript 以使用 iRent。</noscript>
+    <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+    <script type="module" src="js/pages.js"></script>
+  </body>
+</html>

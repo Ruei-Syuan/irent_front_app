@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <!-- 網頁基本設定：使用繁體中文、手機版視窗與品牌主題色。 -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#00a79b" />
+    <title>iRent｜客服中心</title>
+    <!-- 載入 MapLibre 地圖元件與本網站主要樣式。 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css"
+    />
+    <link rel="stylesheet" href="css/nearby-vehicles.css" />
+  </head>
+  <body class="front-app-body" data-initial-page="support">
+    <main data-app-loading role="status">頁面載入中…</main>
+    <template data-page-content="support">
+      <section class="feature-view" data-view-panel="support" aria-label="客服中心">
+        <header class="feature-view__header">
+          <span>客服中心</span><strong>需要協助嗎？</strong>
+        </header>
+        <div class="support-list">
+          <button type="button">
+            <span>?</span>
+            <div>
+              <strong>取車前遇到問題</strong><small>找不到車輛、車門無法開啟</small>
+            </div>
+            <b>›</b></button
+          ><button type="button">
+            <span>!</span>
+            <div>
+              <strong>行程中異常回報</strong><small>車況、事故或臨停相關協助</small>
+            </div>
+            <b>›</b></button
+          ><button type="button">
+            <span>i</span>
+            <div>
+              <strong>使用與付款說明</strong><small>方案、費率與付款紀錄</small>
+            </div>
+            <b>›</b>
+          </button>
+        </div>
+        <button class="support-call" type="button">聯絡線上客服</button>
+      </section>
+    </template>
+    <noscript>請啟用 JavaScript 以使用 iRent。</noscript>
+    <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+    <script type="module" src="js/pages.js"></script>
+  </body>
+</html>

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <!-- 網頁基本設定：使用繁體中文、手機版視窗與品牌主題色。 -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#00a79b" />
+    <title>iRent｜返回還車流程</title>
+    <!-- 載入 MapLibre 地圖元件與本網站主要樣式。 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css"
+    />
+    <link rel="stylesheet" href="css/nearby-vehicles.css" />
+  </head>
+  <body class="front-app-body" data-initial-page="scan/result">
+    <main data-app-loading role="status">頁面載入中…</main>
+    <template data-page-content="scan/result">
+      <section
+        class="inspection-screen return-result-screen"
+        data-inspection-screen="result"
+      >
+        <header class="inspection-topbar">
+          <button
+            class="inspection-back"
+            data-return-result-back
+            type="button"
+            aria-label="返回還車流程"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="m15 5-7 7 7 7" />
+            </svg></button
+          ><a class="inspection-wordmark" href="index.html" aria-label="iRent"
+            >iRent</a
+          >
+          <div class="inspection-top-actions">
+            <button type="button" aria-label="說明">?</button
+            ><button class="inspection-notification" type="button" aria-label="通知">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path
+                  d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-7-3-9M10 21h4"
+                /></svg
+              ><i aria-hidden="true"></i>
+            </button>
+          </div>
+        </header>
+        <div class="inspection-heading"><h1>還車車外歷史比對結果</h1></div>
+        <div class="inspection-result-banner">
+          <span>✓</span>
+          <div>
+            <strong>AI 已完成歷史比對</strong>
+            <p>本次還車前已比對歷史車況資料<br />僅顯示系統未有紀錄或疑似新增問題</p>
+          </div>
+        </div>
+        <div class="inspection-result-car">
+          <div class="inspection-car inspection-car--result">
+            <i class="inspection-car__roof"></i><i class="inspection-car__body"></i
+            ><b></b><b></b>
+          </div>
+          <span>1</span>
+        </div>
+        <section class="inspection-history">
+          <h2>▤　歷史紀錄摘要</h2>
+          <div class="inspection-history-tags">
+            <span>既有車損 3 處</span><span>已存在系統紀錄</span
+            ><span>本次無需逐筆確認</span>
+          </div>
+          <div>
+            <p>✓　左前門 刮痕 <em>既有車損</em><small>已記錄 2024/05/18　⌄</small></p>
+            <p>✓　後保桿 刮痕 <em>既有車損</em><small>已記錄 2024/04/30　⌄</small></p>
+            <p>✓　右後門 凹痕 <em>既有車損</em><small>已記錄 2024/03/15　⌄</small></p>
+          </div>
+        </section>
+        <section class="inspection-new-issue">
+          <h2>!　需注意的新問題 <span>僅顯示未記錄問題</span></h2>
+          <div>
+            <strong>1</strong>
+            <p>
+              <b>右後保桿 擦傷</b><small>系統無歷史紀錄　AI 信心度 <em>91%</em></small
+              ><small>◷ 首次發現於本次還車檢測</small>
+            </p>
+            <i></i><span>›</span>
+          </div>
+          <p>💡　建議使用者確認並回報，避免後續爭議。</p>
+        </section>
+        <button class="inspection-primary" data-return-submit type="button">
+          提交還車結果
+        </button>
+      </section>
+    </template>
+    <noscript>請啟用 JavaScript 以使用 iRent。</noscript>
+    <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+    <script type="module" src="js/pages.js"></script>
+  </body>
+</html>

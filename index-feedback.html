@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <!-- 網頁基本設定：使用繁體中文、手機版視窗與品牌主題色。 -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#00a79b" />
+    <title>iRent｜異常回饋</title>
+    <!-- 載入 MapLibre 地圖元件與本網站主要樣式。 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css"
+    />
+    <link rel="stylesheet" href="css/nearby-vehicles.css" />
+  </head>
+  <body class="front-app-body" data-initial-page="feedback">
+    <main data-app-loading role="status">頁面載入中…</main>
+    <template data-page-content="feedback">
+      <section
+        class="feature-view app-flow-view"
+        data-view-panel="feedback"
+        aria-label="異常回饋"
+      >
+        <header class="feature-view__header">
+          <span>車況回饋</span><strong>發現髒污車輛</strong>
+        </header>
+        <article class="feedback-alert">
+          <span>!</span><strong>髒污車輛不會開放借用</strong>
+          <p>
+            若你遇到不符合預期的車況，請重新選擇車輛；我們會保留這筆回饋並安排處理。
+          </p>
+        </article>
+        <section class="feedback-card">
+          <span>本次回饋</span><strong>車內座椅與置物區有明顯髒污</strong>
+          <div class="feedback-options">
+            <button class="is-selected" type="button">車內髒污</button
+            ><button type="button">外觀異常</button
+            ><button type="button">設備問題</button>
+          </div>
+        </section>
+        <div class="feedback-points">
+          <span>＋1</span>
+          <div><strong>回饋點數</strong><small>完成回報後將加入你的帳戶</small></div>
+        </div>
+        <button class="page-action flow-primary" data-feedback-submit type="button">
+          送出回饋並重新選車
+        </button>
+      </section>
+    </template>
+    <noscript>請啟用 JavaScript 以使用 iRent。</noscript>
+    <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+    <script type="module" src="js/pages.js"></script>
+  </body>
+</html>

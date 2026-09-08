@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <!-- 網頁基本設定：使用繁體中文、手機版視窗與品牌主題色。 -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#00a79b" />
+    <title>iRent｜租借中</title>
+    <!-- 載入 MapLibre 地圖元件與本網站主要樣式。 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css"
+    />
+    <link rel="stylesheet" href="css/nearby-vehicles.css" />
+  </head>
+  <body class="front-app-body" data-initial-page="renting">
+    <main data-app-loading role="status">頁面載入中…</main>
+    <template data-page-content="renting">
+      <section
+        class="feature-view rental-flow-view renting-view"
+        data-view-panel="renting"
+        aria-label="租借中"
+      >
+        <header class="rental-topbar">
+          <a class="rental-wordmark" href="index.html" aria-label="iRent">iRent</a
+          ><button class="rental-help" type="button" aria-label="說明">?</button>
+        </header>
+        <div class="rental-content">
+          <div class="rental-heading renting-heading">
+            <h1>租借中 <span>進行中</span></h1>
+            <p>用車愉快，請注意行車安全！</p>
+          </div>
+          <article class="rental-vehicle-card renting-vehicle-card">
+            <div>
+              <strong>ABC-1234</strong><small>iRent GO</small
+              ><small>Toyota Yaris</small><span>⌾　忠孝復興站</span>
+            </div>
+            <button type="button">查看合約　›</button>
+            <div class="rental-car-visual">
+              <div class="inspection-car inspection-car--rental">
+                <i class="inspection-car__roof"></i
+                ><i class="inspection-car__body"></i><b></b><b></b>
+              </div>
+            </div>
+          </article>
+          <section class="rental-timer">
+            <span>剩餘時間</span><strong>02:18:33</strong
+            ><small>預計 05/20 (二) 12:00 前還車</small
+            ><button type="button">ⓘ　計費說明</button>
+          </section>
+          <div class="rental-actions">
+            <button type="button"><span>♧</span>解鎖</button
+            ><button type="button"><span>♧</span>上鎖</button
+            ><button type="button"><span>⌁</span>尋車</button
+            ><button type="button"><span>◷</span>延長租借</button
+            ><button type="button"><span>➤</span>導航</button
+            ><button class="rental-return" data-nav-view="return" type="button">
+              <span>▣</span>開始還車
+            </button>
+          </div>
+          <section class="rental-record">
+            <div>
+              <h2>本次車況紀錄 <em>已保存</em></h2>
+              <p>已於 05/20 09:41 完成檢查</p>
+              <button type="button">查看紀錄　›</button>
+            </div>
+            <span class="rental-record-icon">▤</span>
+          </section>
+        </div>
+      </section>
+    </template>
+    <noscript>請啟用 JavaScript 以使用 iRent。</noscript>
+    <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+    <script type="module" src="js/pages.js"></script>
+  </body>
+</html>
